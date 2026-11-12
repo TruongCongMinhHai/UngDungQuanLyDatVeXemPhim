@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- ===== A. Đăng nhập & đăng ký (Hải) ===== -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ute.cinenow.ui.auth.LoginFragment"
+        android:label="Đăng nhập"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.ute.cinenow.ui.auth.RegisterFragment"
+        android:label="Đăng ký"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.ute.cinenow.ui.auth.ForgotPasswordFragment"
+        android:label="Khôi phục mật khẩu"
+        tools:layout="@layout/fragment_forgot_password" />
+
+    <fragment
+        android:id="@+id/verifyAccountFragment"
+        android:name="com.ute.cinenow.ui.auth.VerifyAccountFragment"
+        android:label="Xác minh tài khoản"
+        tools:layout="@layout/fragment_verify_account" />
+
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.ute.cinenow.ui.auth.ResetPasswordFragment"
+        android:label="Đặt lại mật khẩu"
+        tools:layout="@layout/fragment_reset_password" />
+
+    <!-- Modal Dialog: class phải kế thừa DialogFragment -->
+    <dialog
+        android:id="@+id/resetSuccessDialog"
+        android:name="com.ute.cinenow.ui.auth.ResetSuccessDialog"
+        android:label="Đặt lại thành công"
+        tools:layout="@layout/dialog_reset_success" />
+
+    <!-- ===== B. Trang chủ & khám phá phim (Hải) ===== -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ute.cinenow.ui.home.HomeFragment"
+        android:label="Trang chủ"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.ute.cinenow.ui.movie.ExploreFragment"
+        android:label="Khám phá"
+        tools:layout="@layout/fragment_explore" />
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.ute.cinenow.ui.movie.MovieDetailFragment"
+        android:label="Chi tiết phim"
+        tools:layout="@layout/fragment_movie_detail" />
+
+    <!-- ===== C. Đặt vé & chọn ghế (Nguyên) ===== -->
+    <fragment
+        android:id="@+id/showtimeFragment"
+        android:name="com.ute.cinenow.ui.booking.ShowtimeFragment"
+        android:label="Chọn rạp và suất chiếu"
+        tools:layout="@layout/fragment_showtime" />
+
+    <fragment
+        android:id="@+id/smartSeatSetupFragment"
+        android:name="com.ute.cinenow.ui.seat.SmartSeatSetupFragment"
+        android:label="Thiết lập SmartSeat"
+        tools:layout="@layout/fragment_smart_seat_setup" />
+
+    <fragment
+        android:id="@+id/seatSelectionFragment"
+        android:name="com.ute.cinenow.ui.seat.SeatSelectionFragment"
+        android:label="Sơ đồ ghế"
+        tools:layout="@layout/fragment_seat_selection" />
+
+    <fragment
+        android:id="@+id/bookingReviewFragment"
+        android:name="com.ute.cinenow.ui.booking.BookingReviewFragment"
+        android:label="Kiểm tra đặt vé"
+        tools:layout="@layout/fragment_booking_review" />
+
+    <fragment
+        android:id="@+id/selectVoucherFragment"
+        android:name="com.ute.cinenow.ui.booking.SelectVoucherFragment"
+        android:label="Chọn ưu đãi"
+        tools:layout="@layout/fragment_select_voucher" />
+
+    <fragment
+        android:id="@+id/bookingSuccessFragment"
+        android:name="com.ute.cinenow.ui.booking.BookingSuccessFragment"
+        android:label="Đặt vé thành công"
+        tools:layout="@layout/fragment_booking_success" />
+
+    <fragment
+        android:id="@+id/ticketDetailFragment"
+        android:name="com.ute.cinenow.ui.tickets.TicketDetailFragment"
+        android:label="Chi tiết vé"
+        tools:layout="@layout/fragment_ticket_detail" />
+
+    <!-- ===== D. CineMatch (Chinh) ===== -->
+    <fragment
+        android:id="@+id/cineMatchPreferencesFragment"
+        android:name="com.ute.cinenow.ui.cinematch.CineMatchPreferencesFragment"
+        android:label="Sở thích CineMatch"
+        tools:layout="@layout/fragment_cinematch_preferences" />
+
+    <fragment
+        android:id="@+id/cineMatchResultFragment"
+        android:name="com.ute.cinenow.ui.cinematch.CineMatchResultFragment"
+        android:label="Gợi ý phim CineMatch"
+        tools:layout="@layout/fragment_cinematch_result" />
+
+    <!-- ===== E. CineTogether (Chinh) ===== -->
+    <fragment
+        android:id="@+id/cineTogetherFragment"
+        android:name="com.ute.cinenow.ui.cinetogether.CineTogetherFragment"
+        android:label="Đi cùng nhóm"
+        tools:layout="@layout/fragment_cine_together" />
+
+    <fragment
+        android:id="@+id/createRoomFragment"
+        android:name="com.ute.cinenow.ui.cinetogether.CreateRoomFragment"
+        android:label="Tạo phòng xem phim"
+        tools:layout="@layout/fragment_create_room" />
+
+    <fragment
+        android:id="@+id/joinRoomFragment"
+        android:name="com.ute.cinenow.ui.cinetogether.JoinRoomFragment"
+        android:label="Tham gia phòng"
+        tools:layout="@layout/fragment_join_room" />
+
+    <fragment
+        android:id="@+id/votingRoomFragment"
+        android:name="com.ute.cinenow.ui.cinetogether.VotingRoomFragment"
+        android:label="Phòng xem phim"
+        tools:layout="@layout/fragment_voting_room" />
+
+    <!-- Bottom Sheet: dùng thẻ <dialog>, class phải kế thừa BottomSheetDialogFragment -->
+    <dialog
+        android:id="@+id/roomMembersBottomSheet"
+        android:name="com.ute.cinenow.ui.cinetogether.RoomMembersBottomSheet"
+        android:label="Thành viên trong phòng"
+        tools:layout="@layout/bottom_sheet_room_members" />
+
+    <!-- ===== F. Vé của tôi (Nguyên) ===== -->
+    <fragment
+        android:id="@+id/ticketsFragment"
+        android:name="com.ute.cinenow.ui.tickets.TicketsFragment"
+        android:label="Vé của tôi"
+        tools:layout="@layout/fragment_tickets" />
+
+    <fragment
+        android:id="@+id/ticketHistoryFragment"
+        android:name="com.ute.cinenow.ui.tickets.TicketHistoryFragment"
+        android:label="Lịch sử vé"
+        tools:layout="@layout/fragment_ticket_history" />
+
+    <!-- ===== G. Cá nhân (Hải) ===== -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ute.cinenow.ui.profile.ProfileFragment"
+        android:label="Cá nhân"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.ute.cinenow.ui.profile.EditProfileFragment"
+        android:label="Chỉnh sửa thông tin"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.ute.cinenow.ui.profile.ChangePasswordFragment"
+        android:label="Đổi mật khẩu"
+        tools:layout="@layout/fragment_change_password" />
+
+    <!-- ===== Bình chọn CineTogether (màn 29, 30 - Nguyên) ===== -->
+    <!-- Bottom Sheet: class phải kế thừa BottomSheetDialogFragment -->
+    <dialog
+        android:id="@+id/confirmVoteBottomSheet"
+        android:name="com.ute.cinenow.ui.cinetogether.ConfirmVoteBottomSheet"
+        android:label="Xác nhận chốt phim"
+        tools:layout="@layout/bottom_sheet_confirm_vote" />
+
+    <fragment
+        android:id="@+id/voteResultFragment"
+        android:name="com.ute.cinenow.ui.cinetogether.VoteResultFragment"
+        android:label="Kết quả bình chọn"
+        tools:layout="@layout/fragment_vote_result" />
+
+    <!-- ===== H. CineConnect (Chinh) ===== -->
+    <fragment
+        android:id="@+id/cineConnectFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.CineConnectFragment"
+        android:label="CineConnect"
+        tools:layout="@layout/fragment_cine_connect" />
+
+    <fragment
+        android:id="@+id/matchedPeopleFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.MatchedPeopleFragment"
+        android:label="Người phù hợp"
+        tools:layout="@layout/fragment_matched_people" />
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.UserProfileFragment"
+        android:label="Hồ sơ người dùng"
+        tools:layout="@layout/fragment_user_profile" />
+
+    <fragment
+        android:id="@+id/friendRequestsFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.FriendRequestsFragment"
+        android:label="Lời mời kết bạn"
+        tools:layout="@layout/fragment_friend_requests" />
+
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.FriendsFragment"
+        android:label="Bạn bè"
+        tools:layout="@layout/fragment_friends" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.ChatFragment"
+        android:label="Trò chuyện"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/inviteMovieFragment"
+        android:name="com.ute.cinenow.ui.cineconnect.InviteMovieFragment"
+        android:label="Mời xem phim"
+        tools:layout="@layout/fragment_invite_movie" />
+
+</navigation>

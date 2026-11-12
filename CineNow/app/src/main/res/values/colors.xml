@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand / Primary -->
+    <color name="cinenow_primary">#4F46E5</color>
+    <color name="cinenow_primary_variant">#4338CA</color>
+    <color name="cinenow_on_primary">#FFFFFF</color>
+    <color name="cinenow_primary_container">#E0E7FF</color>
+    <color name="cinenow_on_primary_container">#3730A3</color>
+
+    <!-- Secondary / Accent -->
+    <color name="cinenow_secondary">#6366F1</color>
+    <color name="cinenow_on_secondary">#FFFFFF</color>
+    <color name="cinenow_secondary_container">#EEF2FF</color>
+    <color name="cinenow_on_secondary_container">#312E81</color>
+
+    <!-- Surface & Backgrounds -->
+    <color name="cinenow_background">#FAF8FF</color>
+    <color name="cinenow_on_background">#111827</color>
+    <color name="cinenow_surface">#FAF8FF</color>
+    <color name="cinenow_on_surface">#111827</color>
+    <color name="cinenow_surface_dim">#D2D9F4</color>
+    <color name="cinenow_surface_bright">#FAF8FF</color>
+
+    <!-- Surface Containers (Card, Modal, Bottom Sheet, Popup) -->
+    <color name="cinenow_surface_container_lowest">#FFFFFF</color>
+    <color name="cinenow_surface_container_low">#F2F3FF</color>
+    <color name="cinenow_surface_container">#EAEDFA</color>
+    <color name="cinenow_surface_container_high">#E4E8F5</color>
+    <color name="cinenow_surface_container_highest">#DEE2EF</color>
+
+    <!-- Typography & Neutral -->
+    <color name="cinenow_text_primary">#111827</color>
+    <color name="cinenow_text_secondary">#4B5563</color>
+    <color name="cinenow_text_tertiary">#94A3B8</color>
+    <color name="cinenow_text_disabled">#CBD5E1</color>
+    <color name="cinenow_outline">#E2E8F0</color>
+    <color name="cinenow_outline_variant">#CBD5E1</color>
+
+    <!-- Success -->
+    <color name="cinenow_success">#10B981</color>
+    <color name="cinenow_success_container">#ECFDF5</color>
+    <color name="cinenow_on_success">#FFFFFF</color>
+    <color name="cinenow_on_success_container">#065F46</color>
+
+    <!-- Warning -->
+    <color name="cinenow_warning">#F59E0B</color>
+    <color name="cinenow_warning_container">#FEF3C7</color>
+    <color name="cinenow_on_warning">#FFFFFF</color>
+    <color name="cinenow_on_warning_container">#92400E</color>
+
+    <!-- Error -->
+    <color name="cinenow_error">#EF4444</color>
+    <color name="cinenow_error_container">#FEF2F2</color>
+    <color name="cinenow_on_error">#FFFFFF</color>
+    <color name="cinenow_on_error_container">#991B1B</color>
+
+    <!-- Info -->
+    <color name="cinenow_info">#3B82F6</color>
+    <color name="cinenow_info_container">#EFF6FF</color>
+    <color name="cinenow_on_info">#FFFFFF</color>
+    <color name="cinenow_on_info_container">#1E40AF</color>
+
+    <!-- SmartSeat & Booking -->
+    <color name="cinenow_seat_standard">#F1F5F9</color>
+    <color name="cinenow_seat_standard_stroke">#CBD5E1</color>
+    <color name="cinenow_seat_vip">#8B5CF6</color>
+    <color name="cinenow_seat_selected">#4F46E5</color>
+    <color name="cinenow_seat_booked">#94A3B8</color>
+    <color name="cinenow_seat_unavailable">#E2E8F0</color>
+
+    <!-- Common -->
+    <color name="cinenow_white">#FFFFFF</color>
+    <color name="cinenow_black">#000000</color>
+    <color name="cinenow_transparent">#00000000</color>
+    <color name="cinenow_scrim_dim">#80000000</color>
+</resources>

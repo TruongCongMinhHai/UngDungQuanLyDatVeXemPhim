@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.CineNow" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary -->
+        <item name="colorPrimary">@color/cinenow_primary</item>
+        <item name="colorOnPrimary">@color/cinenow_on_primary</item>
+        <item name="colorPrimaryContainer">@color/cinenow_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/cinenow_on_primary_container</item>
+
+        <!-- Secondary -->
+        <item name="colorSecondary">@color/cinenow_secondary</item>
+        <item name="colorOnSecondary">@color/cinenow_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/cinenow_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/cinenow_on_secondary_container</item>
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">@color/cinenow_background</item>
+        <item name="colorOnBackground">@color/cinenow_on_background</item>
+        <item name="colorSurface">@color/cinenow_surface</item>
+        <item name="colorOnSurface">@color/cinenow_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/cinenow_text_secondary</item>
+        <item name="colorSurfaceDim">@color/cinenow_surface_dim</item>
+        <item name="colorSurfaceBright">@color/cinenow_surface_bright</item>
+        <item name="colorSurfaceContainerLowest">@color/cinenow_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/cinenow_surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/cinenow_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/cinenow_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/cinenow_surface_container_highest</item>
+
+        <!-- Outline -->
+        <item name="colorOutline">@color/cinenow_outline_variant</item>
+        <item name="colorOutlineVariant">@color/cinenow_outline</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/cinenow_error</item>
+        <item name="colorOnError">@color/cinenow_on_error</item>
+        <item name="colorErrorContainer">@color/cinenow_error_container</item>
+        <item name="colorOnErrorContainer">@color/cinenow_on_error_container</item>
+
+        <!-- Status bar: nền sáng, icon tối -->
+        <item name="android:statusBarColor">@color/cinenow_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.CineNow" parent="Base.Theme.CineNow" />
+    <style name="CineNow.BottomNavLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+    </style>
+</resources>

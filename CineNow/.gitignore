@@ -1,0 +1,20 @@
+# Build / Gradle
+*.iml
+.gradle/
+.kotlin/
+/build/
+**/build/
+/captures
+.externalNativeBuild
+.cxx
+
+# Máy cá nhân
+local.properties
+.idea/
+.DS_Store
+
+# File ký/ ứng dụng sinh ra
+*.apk
+*.aab
+*.keystore
+*.jks
