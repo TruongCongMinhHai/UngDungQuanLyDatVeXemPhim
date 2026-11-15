@@ -47,4 +47,30 @@
     <style name="CineNow.BottomNavLabel" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">11sp</item>
     </style>
+    <!-- Ô nhập dùng chung: nền xám nhạt, bo 12dp, không nhãn nổi -->
+    <style name="Widget.CineNow.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/cinenow_surface_container_low</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="startIconTint">@color/cinenow_text_tertiary</item>
+        <item name="endIconTint">@color/cinenow_text_tertiary</item>
+    </style>
+
+    <!-- Chữ bên trong ô nhập -->
+    <style name="Widget.CineNow.EditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/cinenow_text_primary</item>
+        <item name="android:textColorHint">@color/cinenow_text_tertiary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- Nhãn phía trên ô nhập ("Họ và tên", "Email"...) -->
+    <style name="CineNow.FieldLabel" parent="">
+        <item name="android:textColor">@color/cinenow_text_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
