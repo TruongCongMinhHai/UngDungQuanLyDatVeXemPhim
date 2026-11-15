@@ -1,20 +1,355 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="@color/cinenow_background"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xác minh tài khoản"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Thanh trên (có đổ bóng nhẹ) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/cinenow_background"
+        android:elevation="2dp"
+        android:paddingHorizontal="12dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Quay lại"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_auth_back" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_cinenow_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="CineNow"
+                android:textColor="@color/cinenow_primary_variant"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+            <!-- Icon thư + huy hiệu khiên -->
+            <FrameLayout
+                android:layout_width="88dp"
+                android:layout_height="88dp">
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_auth_oval"
+                    android:backgroundTint="@color/cinenow_secondary_container" />
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_auth_oval"
+                    android:backgroundTint="@color/cinenow_primary"
+                    android:importantForAccessibility="no"
+                    android:padding="14dp"
+                    android:src="@drawable/ic_auth_mail_filled" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_auth_oval"
+                    android:backgroundTint="@color/cinenow_success"
+                    android:importantForAccessibility="no"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_auth_shield_check" />
+            </FrameLayout>
+
+            <!-- Tiêu đề -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Xác minh tài khoản"
+                android:textColor="@color/cinenow_text_primary"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="12dp"
+                android:text="Nhập mã xác minh gồm 6 chữ số đã được gửi đến hộp thư hoặc số điện thoại đã đăng ký."
+                android:textAlignment="center"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Thông tin đã che bớt (dữ liệu giả lập) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/cinenow_secondary_container"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_auth_lock_filled" />
+
+                    <TextView
+                        android:id="@+id/tvMaskedContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="ng*****@gmail.com • 09****321"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 6 ô nhập mã: ô thật là etOtp (ẩn), 6 ô hiển thị được tạo trong code -->
+            <FrameLayout
+                android:id="@+id/otpContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="8dp">
+
+                <LinearLayout
+                    android:id="@+id/otpCells"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+                <EditText
+                    android:id="@+id/etOtp"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:alpha="0"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:digits="0123456789"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="6" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvOtpError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Vui lòng nhập đủ 6 chữ số"
+                android:textColor="@color/cinenow_error"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- Gửi lại mã -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa nhận được mã?"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvResend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:minHeight="48dp"
+                    android:gravity="center_vertical"
+                    android:text="Gửi lại mã"
+                    android:textColor="@color/cinenow_primary_variant"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="(00:59)"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Nút xác minh -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/cinenow_primary"
+                android:text="Xác minh"
+                android:textAllCaps="false"
+                android:textColor="@color/cinenow_on_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_auth_arrow_forward"
+                app:iconGravity="textEnd"
+                app:iconPadding="8dp"
+                app:iconTint="@color/cinenow_on_primary" />
+
+            <!-- Thẻ thông tin 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/cinenow_surface_container_low"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_auth_schedule" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Thời hạn hiệu lực"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Mã xác minh có hiệu lực trong 5 phút. Vui lòng kiểm tra kỹ hòm thư chính hoặc mục thư rác (Spam)."
+                        android:textColor="@color/cinenow_text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Thẻ thông tin 2 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/cinenow_surface_container_low"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_auth_help" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Xử lý sự cố"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Nếu mã không chính xác hoặc đã hết hạn, nhấn “Gửi lại mã” để hệ thống cấp mới ngay lập tức."
+                        android:textColor="@color/cinenow_text_secondary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
