@@ -5,8 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment : Fragment() {
@@ -24,21 +28,155 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Nút mũi tên quay lại
+        setupGenreChips()
+        setupLiveInputPreview()
+        setupClickListeners()
+    }
+
+    /**
+     * Xử lý tương tác danh mục thể loại phim:
+     * - Bấm chọn: đổi sang màu tím đậm, chữ trắng.
+     * - Bỏ chọn: đổi sang màu xám nhạt, chữ tối kèm dấu '+'.
+     * - Giới hạn tối đa 5 thể loại (báo Toast nếu chọn quá 5).
+     * - Cập nhật nhãn "X/5 đã chọn".
+     */
+    private fun setupGenreChips() {
+        val genreChips = listOf(
+            binding.chipSciFi,
+            binding.chipAction,
+            binding.chipAdventure,
+            binding.chipAnimation,
+            binding.chipHorror,
+            binding.chipDrama
+        )
+
+        // 3 mục mặc định ban đầu được chọn
+        val defaultSelectedIds = setOf(
+            binding.chipSciFi.id,
+            binding.chipAction.id,
+            binding.chipAdventure.id
+        )
+
+        genreChips.forEach { chip ->
+            val initialSelected = chip.id in defaultSelectedIds
+            applyChipVisual(chip, initialSelected)
+
+            chip.setOnClickListener {
+                it.animatePress {
+                    val currentlySelected = chip.tag as? Boolean ?: false
+                    val currentCount = genreChips.count { (it.tag as? Boolean) == true }
+
+                    if (!currentlySelected && currentCount >= 5) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Bạn chỉ được chọn tối đa 5 thể loại phim!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val nextState = !currentlySelected
+                        applyChipVisual(chip, nextState)
+                        updateGenreCount(genreChips)
+                    }
+                }
+            }
+        }
+
+        updateGenreCount(genreChips)
+    }
+
+    private fun applyChipVisual(chip: Chip, isSelected: Boolean) {
+        chip.tag = isSelected
+        if (isSelected) {
+            chip.setChipBackgroundColorResource(R.color.cinenow_primary)
+            chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.cinenow_white))
+            val cleanText = chip.text.toString().removePrefix("+ ").trim()
+            chip.text = cleanText
+        } else {
+            chip.setChipBackgroundColorResource(R.color.cinenow_surface_container_low)
+            chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.cinenow_text_primary))
+            val cleanText = chip.text.toString().removePrefix("+ ").trim()
+            chip.text = "+ $cleanText"
+        }
+    }
+
+    private fun updateGenreCount(chips: List<Chip>) {
+        val count = chips.count { (it.tag as? Boolean) == true }
+        binding.tvGenreCount.text = "$count/5 đã chọn"
+    }
+
+    /**
+     * Khi người dùng nhập tên trong ô Họ và tên,
+     * dòng tên preview bên dưới Avatar sẽ đổi theo ngay lập tức.
+     */
+    private fun setupLiveInputPreview() {
+        binding.etFullName.doOnTextChanged { text, _, _, _ ->
+            binding.tvProfileNamePreview.text =
+                if (text.isNullOrBlank()) "Họ và tên" else text.toString().trim()
+        }
+    }
+
+    /**
+     * Sự kiện click cho các nút chức năng
+     */
+    private fun setupClickListeners() {
+        // Nút quay lại
         binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            it.animatePress {
+                Toast.makeText(requireContext(), "Quay lại trang Cá nhân", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
         }
 
-        // Nút Hủy: quay về trang trước
-        binding.btnCancelEdit.setOnClickListener {
-            findNavController().popBackStack()
+        // Nút đổi ảnh đại diện (camera) & Avatar lớn
+        val avatarClickAction: (View) -> Unit = { view ->
+            view.animatePress {
+                Toast.makeText(requireContext(), "Mở thư viện chọn ảnh đại diện mới", Toast.LENGTH_SHORT).show()
+            }
         }
+        binding.btnChangeAvatar.setOnClickListener(avatarClickAction)
+        binding.imgLargeAvatar.setOnClickListener(avatarClickAction)
 
-        // Nút Lưu thay đổi: thông báo giả lập và quay về trang cá nhân
+        // Nút Lưu thay đổi
         binding.btnSaveProfile.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã lưu thông tin hồ sơ thành công!", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
+            it.animatePress {
+                val fullName = binding.etFullName.text?.toString()?.trim().orEmpty()
+                val phone = binding.etPhone.text?.toString()?.trim().orEmpty()
+
+                if (fullName.isEmpty()) {
+                    binding.tilFullName.error = "Họ và tên không được để trống"
+                    return@animatePress
+                } else {
+                    binding.tilFullName.error = null
+                }
+
+                if (phone.isEmpty()) {
+                    binding.tilPhone.error = "Số điện thoại không được để trống"
+                    return@animatePress
+                } else {
+                    binding.tilPhone.error = null
+                }
+
+                Toast.makeText(requireContext(), "✅ Đã lưu thông tin hồ sơ thành công!", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
         }
+
+        // Nút Hủy
+        binding.btnCancelEdit.setOnClickListener {
+            it.animatePress {
+                Toast.makeText(requireContext(), "Đã hủy các thay đổi", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    // Hiệu ứng ấn nhả mượt mà
+    private fun View.animatePress(action: () -> Unit) {
+        animate().scaleX(0.96f).scaleY(0.96f).setDuration(80).withEndAction {
+            animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
+                action()
+            }.start()
+        }.start()
     }
 
     override fun onDestroyView() {
