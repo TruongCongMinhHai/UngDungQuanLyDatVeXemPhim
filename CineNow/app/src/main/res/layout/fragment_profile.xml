@@ -7,13 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/cinenow_background">
 
-    <!-- Nội dung cuộn chính của trang Cá nhân -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavProfile"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -23,9 +22,9 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             android:paddingTop="12dp"
-            android:paddingBottom="24dp">
+            android:paddingBottom="40dp">
 
-            <!-- Header: Logo CineNow & Tiêu đề -->
+            <!-- Header -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +89,6 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Avatar có badge tích xanh -->
                         <FrameLayout
                             android:layout_width="72dp"
                             android:layout_height="72dp">
@@ -194,7 +192,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Tiêu đề section: CÀI ĐẶT & TIỆN ÍCH -->
+            <!-- Tiêu đề section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -273,7 +271,6 @@
                             app:tint="@color/cinenow_text_tertiary"/>
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -332,7 +329,6 @@
                             app:tint="@color/cinenow_text_tertiary"/>
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -391,7 +387,6 @@
                             app:tint="@color/cinenow_text_tertiary"/>
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -474,21 +469,5 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Thanh Menu điều hướng dưới cùng (Bottom Navigation) -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavProfile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/cinenow_white"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@style/CineNow.BottomNavLabel"
-        app:itemTextAppearanceInactive="@style/CineNow.BottomNavLabel"
-        app:itemHorizontalTranslationEnabled="false"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
