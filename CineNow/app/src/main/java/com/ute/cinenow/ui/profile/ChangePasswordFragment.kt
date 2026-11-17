@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentChangePasswordBinding
 
 class ChangePasswordFragment : Fragment() {
@@ -29,9 +30,6 @@ class ChangePasswordFragment : Fragment() {
         setupClickListeners()
     }
 
-    /**
-     * Tự động xóa lỗi khi người dùng bắt đầu gõ vào ô nhập
-     */
     private fun setupLiveValidation() {
         binding.etCurrentPassword.doOnTextChanged { _, _, _, _ ->
             binding.tilCurrentPassword.error = null
@@ -51,15 +49,22 @@ class ChangePasswordFragment : Fragment() {
         // Nút quay lại
         binding.btnBack.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Quay lại trang Cá nhân", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
+            }
+        }
+
+        // Bấm vào Avatar nhỏ góc phải -> Quay về màn Cá nhân
+        binding.imgTopAvatar.setOnClickListener {
+            it.animatePress {
+                if (!findNavController().popBackStack(R.id.profileFragment, false)) {
+                    findNavController().navigate(R.id.profileFragment)
+                }
             }
         }
 
         // Nút Hủy
         binding.btnCancelChange.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Đã hủy thao tác đổi mật khẩu", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
@@ -111,7 +116,6 @@ class ChangePasswordFragment : Fragment() {
         }
     }
 
-    // Hiệu ứng ấn nhả nút mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.96f).scaleY(0.96f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
@@ -120,7 +124,6 @@ class ChangePasswordFragment : Fragment() {
         }.start()
     }
 
-    // Hiệu ứng rung nhẹ khi báo lỗi
     private fun View.shake() {
         animate()
             .translationXBy(20f)
