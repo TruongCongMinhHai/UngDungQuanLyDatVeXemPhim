@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -26,53 +28,66 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Sự kiện click vào các button và danh mục trên trang
+     * Thiết lập điều hướng thật tới các màn hình trong hệ thống
      */
     private fun setupClickListeners() {
-        // Nút Chỉnh sửa hồ sơ
+        // 1. Bấm vào Avatar -> Chuyển sang Chỉnh sửa hồ sơ (#27)
+        binding.imgAvatar.setOnClickListener {
+            it.animatePress {
+                findNavController().navigate(R.id.editProfileFragment)
+            }
+        }
+
+        // 2. Nút Chỉnh sửa hồ sơ -> Chuyển sang Chỉnh sửa hồ sơ (#27)
         binding.btnEditProfile.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Chỉnh sửa hồ sơ", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.editProfileFragment)
             }
         }
 
-        // Mục 1: Sở thích xem phim
+        // 3. Mục 1: Sở thích xem phim -> Chuyển sang Sở thích CineMatch (#13)
         binding.itemCineMatch.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Sở thích xem phim (CineMatch)", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.cineMatchPreferencesFragment)
             }
         }
 
-        // Mục 2: Nhóm CineTogether
+        // 4. Mục 2: Nhóm CineTogether -> Chuyển sang Đi cùng nhóm (#17)
         binding.itemCineTogether.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Nhóm CineTogether", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.cineTogetherFragment)
             }
         }
 
-        // Mục 3: Lịch sử đặt vé
+        // 5. Mục 3: Lịch sử đặt vé -> Chuyển sang Lịch sử vé (#25)
         binding.itemTicketHistory.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Lịch sử đặt vé", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.ticketHistoryFragment)
             }
         }
 
-        // Mục 4: Đổi mật khẩu
+        // 6. Mục 4: Đổi mật khẩu -> Chuyển sang Đổi mật khẩu (#28)
         binding.itemChangePassword.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Đổi mật khẩu", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.changePasswordFragment)
             }
         }
 
-        // Nút Đăng xuất
+        // 7. Nút Đăng xuất -> Quay về màn Đăng nhập (#1) và xóa stack điều hướng
         binding.btnLogout.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Đăng xuất tài khoản", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(
+                    R.id.loginFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.nav_graph) { inclusive = true }
+                    }
+                )
             }
         }
     }
 
-    // Hiệu ứng ấn nhả mượt mà khi click
+    // Hiệu ứng ấn nhả nút mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.97f).scaleY(0.97f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
