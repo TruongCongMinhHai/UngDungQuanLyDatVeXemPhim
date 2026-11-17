@@ -34,11 +34,7 @@ class EditProfileFragment : Fragment() {
     }
 
     /**
-     * Xử lý tương tác danh mục thể loại phim:
-     * - Bấm chọn: đổi sang màu tím đậm, chữ trắng.
-     * - Bỏ chọn: đổi sang màu xám nhạt, chữ tối kèm dấu '+'.
-     * - Giới hạn tối đa 5 thể loại (báo Toast nếu chọn quá 5).
-     * - Cập nhật nhãn "X/5 đã chọn".
+     * Tương tác chọn thể loại phim
      */
     private fun setupGenreChips() {
         val genreChips = listOf(
@@ -50,7 +46,6 @@ class EditProfileFragment : Fragment() {
             binding.chipDrama
         )
 
-        // 3 mục mặc định ban đầu được chọn
         val defaultSelectedIds = setOf(
             binding.chipSciFi.id,
             binding.chipAction.id,
@@ -104,10 +99,6 @@ class EditProfileFragment : Fragment() {
         binding.tvGenreCount.text = "$count/5 đã chọn"
     }
 
-    /**
-     * Khi người dùng nhập tên trong ô Họ và tên,
-     * dòng tên preview bên dưới Avatar sẽ đổi theo ngay lập tức.
-     */
     private fun setupLiveInputPreview() {
         binding.etFullName.doOnTextChanged { text, _, _, _ ->
             binding.tvProfileNamePreview.text =
@@ -122,12 +113,20 @@ class EditProfileFragment : Fragment() {
         // Nút quay lại
         binding.btnBack.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Quay lại trang Cá nhân", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
 
-        // Nút đổi ảnh đại diện (camera) & Avatar lớn
+        // Bấm vào Avatar nhỏ góc phải -> Quay về màn Cá nhân
+        binding.imgTopAvatar.setOnClickListener {
+            it.animatePress {
+                if (!findNavController().popBackStack(R.id.profileFragment, false)) {
+                    findNavController().navigate(R.id.profileFragment)
+                }
+            }
+        }
+
+        // Đổi ảnh đại diện
         val avatarClickAction: (View) -> Unit = { view ->
             view.animatePress {
                 Toast.makeText(requireContext(), "Mở thư viện chọn ảnh đại diện mới", Toast.LENGTH_SHORT).show()
@@ -164,13 +163,11 @@ class EditProfileFragment : Fragment() {
         // Nút Hủy
         binding.btnCancelEdit.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Đã hủy các thay đổi", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
     }
 
-    // Hiệu ứng ấn nhả mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.96f).scaleY(0.96f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
