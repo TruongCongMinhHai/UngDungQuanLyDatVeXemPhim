@@ -132,4 +132,6 @@ class InviteMovieFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _b
+        _binding = null
+    }
+}
