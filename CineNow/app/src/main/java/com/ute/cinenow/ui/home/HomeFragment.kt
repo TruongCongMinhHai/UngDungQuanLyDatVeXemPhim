@@ -12,12 +12,15 @@ import com.ute.cinenow.adapter.HomeCineMatchAdapter
 import com.ute.cinenow.adapter.HomeHotMovieAdapter
 import com.ute.cinenow.adapter.HomeUpcomingAdapter
 import com.ute.cinenow.databinding.FragmentHomeBinding
+import com.ute.cinenow.utils.ReminderStore
 import com.ute.cinenow.utils.showCineMessage
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var upcomingAdapter: HomeUpcomingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,11 +52,23 @@ class HomeFragment : Fragment() {
         )
 
         binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvUpcoming.adapter = HomeUpcomingAdapter(
+        upcomingAdapter = HomeUpcomingAdapter(
             items = sampleUpcoming(),
             onItemClick = { navigate(R.id.movieDetailFragment) },
-            onRemindClick = { toast("Đã bật nhắc nhở cho \"${it.title}\"") }
+            onReminderChanged = { movie, isOn ->
+                showCineMessage(
+                    message = if (isOn) "Đã bật nhắc nhở" else "Đã tắt nhắc nhở",
+                    subtitle = movie.title,
+                    actionLabel = "HOÀN TÁC",
+                    onAction = {
+                        // Khôi phục đúng trạng thái trước đó của phim này
+                        ReminderStore.set(movie.title, !isOn)
+                        upcomingAdapter.refresh(movie.title)
+                    }
+                )
+            }
         )
+        binding.rvUpcoming.adapter = upcomingAdapter
     }
 
     private fun setupClicks() {
