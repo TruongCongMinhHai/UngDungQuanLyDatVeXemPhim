@@ -1,20 +1,572 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="#F8F9FC">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Người phù hợp"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Top Header Bar -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#1A1A1A" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="#F3F0FF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_cinenow_logo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CineNow"
+                    android:textColor="#5850EC"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Người Phù Hợp"
+                    android:textColor="#1A1A1A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_camera_circle"
+            android:backgroundTint="#5850EC"
+            android:padding="6dp"
+            android:src="@drawable/ic_person"
+            app:tint="@android:color/white" />
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Banner Header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="👥  Khám phá bạn xem phim"
+                android:textColor="#0F172A"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Khám phá những người yêu phim và tìm bạn cùng sở thích tại các cụm rạp gần bạn."
+                android:textColor="#64748B"
+                android:textSize="12sp" />
+
+            <!-- Search Bar & Filter -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    app:cardElevation="1dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_arrow_back"
+                        app:tint="#94A3B8" />
+
+                    <EditText
+                        android:id="@+id/etSearchUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="Tìm tên người dùng, rạp phim..."
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@android:color/white"
+                    android:text="⚙️ Bộ lọc"
+                    android:textAllCaps="false"
+                    android:textColor="#0F172A"
+                    android:textSize="12sp"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="#CBD5E1"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+
+            <!-- Filter Chips Horizontal -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#5850EC"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="Tất cả"
+                        android:textColor="@android:color/white"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/chipLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="📍 Khu vực: TP.HCM ▾"
+                        android:textColor="#475569"
+                        android:textSize="11.5sp" />
+
+                    <TextView
+                        android:id="@+id/chipGenre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="Khoa học viễn tưởng"
+                        android:textColor="#475569"
+                        android:textSize="11.5sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Result Count & Sort Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvResultCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="● Tìm thấy 6 thành viên"
+                    android:textColor="#0F172A"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sắp xếp: Mới nhất"
+                    android:textColor="#64748B"
+                    android:textSize="11.5sp" />
+            </LinearLayout>
+
+            <!-- ================= THÀNH VIÊN 1: Trần Bảo Long ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_camera_circle"
+                            android:backgroundTint="#CBD5E1"
+                            android:src="@drawable/ic_person" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView android:text="Trần Bảo Long" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="25 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <TextView android:text="📍 CineNow Landmark 81" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Thích xem phim cuối tuần ở phòng chiếu IMAX, mê phim viễn tưởng và thảo luận chi tiết plot twist sau phim." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Khoa học viễn tưởng" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="IMAX" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="4DX" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile1" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend1" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= THÀNH VIÊN 2: Nguyễn Thảo Ly ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <LinearLayout android:orientation="horizontal" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <TextView android:text="Nguyễn Thảo Ly" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="22 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView android:text="📍 CineNow Hai Bà Trưng" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Fan ruột Ghibli và các tác phẩm điện ảnh tâm lý sâu sắc. Thường đi xem rạp suất chiếu tối các ngày trong tuần." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Anime" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Tâm lý" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Ghibli" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile2" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend2" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= THÀNH VIÊN 3: Đặng Tuấn Kiệt ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <LinearLayout android:orientation="horizontal" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <TextView android:text="Đặng Tuấn Kiệt" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="26 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView android:text="📍 CineNow Bitexco Q1" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Thường xem phim bom tấn hành động rạp Bitexco, tìm bạn đi xem cùng để rủ nhau bàn luận kỹ xảo điện ảnh." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Hành động" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Phiêu lưu" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Marvel" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile3" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend3" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= THÀNH VIÊN 4: Lê Hoàng Minh ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <LinearLayout android:orientation="horizontal" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <TextView android:text="Lê Hoàng Minh" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="23 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView android:text="📍 CineNow Landmark 81" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Yêu thích phim kinh điển, tác phẩm của đạo diễn Christopher Nolan và thể loại giật gân tâm lý." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Tâm lý" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Giật gân" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Nolan" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile4" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend4" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= THÀNH VIÊN 5: Phạm Quỳnh Nga ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <LinearLayout android:orientation="horizontal" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <TextView android:text="Phạm Quỳnh Nga" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="21 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView android:text="📍 CineNow Thảo Điền" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Đam mê phim tình cảm lãng mạn Hàn Quốc và nhạc phim điện ảnh. Tìm bạn hẹn xem phim suất chiều hoàng hôn." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Tình cảm" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Rom-com" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="OST" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile5" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend5" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= THÀNH VIÊN 6: Hoàng Hữu Tài ================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <LinearLayout android:orientation="horizontal" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <TextView android:text="Hoàng Hữu Tài" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="24 tuổi" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginStart="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                            <TextView android:text="📍 CineNow Hùng Vương Plaza" android:textColor="#5850EC" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView android:text="Chuyên săn suất chiếu phim độc lập, phim nghệ thuật châu Á và thích thưởng thức bắp nước vị phô mai." android:textColor="#334155" android:textSize="12sp" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="Phim độc lập" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Nghệ thuật" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Indie" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnViewProfile6" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="👁️ Xem hồ sơ" android:textAllCaps="false" android:textColor="#475569" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#E2E8F0" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAddFriend6" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Kết bạn" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Footer Note -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="👥 Kết nối và giao lưu cùng cộng đồng yêu điện ảnh CineNow"
+                android:textColor="#64748B"
+                android:textSize="11.5sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
