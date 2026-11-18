@@ -1,20 +1,378 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="#F8F9FC">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lời mời kết bạn"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Top Header Bar -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#1A1A1A" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="#F3F0FF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_cinenow_logo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CineNow"
+                    android:textColor="#5850EC"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lời Mời Kết Bạn"
+                    android:textColor="#1A1A1A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_camera_circle"
+            android:backgroundTint="#5850EC"
+            android:padding="6dp"
+            android:src="@drawable/ic_person"
+            app:tint="@android:color/white" />
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Tabs: Đã nhận & Đã gửi -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_rounded_icon"
+                android:backgroundTint="#F1F5F9"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <Button
+                    android:id="@+id/tabReceived"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#5850EC"
+                    android:text="Đã nhận  2"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp" />
+
+                <Button
+                    android:id="@+id/tabSent"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/transparent"
+                    android:elevation="0dp"
+                    android:text="Đã gửi  1"
+                    android:textAllCaps="false"
+                    android:textColor="#64748B"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp" />
+            </LinearLayout>
+
+            <!-- Banner Gợi Ý -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_rounded_icon"
+                android:backgroundTint="#F3F0FF"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_cinenow_logo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Tìm bạn đồng hành đi rạp cùng sở thích. Độ tương thích dựa trên lịch sử đặt vé và đánh giá thực tế."
+                    android:textColor="#4338CA"
+                    android:textSize="11.5sp" />
+            </LinearLayout>
+
+            <!-- ================= REQUEST CARD 1: Nguyễn Thảo Ly ================= -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRequest1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_camera_circle"
+                            android:backgroundTint="#CBD5E1"
+                            android:src="@drawable/ic_person" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView android:text="Nguyễn Thảo Ly" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView android:text="22 tuổi  •  📍 Hay đi: CineNow Landmark" android:textColor="#64748B" android:textSize="11.5sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Badge Khớp Gu -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F3F0FF"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="⚡ 92% Khớp gu"
+                            android:textColor="#5850EC"
+                            android:textSize="10.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Lời nhắn kèm theo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#F8FAFC"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="“Chào bạn, mình thấy bạn cũng hay xem IMAX ở Landmark 81, kết bạn để rủ nhau xem phim nhé!”"
+                            android:textColor="#334155"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <!-- Sở thích chung -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Sở thích chung:"
+                        android:textColor="#64748B"
+                        android:textSize="11.5sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView android:text="🚀 Sci-Fi" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="🌸 Anime" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="🎬 Định dạng IMAX Laser" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#F1F5F9" />
+
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnReject1"
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#F8FAFC"
+                            android:text="✕ Từ chối"
+                            android:textAllCaps="false"
+                            android:textColor="#64748B"
+                            android:textSize="11.5sp"
+                            app:cornerRadius="10dp"
+                            app:strokeColor="#CBD5E1"
+                            app:strokeWidth="1dp" />
+
+                        <Button
+                            android:id="@+id/btnAccept1"
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#5850EC"
+                            android:text="👤+ Chấp nhận"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="11.5sp"
+                            app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= REQUEST CARD 2: Đặng Tuấn Kiệt ================= -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRequest2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_camera_circle" android:backgroundTint="#CBD5E1" android:src="@drawable/ic_person" />
+
+                        <LinearLayout android:orientation="vertical" android:layout_marginStart="10dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+                            <TextView android:text="Đặng Tuấn Kiệt" android:textColor="#0F172A" android:textSize="13.5sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="26 tuổi  •  📍 Cụm rạp: CineNow Bitexco" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginTop="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <TextView android:text="⚡ 88% Khớp gu" android:textColor="#5850EC" android:textSize="10.5sp" android:textStyle="bold" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F3F0FF" android:paddingHorizontal="8dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <TextView android:text="Sở thích chung:" android:textColor="#64748B" android:textSize="11.5sp" android:layout_marginTop="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:orientation="horizontal" android:layout_marginTop="6dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:text="⚔️ Hành động" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="🛡️ Marvel &amp; DC" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_marginEnd="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="🛋️ Ghế Đôi Sweetbox" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:textColor="#475569" android:textSize="10.5sp" android:paddingHorizontal="8dp" android:paddingVertical="3dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="12dp" android:background="#F1F5F9" />
+
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <Button android:id="@+id/btnReject2" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginEnd="6dp" android:backgroundTint="#F8FAFC" android:text="✕ Từ chối" android:textAllCaps="false" android:textColor="#64748B" android:textSize="11.5sp" app:cornerRadius="10dp" app:strokeColor="#CBD5E1" app:strokeWidth="1dp" />
+                        <Button android:id="@+id/btnAccept2" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:layout_marginStart="6dp" android:backgroundTint="#5850EC" android:text="👤+ Chấp nhận" android:textAllCaps="false" android:textColor="@android:color/white" android:textSize="11.5sp" app:cornerRadius="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Footer Notice -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="⏱️ Lời mời kết bạn tự động hết hạn sau 14 ngày nếu không được chấp nhận."
+                android:textColor="#64748B"
+                android:textSize="11.5sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
