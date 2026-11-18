@@ -1,20 +1,1017 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="#F8F9FC">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chọn rạp và suất chiếu"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Top Header Bar -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#1A1A1A" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="#F3F0FF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_cinenow_logo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CineNow"
+                    android:textColor="#5850EC"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn suất chiếu"
+                    android:textColor="#1A1A1A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_camera_circle"
+            android:backgroundTint="#5850EC"
+            android:padding="6dp"
+            android:src="@drawable/ic_person"
+            app:tint="@android:color/white" />
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="96dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Movie Info Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="70dp"
+                        android:layout_height="98dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#E2E8F0"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_cinenow_logo" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#FEE2E2"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="1dp"
+                                android:text="T16"
+                                android:textColor="#DC2626"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="166 phút • 2D / IMAX Laser"
+                                android:textColor="#64748B"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Dune: Hành Tinh Cát 2"
+                            android:textColor="#0F172A"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:text="Khoa học viễn tưởng, Phiêu lưu"
+                            android:textColor="#64748B"
+                            android:textSize="11sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:src="@drawable/ic_auth_star"
+                                app:tint="#F59E0B" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:text="8.9/10"
+                                android:textColor="#0F172A"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:text="(đánh giá)"
+                                android:textColor="#94A3B8"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Chọn ngày chiếu Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Chọn ngày chiếu"
+                    android:textColor="#0F172A"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tháng 10/2024"
+                    android:textColor="#5850EC"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Horizontal Date Picker Row (Tất cả đều nền trắng mặc định) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/day1"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView android:id="@+id/tvDay1Name" android:text="T5" android:textSize="11sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay1Num" android:text="24" android:textSize="15sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay1Label" android:text="Hôm nay" android:textSize="8sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/day2"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView android:id="@+id/tvDay2Name" android:text="T6" android:textSize="11sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay2Num" android:text="25" android:textSize="15sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay2Label" android:text="Ngày mai" android:textSize="8sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/day3"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView android:id="@+id/tvDay3Name" android:text="T7" android:textSize="11sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay3Num" android:text="26" android:textSize="15sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay3Label" android:text="Cuối tuần" android:textSize="8sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/day4"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView android:id="@+id/tvDay4Name" android:text="CN" android:textSize="11sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay4Num" android:text="27" android:textSize="15sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay4Label" android:text="Chủ nhật" android:textSize="8sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/day5"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@android:color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView android:id="@+id/tvDay5Name" android:text="T2" android:textSize="11sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay5Num" android:text="28" android:textSize="15sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:id="@+id/tvDay5Label" android:text="Thứ hai" android:textSize="8sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Location Selector & Filter Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/btnSelectLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="#EDE9FE"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="10dp">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:src="@drawable/ic_info"
+                        app:tint="#5850EC" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Bình Thạnh &amp; TP. Thủ Đức"
+                        android:textColor="#5850EC"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginStart="3dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#5850EC" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="3 cụm rạp gần bạn"
+                    android:textColor="#64748B"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Format Filter Chips (Mặc định "Tất cả định dạng" đang active, bấm vào chip nào chip đó xanh) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#5850EC"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:text="Tất cả định dạng"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/chip2D"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#F1F5F9"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:text="2D"
+                        android:textColor="#475569"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/chipIMAX"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#F1F5F9"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:text="IMAX Laser"
+                        android:textColor="#475569"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/chip4DX"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#F1F5F9"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:text="4DX"
+                        android:textColor="#475569"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/chipScreenX"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#F1F5F9"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:text="ScreenX"
+                        android:textColor="#475569"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- ================= CỤM RẠP 1: CineNow Landmark 81 ================= -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCinema1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="CineNow Landmark 81"
+                            android:textColor="#0F172A"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#D1FAE5"
+                            android:paddingHorizontal="5dp"
+                            android:paddingVertical="1dp"
+                            android:text="VIP"
+                            android:textColor="#059669"
+                            android:textSize="9sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Cách bạn 1.5 km • Tầng B1, Vincom Landmark 81"
+                        android:textColor="#64748B"
+                        android:textSize="11sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="IMAX Laser"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="Dolby Atmos"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="120.000đ - 160.000đ"
+                            android:textColor="#5850EC"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#F1F5F9" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="IMAX Laser • Phụ đề tiếng Việt"
+                        android:textColor="#64748B"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Tất cả ô giờ đều nền xám #F1F5F9 mặc định, chỉ sáng xanh khi bấm -->
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:columnCount="4"
+                        android:useDefaultMargins="true">
+
+                        <LinearLayout
+                            android:id="@+id/slot1_1"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime1_1" android:text="09:30" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub1_1" android:text="Còn 42 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot1_2"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime1_2" android:text="13:15" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub1_2" android:text="Còn 18 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot1_3"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime1_3" android:text="16:45" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub1_3" android:text="Còn 25 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot1_4"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime1_4" android:text="20:00" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#DC2626" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub1_4" android:text="Gần kín" android:textSize="8.5sp" android:textColor="#DC2626" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot1_5"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime1_5" android:text="22:30" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub1_5" android:text="Suất khuya" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </GridLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= CỤM RẠP 2: CineNow Vạn Hạnh Mall ================= -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCinema2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CineNow Vạn Hạnh Mall"
+                        android:textColor="#0F172A"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Cách bạn 3.2 km • Tầng 6, Vạn Hạnh Mall, Q.10"
+                        android:textColor="#64748B"
+                        android:textSize="11sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="Standard 2D"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="Ghế Đôi Cuddle"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="95.000đ - 130.000đ"
+                            android:textColor="#5850EC"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#F1F5F9" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Standard 2D • Phụ đề tiếng Việt"
+                        android:textColor="#64748B"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:columnCount="4"
+                        android:useDefaultMargins="true">
+
+                        <LinearLayout
+                            android:id="@+id/slot2_1"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime2_1" android:text="10:00" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub2_1" android:text="Còn 64 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot2_2"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime2_2" android:text="14:30" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub2_2" android:text="Còn 51 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot2_3"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime2_3" android:text="18:00" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub2_3" android:text="Còn 23 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot2_4"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime2_4" android:text="21:15" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub2_4" android:text="Còn 38 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </GridLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= CỤM RẠP 3: CineNow Thủ Đức ================= -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCinema3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CineNow Thủ Đức"
+                        android:textColor="#0F172A"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Cách bạn 6.8 km • Võ Văn Ngân, TP. Thủ Đức"
+                        android:textColor="#64748B"
+                        android:textSize="11sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="Standard 2D"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:background="#F1F5F9"
+                            android:gravity="center"
+                            android:paddingHorizontal="6dp"
+                            android:text="Phụ đề"
+                            android:textColor="#475569"
+                            android:textSize="9.5sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="65.000đ - 90.000đ"
+                            android:textColor="#5850EC"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#F1F5F9" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Standard 2D • Phụ đề tiếng Việt"
+                        android:textColor="#64748B"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:columnCount="4"
+                        android:useDefaultMargins="true">
+
+                        <LinearLayout
+                            android:id="@+id/slot3_1"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime3_1" android:text="11:15" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub3_1" android:text="Còn 72 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot3_2"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime3_2" android:text="15:00" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub3_2" android:text="Còn 45 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot3_3"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvTime3_3" android:text="19:30" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#0F172A" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:id="@+id/tvSub3_3" android:text="Còn 12 ghế" android:textSize="8.5sp" android:textColor="#64748B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/slot3_4"
+                            android:layout_width="72dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9"
+                            android:alpha="0.5"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView android:text="21:45" android:textSize="11.5sp" android:textStyle="bold" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Hết vé" android:textSize="8.5sp" android:textColor="#94A3B8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </GridLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Action Bar (Mặc định chưa chọn gì, bấm giờ chiếu mới sáng nút) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp">
+
+            <View
+                android:id="@+id/dotIndicator"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:background="@drawable/bg_camera_circle"
+                android:backgroundTint="#94A3B8" />
+
+            <TextView
+                android:id="@+id/tvSelectedSummary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:text="Vui lòng chọn ngày và suất chiếu"
+                android:textColor="#64748B"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:backgroundTint="#CBD5E1"
+            android:enabled="false"
+            android:text="Tiếp tục chọn ghế →"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
