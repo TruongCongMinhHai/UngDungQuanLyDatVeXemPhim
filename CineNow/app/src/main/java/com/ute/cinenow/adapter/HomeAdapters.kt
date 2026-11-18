@@ -14,6 +14,8 @@ import com.ute.cinenow.databinding.ItemHomeUpcomingBinding
 import com.ute.cinenow.ui.home.CineMatchMovie
 import com.ute.cinenow.ui.home.HotMovie
 import com.ute.cinenow.ui.home.UpcomingMovie
+import com.ute.cinenow.utils.ReminderStore
+import com.ute.cinenow.utils.applyReminderState
 
 private fun Context.tint(@ColorRes id: Int): ColorStateList =
     ColorStateList.valueOf(ContextCompat.getColor(this, id))
@@ -112,10 +114,12 @@ class HomeHotMovieAdapter(
 }
 
 // ---------------- Phim Sắp Chiếu ----------------
+// Trạng thái "Nhắc tôi" lưu theo từng phim trong ReminderStore (không lưu trong ViewHolder),
+// nên cuộn danh sách hoặc tái sử dụng ViewHolder cũng không bị đổi nhầm.
 class HomeUpcomingAdapter(
     private val items: List<UpcomingMovie>,
     private val onItemClick: (UpcomingMovie) -> Unit,
-    private val onRemindClick: (UpcomingMovie) -> Unit
+    private val onReminderChanged: (movie: UpcomingMovie, isOn: Boolean) -> Unit
 ) : RecyclerView.Adapter<HomeUpcomingAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemHomeUpcomingBinding) : RecyclerView.ViewHolder(binding.root)
@@ -134,8 +138,41 @@ class HomeUpcomingAdapter(
         b.tvTitle.text = item.title
         b.tvGenre.text = item.genre
         b.tvDate.text = "Khởi chiếu: ${item.releaseDate}"
+        bindReminder(b, item)
 
         b.root.setOnClickListener { onItemClick(item) }
-        b.btnRemind.setOnClickListener { onRemindClick(item) }
+        b.btnRemind.setOnClickListener {
+            val adapterPosition = holder.bindingAdapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            val movie = items[adapterPosition]
+            val turnOn = !ReminderStore.isReminded(movie.title)
+            ReminderStore.set(movie.title, turnOn)
+            notifyItemChanged(adapterPosition, PAYLOAD_REMINDER)
+            onReminderChanged(movie, turnOn)
+        }
+    }
+
+    // Chỉ cập nhật riêng nút nhắc nhở, không nạp lại cả thẻ phim
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.contains(PAYLOAD_REMINDER)) {
+            bindReminder(holder.binding, items[position])
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    private fun bindReminder(b: ItemHomeUpcomingBinding, item: UpcomingMovie) {
+        b.btnRemind.applyReminderState(ReminderStore.isReminded(item.title))
+    }
+
+    // Dùng khi bấm HOÀN TÁC: vẽ lại nút của đúng phim đó
+    fun refresh(title: String) {
+        val index = items.indexOfFirst { it.title == title }
+        if (index >= 0) notifyItemChanged(index, PAYLOAD_REMINDER)
+    }
+
+    companion object {
+        private const val PAYLOAD_REMINDER = "reminder"
     }
 }
