@@ -57,21 +57,20 @@ class HomeCineMatchAdapter(
         b.tvPrice.text = item.price
         b.tvMatch.text = "Điểm khớp: ${item.matchPercent}%"
 
-        // Thẻ đầu tiên nổi bật (xanh lá + nút đặc), các thẻ sau dịu hơn
+        // Nút "Chọn suất": tất cả các thẻ đều dùng kiểu tím đặc
+        b.btnBook.backgroundTintList = ctx.tint(R.color.cinenow_primary)
+        b.btnBook.setTextColor(ContextCompat.getColor(ctx, R.color.cinenow_on_primary))
+        b.btnBook.iconTint = ctx.tint(R.color.cinenow_on_primary)
+
+        // Chip điểm khớp: thẻ đầu nổi bật (xanh lá), các thẻ sau dịu hơn (tím nhạt)
         if (item.highlighted) {
             b.chipMatch.backgroundTintList = ctx.tint(R.color.cinenow_success_container)
             b.tvMatch.setTextColor(ContextCompat.getColor(ctx, R.color.cinenow_on_success_container))
             b.ivMatch.imageTintList = ctx.tint(R.color.cinenow_on_success_container)
-            b.btnBook.backgroundTintList = ctx.tint(R.color.cinenow_primary)
-            b.btnBook.setTextColor(ContextCompat.getColor(ctx, R.color.cinenow_on_primary))
-            b.btnBook.iconTint = ctx.tint(R.color.cinenow_on_primary)
         } else {
             b.chipMatch.backgroundTintList = ctx.tint(R.color.cinenow_secondary_container)
             b.tvMatch.setTextColor(ContextCompat.getColor(ctx, R.color.cinenow_primary_variant))
             b.ivMatch.imageTintList = ctx.tint(R.color.cinenow_primary_variant)
-            b.btnBook.backgroundTintList = ctx.tint(R.color.cinenow_secondary_container)
-            b.btnBook.setTextColor(ContextCompat.getColor(ctx, R.color.cinenow_primary_variant))
-            b.btnBook.iconTint = ctx.tint(R.color.cinenow_primary_variant)
         }
 
         b.root.setOnClickListener { onItemClick(item) }
