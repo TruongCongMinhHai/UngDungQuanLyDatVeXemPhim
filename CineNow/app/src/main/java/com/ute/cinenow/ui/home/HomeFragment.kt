@@ -76,30 +76,48 @@ class HomeFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     // ---------- Dữ liệu giả lập ----------
+    // Ảnh poster: bỏ file vào res/drawable rồi gọi R.drawable.<tên file không có đuôi>
     private fun sampleCineMatch() = listOf(
         CineMatchMovie(
             title = "Hành Tinh Cát 2",
             description = "Khớp thể loại: Hành động + Nhóm 3 người",
             matchPercent = 95, rating = "9.1", duration = "166 phút", format = "IMAX",
-            price = "Từ 110.000đ", ageRating = "T16", highlighted = true
+            price = "Từ 110.000đ", ageRating = "T16", highlighted = true,
+            posterRes = R.drawable.poster_hanh_tinh_cat_2
         ),
         CineMatchMovie(
             title = "Gia Tài Của Ngoại",
             description = "Khớp tâm trạng: Xúc động + Cuối tuần",
             matchPercent = 92, rating = "9.3", duration = "120 phút", format = "2D Phụ đề",
-            price = "Từ 85.000đ", ageRating = "P", highlighted = false
+            price = "Từ 85.000đ", ageRating = "P", highlighted = false,
+            posterRes = R.drawable.poster_gia_tai_cua_ngoai
         )
     )
 
     private fun sampleHotMovies() = listOf(
-        HotMovie("Mai: Kỷ Nguyên Mới", "Tâm lý, Tình cảm", "125 phút", "8.8", "T18"),
-        HotMovie("Hành Tinh Cát 2", "Khoa học viễn tưởng", "166 phút", "9.1", "T16"),
-        HotMovie("Gia Tài Của Ngoại", "Gia đình, Tâm lý", "120 phút", "9.3", "P")
+        HotMovie(
+            "Mai: Kỷ Nguyên Mới", "Tâm lý, Tình cảm", "125 phút", "8.8", "T18",
+            R.drawable.poster_mai
+        ),
+        HotMovie(
+            "Hành Tinh Cát 2", "Khoa học viễn tưởng", "166 phút", "9.1", "T16",
+            R.drawable.poster_hanh_tinh_cat_2
+        ),
+        HotMovie(
+            "Gia Tài Của Ngoại", "Gia đình, Tâm lý", "120 phút", "9.3", "P",
+            R.drawable.poster_gia_tai_cua_ngoai
+        )
     )
 
     private fun sampleUpcoming() = listOf(
-        UpcomingMovie("Deadpool & Wolverine", "Hành động, Hài hước", "26/07/2025"),
-        UpcomingMovie("Những Mảnh Ghép Cảm Xúc", "Hoạt hình, Phiêu lưu", "14/08/2025")
+        UpcomingMovie(
+            "Deadpool & Wolverine", "Hành động, Hài hước", "26/07/2025",
+            R.drawable.poster_deadpool_wolverine
+        ),
+        UpcomingMovie(
+            "Những Mảnh Ghép Cảm Xúc", "Hoạt hình, Phiêu lưu", "14/08/2025",
+            R.drawable.poster_nhung_manh_ghep_cam_xuc
+        )
     )
 
     override fun onDestroyView() {
