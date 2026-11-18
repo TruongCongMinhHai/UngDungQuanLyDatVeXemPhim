@@ -73,4 +73,17 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!-- Bottom Navigation: nền #F8F7FF, mục chọn tím #4935E8 có nền pill #E7E5FF -->
+    <style name="Widget.CineNow.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/cinenow_nav_bg</item>
+        <item name="itemIconTint">@color/selector_nav_item</item>
+        <item name="itemTextColor">@color/selector_nav_item</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.CineNow.BottomNavigationView.ActiveIndicator</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <style name="Widget.CineNow.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/cinenow_nav_pill</item>
+    </style>
 </resources>

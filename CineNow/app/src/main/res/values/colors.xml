@@ -73,4 +73,18 @@
     <color name="cinenow_black">#000000</color>
     <color name="cinenow_transparent">#00000000</color>
     <color name="cinenow_scrim_dim">#80000000</color>
+
+    <!-- ===== MỚI: nút Nhắc tôi ===== -->
+    <color name="cinenow_accent">#4935E8</color>
+    <color name="cinenow_accent_soft">#EEF0FF</color>
+
+    <!-- ===== MỚI: Snackbar ===== -->
+    <color name="cinenow_snackbar_bg">#28243A</color>
+    <color name="cinenow_snackbar_subtitle">#D6D1E7</color>
+    <color name="cinenow_snackbar_action">#B9AEFF</color>
+
+    <!-- ===== MỚI: Bottom Navigation ===== -->
+    <color name="cinenow_nav_bg">#F8F7FF</color>
+    <color name="cinenow_nav_pill">#E7E5FF</color>
+    <color name="cinenow_nav_inactive">#646477</color>
 </resources>
