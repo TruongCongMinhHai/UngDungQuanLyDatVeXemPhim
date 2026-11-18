@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +12,7 @@ import com.ute.cinenow.adapter.HomeCineMatchAdapter
 import com.ute.cinenow.adapter.HomeHotMovieAdapter
 import com.ute.cinenow.adapter.HomeUpcomingAdapter
 import com.ute.cinenow.databinding.FragmentHomeBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class HomeFragment : Fragment() {
 
@@ -72,8 +72,7 @@ class HomeFragment : Fragment() {
 
     private fun navigate(destinationId: Int) = findNavController().navigate(destinationId)
 
-    private fun toast(message: String) =
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun toast(message: String) = showCineMessage(message)
 
     // ---------- Dữ liệu giả lập ----------
     // Ảnh poster: bỏ file vào res/drawable rồi gọi R.drawable.<tên file không có đuôi>
