@@ -1,20 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:orientation="vertical"
+    android:background="@color/cinenow_background"
+    tools:context=".ui.cinetogether.CreateRoomFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header dùng chung CineHeader: cố định 64dp, có nút back, không nút profile -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tạo phòng xem phim"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:headerTitle="Tạo phòng xem phim"
+        app:headerShowBack="true"
+        app:headerShowProfile="false" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Vùng nội dung cuộn bên dưới Header -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="40dp">
+
+            <!-- Card Thông tin thiết lập phòng -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin phòng xem chung"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- 1. Tên phòng xem phim -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Tên phòng xem phim *"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilRoomName"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:hint="Ví dụ: UIT Movie Club cuối tuần"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_primary"
+                        app:startIconDrawable="@drawable/ic_group"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRoomName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:text="UIT Movie Weekend"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 2. Rạp chiếu dự kiến -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Khu vực / Rạp chiếu ưu tiên"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCinema"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:hint="Chọn rạp chiếu gần nhóm bạn"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_primary"
+                        app:startIconDrawable="@drawable/ic_home_place"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCinema"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CGV Landmark 81 (hoặc các rạp lân cận)"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 3. Thời gian dự kiến đi xem -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Thời gian dự kiến"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="@color/cinenow_primary"
+                                android:gravity="center"
+                                android:paddingHorizontal="14dp"
+                                android:text="Cuối tuần này"
+                                android:textColor="@color/cinenow_white"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="@color/cinenow_surface_container_low"
+                                android:gravity="center"
+                                android:paddingHorizontal="14dp"
+                                android:text="Tối nay (sau 19h)"
+                                android:textColor="@color/cinenow_text_primary"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="@color/cinenow_surface_container_low"
+                                android:gravity="center"
+                                android:paddingHorizontal="14dp"
+                                android:text="Ngày mai"
+                                android:textColor="@color/cinenow_text_primary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <!-- 4. Số lượng thành viên tối đa -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Số lượng bạn tham gia tối đa"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:gravity="center"
+                            android:text="2 người"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_primary"
+                            android:gravity="center"
+                            android:text="4 người"
+                            android:textColor="@color/cinenow_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:gravity="center"
+                            android:text="6 người"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:gravity="center"
+                            android:text="8+ người"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Tính năng Chia tiền vé tự động -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_ticket"
+                        app:tint="@color/cinenow_primary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tự động chia tiền vé"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Chia đều chi phí vé &amp; combo bắp nước qua MoMo/ZaloPay"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_auth_check_circle"
+                        app:tint="@color/cinenow_primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Hộp gợi ý mã PIN -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_info_hint"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_auth_info"
+                    app:tint="@color/cinenow_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Sau khi bấm Tạo phòng, hệ thống sẽ cấp Mã PIN 6 số để bạn gửi vào Messenger/Zalo mời bạn bè."
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Nút Tạo phòng & Lấy mã PIN -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmitCreateRoom"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="22dp"
+                android:text="Tạo phòng &amp; Lấy mã PIN"
+                android:textColor="@color/cinenow_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/cinenow_primary"
+                app:cornerRadius="14dp"
+                app:icon="@drawable/ic_auth_arrow_forward"
+                app:iconGravity="textEnd"
+                app:iconPadding="8dp"
+                app:iconTint="@color/cinenow_white" />
+
+            <!-- Nút Hủy -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="6dp"
+                android:text="Hủy"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:rippleColor="@color/cinenow_surface_container" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
