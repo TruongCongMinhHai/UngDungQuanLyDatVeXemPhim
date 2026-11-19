@@ -74,7 +74,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClicks() {
-        binding.btnProfile.setOnClickListener { navigate(R.id.profileFragment) }
         binding.btnNotification.setOnClickListener { toast("Chưa có thông báo mới") }
         binding.btnLocation.setOnClickListener { toast("Chọn thành phố (sẽ làm sau)") }
 
