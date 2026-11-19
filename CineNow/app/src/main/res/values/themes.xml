@@ -86,4 +86,32 @@
     <style name="Widget.CineNow.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/cinenow_nav_pill</item>
     </style>
+
+    <!-- Chữ trong chip -->
+    <style name="TextAppearance.CineNow.Chip" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.CineNow.Chip.Small" parent="TextAppearance.CineNow.Chip">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Chip lọc: chọn thì nền tím đặc chữ trắng, chưa chọn thì nền tím nhạt -->
+    <style name="Widget.CineNow.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textAppearance">@style/TextAppearance.CineNow.Chip</item>
+        <item name="android:textColor">@color/selector_chip_text</item>
+        <item name="chipBackgroundColor">@color/selector_chip_bg</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="chipCornerRadius">20dp</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipIconTint">@color/selector_chip_text</item>
+        <item name="rippleColor">@color/cinenow_primary_container</item>
+    </style>
+
+    <!-- Chip nhỏ hơn cho khung Bộ lọc phim -->
+    <style name="Widget.CineNow.Chip.Small" parent="Widget.CineNow.Chip">
+        <item name="android:textAppearance">@style/TextAppearance.CineNow.Chip.Small</item>
+        <item name="chipMinHeight">32dp</item>
+    </style>
 </resources>
