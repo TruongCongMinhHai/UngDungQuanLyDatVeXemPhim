@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentTicketsBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class TicketsFragment : Fragment() {
 
@@ -31,28 +31,30 @@ class TicketsFragment : Fragment() {
      * Cấu hình sự kiện click và điều hướng cho màn Vé của tôi
      */
     private fun setupClickListeners() {
-        // 1. Bấm Avatar góc phải -> Chuyển sang màn Cá nhân (#26)
-        binding.imgTopAvatar.setOnClickListener {
-            it.animatePress {
-                findNavController().navigate(R.id.profileFragment)
-            }
-        }
+        // Lưu ý: Nút Avatar profile trên CineHeader đã tự động điều hướng sang profileFragment
 
-        // 2. Tab Vé sắp xem (đang chọn)
+        // 1. Tab Vé sắp xem (đang chọn)
         binding.btnTabUpcoming.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Bạn đang xem danh sách vé sắp chiếu", Toast.LENGTH_SHORT).show()
+                showCineMessage("Bạn đang xem danh sách vé sắp chiếu")
             }
         }
 
-        // 3. Tab Lịch sử -> Chuyển sang màn Lịch sử vé (#25)
+        // 2. Tab Lịch sử -> Chuyển sang màn Lịch sử vé (#25)
         binding.btnTabHistory.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.ticketHistoryFragment)
             }
         }
 
-        // 4. Bấm nút Xem chi tiết hoặc bấm vào vé Hero -> Chuyển sang Chi tiết vé & Mã QR (#16)
+        // Nút Xem tất cả lịch sử -> Chuyển sang màn Lịch sử vé (#25)
+        binding.tvViewAllHistory.setOnClickListener {
+            it.animatePress {
+                findNavController().navigate(R.id.ticketHistoryFragment)
+            }
+        }
+
+        // 3. Bấm nút Xem chi tiết hoặc bấm vào vé Hero -> Chuyển sang Chi tiết vé & Mã QR (#16)
         val openHeroTicketDetail: (View) -> Unit = { view ->
             view.animatePress {
                 findNavController().navigate(R.id.ticketDetailFragment)
@@ -61,14 +63,14 @@ class TicketsFragment : Fragment() {
         binding.btnViewHeroTicket.setOnClickListener(openHeroTicketDetail)
         binding.cardHeroTicket.setOnClickListener(openHeroTicketDetail)
 
-        // 5. Bấm vé gần đây 1 (Mai: Kỳ Nguyên Mới) -> Chuyển sang Chi tiết vé (#16)
+        // 4. Bấm vé gần đây 1 (Mai: Kỳ Nguyên Mới) -> Chuyển sang Chi tiết vé (#16)
         binding.cardRecentTicket1.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.ticketDetailFragment)
             }
         }
 
-        // 6. Bấm vé gần đây 2 (Gia Tài Của Ngoại) -> Chuyển sang Chi tiết vé (#16)
+        // 5. Bấm vé gần đây 2 (Gia Tài Của Ngoại) -> Chuyển sang Chi tiết vé (#16)
         binding.cardRecentTicket2.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.ticketDetailFragment)

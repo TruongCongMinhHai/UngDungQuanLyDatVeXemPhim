@@ -1,554 +1,642 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/cinenow_background"
-    android:fillViewport="true"
     tools:context=".ui.tickets.TicketsFragment">
 
-    <LinearLayout
+    <!-- Header dùng chung CineHeader: cố định 64dp, không back, có nút profile góc phải -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="40dp">
+        app:headerTitle="Vé của tôi"
+        app:headerShowBack="false"
+        app:headerShowProfile="true" />
 
-        <!-- 1. Top Bar: Logo CineNow + Tiêu đề + Avatar nhỏ -->
+    <!-- Vùng nội dung cuộn bên dưới Header -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="40dp">
 
-            <ImageView
-                android:id="@+id/imgAppLogo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="12dp"
-                android:contentDescription="Logo CineNow"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_cinenow_logo" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CineNow"
-                    android:textColor="@color/cinenow_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.05"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Vé của tôi"
-                    android:textColor="@color/cinenow_text_primary"
-                    android:textSize="22sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgTopAvatar"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:background="@color/cinenow_primary"
-                android:padding="7dp"
-                android:src="@drawable/ic_person"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                app:tint="@color/cinenow_white" />
-        </LinearLayout>
-
-        <!-- 2. Segmented Tab Bar (Vé sắp xem / Lịch sử) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_segmented_tab"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
-            <!-- Tab 1: Vé sắp xem (Đang chọn) -->
-            <LinearLayout
-                android:id="@+id/btnTabUpcoming"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_rounded_icon"
-                android:backgroundTint="@color/cinenow_primary"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_ticket"
-                    app:tint="@color/cinenow_white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="Vé sắp xem (1)"
-                    android:textColor="@color/cinenow_white"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Tab 2: Lịch sử -->
-            <LinearLayout
-                android:id="@+id/btnTabHistory"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_history"
-                    app:tint="@color/cinenow_text_secondary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="Lịch sử (3)"
-                    android:textColor="@color/cinenow_text_secondary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- 3. Hero Ticket Card: Vé sắp chiếu nổi bật -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardHeroTicket"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/cinenow_white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/cinenow_outline"
-            app:strokeWidth="1dp">
-
+            <!-- 2. Segmented Tab Bar (Vé sắp xem / Lịch sử) -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="48dp"
+                android:background="@drawable/bg_segmented_tab"
+                android:orientation="horizontal"
+                android:padding="4dp">
 
-                <!-- Header ảnh Backdrop + Badges -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp">
+                <!-- Tab 1: Vé sắp xem (Đang chọn) -->
+                <LinearLayout
+                    android:id="@+id/btnTabUpcoming"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@color/cinenow_primary"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imgHeroBackdrop"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/cinenow_surface_container_high"
-                        android:scaleType="centerCrop"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:src="@drawable/ic_ticket"
-                        app:tint="@color/cinenow_outline" />
+                        app:tint="@color/cinenow_white" />
 
-                    <!-- Badge Đếm ngược (Trái) -->
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top|start"
-                        android:layout_margin="12dp"
-                        android:background="@drawable/bg_rounded_icon"
-                        android:backgroundTint="#D9064E3B"
+                        android:layout_marginStart="6dp"
+                        android:text="Vé sắp xem (1)"
+                        android:textColor="@color/cinenow_white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Tab 2: Lịch sử -->
+                <LinearLayout
+                    android:id="@+id/btnTabHistory"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_history"
+                        app:tint="@color/cinenow_text_secondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="Lịch sử xem phim"
+                        android:textColor="@color/cinenow_text_secondary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 3. Tiêu đề section Vé sắp chiếu -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SUẤT CHIẾU GẦN NHẤT"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chạm để mở mã QR"
+                    android:textColor="@color/cinenow_primary"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- 4. Card Vé Hero nổi bật (Dune 2) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHeroTicket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Header ảnh Backdrop Poster Hành Tinh Cát 2 -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp">
+
+                        <ImageView
+                            android:id="@+id/imgHeroBackdrop"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/poster_hanh_tinh_cat_2" />
+
+                        <!-- Badge Đếm ngược (Trái) -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_margin="12dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#D9064E3B"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp">
+
+                            <View
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:background="@drawable/bg_camera_circle"
+                                android:backgroundTint="#34D399" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Sắp diễn ra trong 2 giờ nữa"
+                                android:textColor="#A7F3D0"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Badge Định dạng IMAX (Phải) -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|end"
+                            android:layout_margin="12dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F2FFFFFF"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="IMAX Laser"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+
+                    <!-- Thông tin phim & Mã vé -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Tag T16 -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="#FEE2E2"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="T16"
+                                android:textColor="#DC2626"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <!-- Thể loại & Thời lượng -->
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="Khoa học viễn tưởng • 166p"
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="12sp" />
+
+                            <!-- Nhãn mã vé -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mã vé"
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- Tên phim & Mã số vé -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvHeroMovieTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Hành Tinh Cát 2"
+                                android:textColor="@color/cinenow_text_primary"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroTicketCode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="#CN-88921-UIT"
+                                android:textColor="@color/cinenow_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Đường đứt đoạn cuống vé -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp">
+                        android:orientation="horizontal">
 
                         <View
-                            android:layout_width="7dp"
-                            android:layout_height="7dp"
-                            android:background="@drawable/bg_camera_circle"
-                            android:backgroundTint="#34D399" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Sắp diễn ra trong 2 giờ nữa"
-                            android:textColor="#A7F3D0"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Badge Định dạng IMAX (Phải) -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|end"
-                        android:layout_margin="12dp"
-                        android:background="@drawable/bg_rounded_icon"
-                        android:backgroundTint="#F2FFFFFF"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="IMAX Laser"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </FrameLayout>
-
-                <!-- Thông tin phim & Mã vé -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingTop="14dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <!-- Tag T16 -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="12dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/bg_rounded_icon"
-                            android:backgroundTint="#FEE2E2"
-                            android:paddingHorizontal="6dp"
-                            android:paddingVertical="2dp"
-                            android:text="T16"
-                            android:textColor="#DC2626"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
+                            android:backgroundTint="@color/cinenow_background" />
 
-                        <!-- Thể loại & Thời lượng -->
-                        <TextView
+                        <View
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="6dp"
                             android:layout_weight="1"
-                            android:text="Khoa học viễn tưởng • 166p"
-                            android:textColor="@color/cinenow_text_secondary"
-                            android:textSize="12sp" />
+                            android:background="@color/cinenow_outline" />
 
-                        <!-- Nhãn mã vé -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mã vé"
-                            android:textColor="@color/cinenow_text_secondary"
-                            android:textSize="11sp" />
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="24dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_background" />
                     </LinearLayout>
 
-                    <!-- Tên phim & Mã số vé -->
+                    <!-- Lưới thông tin suất chiếu: Rạp, Ngày giờ, Ghế -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="16dp">
 
-                        <TextView
-                            android:id="@+id/tvHeroMovieTitle"
+                        <!-- Cột 1: Rạp & Phòng -->
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Hành Tinh Cát 2"
-                            android:textColor="@color/cinenow_text_primary"
-                            android:textSize="19sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1.4"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tvHeroTicketCode"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="RẠP &amp; PHÒNG"
+                                android:textColor="@color/cinenow_text_tertiary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroCinema"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="CineNow Landmark 81"
+                                android:textColor="@color/cinenow_text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroHall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Phòng IMAX 01"
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Cột 2: Suất chiếu -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="#CN-88921-UIT"
-                            android:textColor="@color/cinenow_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1.2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SUẤT CHIẾU"
+                                android:textColor="@color/cinenow_text_tertiary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="19:30"
+                                android:textColor="@color/cinenow_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hôm nay, 20/11"
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Cột 3: Vị trí ghế -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GHẾ NGỒI"
+                                android:textColor="@color/cinenow_text_tertiary"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHeroSeats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="@color/cinenow_secondary_container"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="3dp"
+                                android:text="F10, F11"
+                                android:textColor="@color/cinenow_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <!-- Vết cắt cuống vé (Perforated ticket divider) -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="12dp">
-
-                    <!-- Vết lõm bán nguyệt bên trái -->
-                    <View
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="-7dp"
-                        android:background="@drawable/bg_camera_circle"
-                        android:backgroundTint="@color/cinenow_background" />
-
-                    <!-- Đường nét đứt ngang -->
-                    <View
+                    <!-- Nút Mở mã vé QR nhanh -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewHeroTicket"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="12dp"
-                        android:background="@color/cinenow_outline" />
+                        android:layout_height="46dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Mở mã QR soát vé"
+                        android:textColor="@color/cinenow_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/cinenow_primary"
+                        app:cornerRadius="12dp"
+                        app:elevation="0dp"
+                        app:icon="@drawable/ic_qr_code"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconTint="@color/cinenow_white" />
 
-                    <!-- Vết lõm bán nguyệt bên phải -->
-                    <View
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="-7dp"
-                        android:background="@drawable/bg_camera_circle"
-                        android:backgroundTint="@color/cinenow_background" />
-                </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <!-- Nút Xem chi tiết vé & mã QR -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnViewHeroTicket"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Xem chi tiết vé &amp; mã QR"
-                    android:textColor="@color/cinenow_white"
-                    android:textSize="14sp"
+            <!-- 5. Tiêu đề mục Vé xem gần đây -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="VÉ XEM GẦN ĐÂY"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="11sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/cinenow_primary"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_qr_code"
-                    app:iconGravity="textStart"
-                    app:iconPadding="8dp"
-                    app:iconTint="@color/cinenow_white"
-                    app:rippleColor="@color/cinenow_primary_container" />
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:id="@+id/tvViewAllHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="4dp"
+                    android:text="Xem tất cả lịch sử"
+                    android:textColor="@color/cinenow_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- 4. Section: Vé đã xem gần đây -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_ticket"
-                app:tint="@color/cinenow_primary" />
-
-            <TextView
-                android:layout_width="0dp"
+            <!-- Card Vé gần đây 1: Mai -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRecentTicket1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="Vé đã xem gần đây"
-                android:textColor="@color/cinenow_text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <!-- Poster thumbnail thật: Mai -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgRecentPoster1"
+                        android:layout_width="54dp"
+                        android:layout_height="72dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/poster_mai"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+                    <!-- Thông tin vé -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="12/10/2024  •  "
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hoàn thành"
+                                android:textColor="#16A34A"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Mai: Kỳ Nguyên Mới"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="CineNow Vạn Hạnh Mall • Ghế D8, D9"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Nút mũi tên xem chi tiết -->
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/cinenow_primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Vé gần đây 2: Gia Tài Của Ngoại -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRecentTicket2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2 suất chiếu"
-                android:textColor="@color/cinenow_text_secondary"
-                android:textSize="12sp" />
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <!-- Poster thumbnail thật: Gia Tài Của Ngoại -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgRecentPoster2"
+                        android:layout_width="54dp"
+                        android:layout_height="72dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/poster_gia_tai_cua_ngoai"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+                    <!-- Thông tin vé -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="28/09/2024  •  "
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hoàn thành"
+                                android:textColor="#16A34A"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Gia Tài Của Ngoại"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="CineNow Vincom Đồng Khởi • Ghế G5"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Nút mũi tên xem chi tiết -->
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/cinenow_primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- Vé gần đây 1: Mai: Kỳ Nguyên Mới -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardRecentTicket1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/cinenow_white"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/cinenow_outline"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <!-- Poster thumbnail -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imgRecentPoster1"
-                    android:layout_width="54dp"
-                    android:layout_height="72dp"
-                    android:background="@color/cinenow_surface_container"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_ticket"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                    app:tint="@color/cinenow_text_tertiary" />
-
-                <!-- Thông tin vé -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12/10/2024  •  "
-                            android:textColor="@color/cinenow_text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hoàn thành"
-                            android:textColor="#16A34A"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Mai: Kỳ Nguyên Mới"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="CineNow Vạn Hạnh Mall • Ghế D8, D9"
-                        android:textColor="@color/cinenow_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Nút mũi tên xem chi tiết -->
-                <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:background="@drawable/bg_rounded_icon"
-                    android:backgroundTint="@color/cinenow_secondary_container"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="@color/cinenow_primary" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Vé gần đây 2: Gia Tài Của Ngoại -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardRecentTicket2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/cinenow_white"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/cinenow_outline"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <!-- Poster thumbnail -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imgRecentPoster2"
-                    android:layout_width="54dp"
-                    android:layout_height="72dp"
-                    android:background="@color/cinenow_surface_container"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_ticket"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                    app:tint="@color/cinenow_text_tertiary" />
-
-                <!-- Thông tin vé -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="28/09/2024  •  "
-                            android:textColor="@color/cinenow_text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hoàn thành"
-                            android:textColor="#16A34A"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Gia Tài Của Ngoại"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="CineNow Thủ Đức • Ghế H4"
-                        android:textColor="@color/cinenow_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Nút mũi tên xem chi tiết -->
-                <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:background="@drawable/bg_rounded_icon"
-                    android:backgroundTint="@color/cinenow_secondary_container"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="@color/cinenow_primary" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>
