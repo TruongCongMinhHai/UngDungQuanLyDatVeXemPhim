@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thuộc tính của CineHeader (header chung). Đặt tên có tiền tố "header" để không trùng attr "title" của thư viện. -->
+    <declare-styleable name="CineHeader">
+        <attr name="headerTitle" format="string" />
+        <attr name="headerShowBack" format="boolean" />
+        <attr name="headerShowProfile" format="boolean" />
+    </declare-styleable>
+</resources>
