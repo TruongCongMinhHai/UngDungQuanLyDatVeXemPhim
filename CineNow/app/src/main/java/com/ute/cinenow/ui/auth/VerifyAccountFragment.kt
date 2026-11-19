@@ -6,7 +6,6 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentVerifyAccountBinding
 import com.ute.cinenow.databinding.ItemOtpCellBinding
+import com.ute.cinenow.utils.showCineMessage
 import java.util.Locale
 
 class VerifyAccountFragment : Fragment() {
@@ -59,7 +59,7 @@ class VerifyAccountFragment : Fragment() {
                 // Dữ liệu giả lập: chưa gửi mã thật
                 binding.etOtp.setText("")
                 startTimer()
-                Toast.makeText(requireContext(), "Đã gửi lại mã xác minh", Toast.LENGTH_SHORT).show()
+                showCineMessage("Đã gửi lại mã xác minh")
             }
         }
 

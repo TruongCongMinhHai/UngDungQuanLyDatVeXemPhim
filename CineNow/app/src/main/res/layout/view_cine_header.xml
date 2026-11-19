@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bên trong của CineHeader. Không include trực tiếp, hãy dùng <com.ute.cinenow.utils.CineHeader> -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <!-- Nút quay lại: vùng chạm 48dp, kéo lùi 12dp để mũi tên thẳng với lề nội dung 16dp -->
+    <FrameLayout
+        android:id="@+id/btnHeaderBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="-12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Quay lại"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_auth_back"
+            app:tint="@color/cinenow_text_primary" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/ivHeaderLogo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_cinenow_logo" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CineNow"
+            android:textColor="@color/cinenow_primary_variant"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/cinenow_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Nút hồ sơ: vùng chạm 48dp, kéo lùi 4dp để mép nút thẳng với lề phải 16dp -->
+    <FrameLayout
+        android:id="@+id/btnHeaderProfile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="-4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Hồ sơ cá nhân"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_auth_oval"
+            android:backgroundTint="@color/cinenow_primary"
+            android:importantForAccessibility="no"
+            android:padding="9dp"
+            android:src="@drawable/ic_home_person"
+            app:tint="@color/cinenow_white" />
+    </FrameLayout>
+</merge>

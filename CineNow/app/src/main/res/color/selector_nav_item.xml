@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Đặt trong res/color/. Màu icon và chữ của Bottom Navigation -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/cinenow_accent" android:state_checked="true" />
+    <item android:color="@color/cinenow_nav_inactive" />
+</selector>

@@ -5,13 +5,13 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ute.cinenow.databinding.FragmentRegisterBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class RegisterFragment : Fragment() {
 
@@ -48,7 +48,7 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             if (validateAll()) {
                 // Dữ liệu giả lập: chưa tạo tài khoản thật, quay về màn Đăng nhập
-                Toast.makeText(requireContext(), "Tạo tài khoản thành công", Toast.LENGTH_SHORT).show()
+                showCineMessage("Tạo tài khoản thành công")
                 findNavController().popBackStack()
             }
         }
