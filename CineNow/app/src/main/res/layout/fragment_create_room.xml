@@ -126,12 +126,12 @@
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- 3. Thời gian dự kiến đi xem -->
+                    <!-- 3. Thời gian dự kiến đi xem (Tương tác bấm chọn) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Thời gian dự kiến"
+                        android:text="Thời gian dự kiến (Chạm để chọn)"
                         android:textColor="@color/cinenow_text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -147,11 +147,15 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
+                            <!-- Option 1: Cuối tuần -->
                             <TextView
+                                android:id="@+id/chipTimeWeekend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:background="@drawable/bg_rounded_icon"
                                 android:backgroundTint="@color/cinenow_primary"
+                                android:clickable="true"
+                                android:focusable="true"
                                 android:gravity="center"
                                 android:paddingHorizontal="14dp"
                                 android:text="Cuối tuần này"
@@ -159,24 +163,32 @@
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
+                            <!-- Option 2: Tối nay -->
                             <TextView
+                                android:id="@+id/chipTimeTonight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:layout_marginStart="8dp"
                                 android:background="@drawable/bg_rounded_icon"
                                 android:backgroundTint="@color/cinenow_surface_container_low"
+                                android:clickable="true"
+                                android:focusable="true"
                                 android:gravity="center"
                                 android:paddingHorizontal="14dp"
                                 android:text="Tối nay (sau 19h)"
                                 android:textColor="@color/cinenow_text_primary"
                                 android:textSize="13sp" />
 
+                            <!-- Option 3: Ngày mai -->
                             <TextView
+                                android:id="@+id/chipTimeTomorrow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
                                 android:layout_marginStart="8dp"
                                 android:background="@drawable/bg_rounded_icon"
                                 android:backgroundTint="@color/cinenow_surface_container_low"
+                                android:clickable="true"
+                                android:focusable="true"
                                 android:gravity="center"
                                 android:paddingHorizontal="14dp"
                                 android:text="Ngày mai"
@@ -185,12 +197,12 @@
                         </LinearLayout>
                     </HorizontalScrollView>
 
-                    <!-- 4. Số lượng thành viên tối đa -->
+                    <!-- 4. Số lượng thành viên tối đa (Tương tác bấm chọn) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Số lượng bạn tham gia tối đa"
+                        android:text="Số lượng bạn tham gia tối đa (Chạm để chọn)"
                         android:textColor="@color/cinenow_text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -201,49 +213,65 @@
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
+                        <!-- 2 người -->
                         <TextView
+                            android:id="@+id/chipMember2"
                             android:layout_width="0dp"
                             android:layout_height="38dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:text="2 người"
                             android:textColor="@color/cinenow_text_primary"
                             android:textSize="13sp" />
 
+                        <!-- 4 người (mặc định chọn) -->
                         <TextView
+                            android:id="@+id/chipMember4"
                             android:layout_width="0dp"
                             android:layout_height="38dp"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="@color/cinenow_primary"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:text="4 người"
                             android:textColor="@color/cinenow_white"
                             android:textSize="13sp"
                             android:textStyle="bold" />
 
+                        <!-- 6 người -->
                         <TextView
+                            android:id="@+id/chipMember6"
                             android:layout_width="0dp"
                             android:layout_height="38dp"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:text="6 người"
                             android:textColor="@color/cinenow_text_primary"
                             android:textSize="13sp" />
 
+                        <!-- 8+ người -->
                         <TextView
+                            android:id="@+id/chipMember8"
                             android:layout_width="0dp"
                             android:layout_height="38dp"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:text="8+ người"
                             android:textColor="@color/cinenow_text_primary"
@@ -253,11 +281,14 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Tính năng Chia tiền vé tự động -->
+            <!-- Card Tính năng Chia tiền vé tự động (Có thể bật/tắt) -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSplitBill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/cinenow_white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
@@ -305,6 +336,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/ivCheckSplitBill"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/ic_auth_check_circle"
