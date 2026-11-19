@@ -1,20 +1,571 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="@color/cinenow_background"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Khám phá phim"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- ===== Thanh trên ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/cinenow_background"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_cinenow_logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CineNow"
+                android:textColor="@color/cinenow_primary_variant"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khám phá"
+                android:textColor="@color/cinenow_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/btnProfile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Hồ sơ cá nhân"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_auth_oval"
+                android:backgroundTint="@color/cinenow_primary"
+                android:importantForAccessibility="no"
+                android:padding="9dp"
+                android:src="@drawable/ic_home_person"
+                app:tint="@color/cinenow_white" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp">
+
+            <!-- ===== Ô tìm kiếm + nút bật/tắt bộ lọc ===== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:cardBackgroundColor="@color/cinenow_surface_container_lowest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_home_search"
+                        app:tint="@color/cinenow_text_secondary" />
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="Tìm phim, đạo diễn, rạp chiếu..."
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textColorHint="@color/cinenow_text_tertiary"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/btnFilterToggle"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:contentDescription="Bật hoặc tắt bộ lọc"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_explore_square"
+                            android:backgroundTint="@color/cinenow_secondary_container"
+                            android:importantForAccessibility="no"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_home_tune"
+                            app:tint="@color/cinenow_primary_variant" />
+                    </FrameLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Chip trạng thái (cuộn ngang) ===== -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="-16dp"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingHorizontal="16dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="8dp"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStatusAll"
+                        style="@style/Widget.CineNow.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:tag="ALL"
+                        android:text="Tất cả"
+                        app:chipIcon="@drawable/ic_ex_apps"
+                        app:chipIconSize="18dp"
+                        app:chipIconVisible="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStatusNow"
+                        style="@style/Widget.CineNow.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="NOW"
+                        android:text="Đang chiếu" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStatusSoon"
+                        style="@style/Widget.CineNow.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="SOON"
+                        android:text="Sắp chiếu" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStatusImax"
+                        style="@style/Widget.CineNow.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="IMAX"
+                        android:text="IMAX 3D"
+                        app:chipIcon="@drawable/ic_ex_videocam"
+                        app:chipIconSize="18dp"
+                        app:chipIconVisible="true" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <!-- ===== Bộ lọc phim ===== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/cinenow_surface_container_lowest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_ex_filter"
+                            app:tint="@color/cinenow_primary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="Bộ lọc phim"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/btnCollapse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="4dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_home_tune"
+                                app:tint="@color/cinenow_text_secondary" />
+
+                            <TextView
+                                android:id="@+id/tvCollapse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="Thu gọn"
+                                android:textColor="@color/cinenow_text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutFilterBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Thể loại -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thể loại"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroupGenre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="0dp"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:tag=""
+                                android:text="Tất cả" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Hành động"
+                                android:text="Hành động" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Hài"
+                                android:text="Hài" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Kinh dị"
+                                android:text="Kinh dị" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Hoạt hình"
+                                android:text="Hoạt hình" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Tình cảm"
+                                android:text="Tình cảm" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="Tâm lý"
+                                android:text="Tâm lý" />
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <!-- Điểm đánh giá -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Điểm đánh giá từ"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroupRating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="0dp"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:tag="0"
+                                android:text="Tất cả" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="6"
+                                android:text="★ 6.0+" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="7"
+                                android:text="★ 7.0+" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="8"
+                                android:text="★ 8.0+" />
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <!-- Định dạng chiếu -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Định dạng chiếu"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroupFormat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="0dp"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:tag=""
+                                android:text="Tất cả" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="2D"
+                                android:text="2D" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="3D"
+                                android:text="3D" />
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.CineNow.Chip.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tag="IMAX"
+                                android:text="IMAX" />
+                        </com.google.android.material.chip.ChipGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== Tiêu đề kết quả + sắp xếp + đổi kiểu xem ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvResultTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Tất cả phim"
+                    android:textColor="@color/cinenow_text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvResultCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:id="@+id/btnSort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="6dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="6dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_ex_swap"
+                        app:tint="@color/cinenow_primary_variant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Sắp xếp"
+                        android:textColor="@color/cinenow_primary_variant"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnLayout"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="Đổi kiểu hiển thị"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_explore_square"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:importantForAccessibility="no"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_ex_grid"
+                        app:tint="@color/cinenow_primary_variant" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- ===== Lưới phim 2 cột ===== -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="-6dp"
+                android:layout_marginTop="4dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- ===== Chân danh sách ===== -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_explore_square"
+                    android:backgroundTint="@color/cinenow_secondary_container"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_ex_movie"
+                    app:tint="@color/cinenow_primary_variant" />
+
+                <TextView
+                    android:id="@+id/tvFooter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Đã hiển thị tất cả suất chiếu hôm nay"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

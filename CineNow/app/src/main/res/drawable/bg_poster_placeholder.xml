@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Poster tạm. Khi có ảnh thật, thay posterRes trong dữ liệu mẫu bằng R.drawable.ten_anh -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+  <gradient
+      android:angle="270"
+      android:endColor="@color/cinenow_surface_dim"
+      android:startColor="@color/cinenow_primary_container"
+      android:type="linear" />
+</shape>
