@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentTicketDetailBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class TicketDetailFragment : Fragment() {
 
@@ -34,49 +34,42 @@ class TicketDetailFragment : Fragment() {
      * Cấu hình toàn bộ sự kiện click trên màn Chi tiết vé
      */
     private fun setupClickListeners() {
-        // 1. Nút Back quay lại màn trước
-        binding.btnBack.setOnClickListener {
-            it.animatePress {
-                findNavController().popBackStack()
+        // 1. Nút Back trên CineHeader: lùi về hoặc sang ticketsFragment nếu backstack rỗng
+        binding.header.onBackClick = {
+            if (!findNavController().popBackStack()) {
+                findNavController().navigate(R.id.ticketsFragment)
             }
         }
 
-        // 2. Avatar góc phải -> Chuyển sang màn Cá nhân (#26)
-        binding.imgTopAvatar.setOnClickListener {
-            it.animatePress {
-                findNavController().navigate(R.id.profileFragment)
-            }
-        }
-
-        // 3. Sao chép Mã đặt chỗ (Booking ID) vào Clipboard hệ thống
+        // 2. Sao chép Mã đặt chỗ (Booking ID) vào Clipboard hệ thống
         binding.btnCopyBookingCode.setOnClickListener {
             it.animatePress {
                 val bookingCode = binding.tvBookingCode.text.toString().trim()
                 val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("BookingCode", bookingCode)
                 clipboard.setPrimaryClip(clip)
-                Toast.makeText(requireContext(), "Đã sao chép mã đặt chỗ: $bookingCode", Toast.LENGTH_SHORT).show()
+                showCineMessage("Đã sao chép mã đặt chỗ: $bookingCode")
             }
         }
 
-        // 4. Bấm vào Nhóm CineTogether -> Chuyển sang màn Đi cùng nhóm (#17)
+        // 3. Bấm vào Nhóm CineTogether -> Chuyển sang màn Đi cùng nhóm (#17)
         binding.cardGroupInfo.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.cineTogetherFragment)
             }
         }
 
-        // 5. Nút Lưu vé vào thư viện ảnh
+        // 4. Nút Lưu vé vào thư viện ảnh
         binding.btnSaveTicketImage.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "✅ Đã lưu vé vào thư viện ảnh thành công!", Toast.LENGTH_SHORT).show()
+                showCineMessage("Đã lưu vé điện tử vào thư viện ảnh")
             }
         }
 
-        // 6. Bấm vào mã QR lớn hoặc Barcode -> Nhắc nhở người dùng
+        // 5. Bấm vào mã QR lớn hoặc Barcode -> Nhắc nhở người dùng
         val qrBarcodeAction: (View) -> Unit = { view ->
             view.animatePress {
-                Toast.makeText(requireContext(), "Mã vé đã sẵn sàng để quét tại quầy soát vé", Toast.LENGTH_SHORT).show()
+                showCineMessage("Mã vé đã sẵn sàng để quét tại quầy soát vé")
             }
         }
         binding.imgLargeQrCode.setOnClickListener(qrBarcodeAction)
