@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -52,7 +53,12 @@ class ExploreFragment : Fragment() {
 
     private fun setupList() {
         adapter = ExploreMovieAdapter(
-            onDetailClick = { findNavController().navigate(R.id.movieDetailFragment) },
+            onDetailClick = { movie ->
+                findNavController().navigate(
+                    R.id.movieDetailFragment,
+                    bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movie.title)
+                )
+            },
             onBookClick = { findNavController().navigate(R.id.showtimeFragment) },
             onReminderChanged = { movie, isOn ->
                 showCineMessage(

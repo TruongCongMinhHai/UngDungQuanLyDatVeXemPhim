@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ute.cinenow.R
@@ -12,6 +13,7 @@ import com.ute.cinenow.adapter.HomeCineMatchAdapter
 import com.ute.cinenow.adapter.HomeHotMovieAdapter
 import com.ute.cinenow.adapter.HomeUpcomingAdapter
 import com.ute.cinenow.databinding.FragmentHomeBinding
+import com.ute.cinenow.ui.movie.MovieDetailFragment
 import com.ute.cinenow.utils.ReminderStore
 import com.ute.cinenow.utils.showCineMessage
 
@@ -39,7 +41,7 @@ class HomeFragment : Fragment() {
         binding.rvCineMatch.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCineMatch.adapter = HomeCineMatchAdapter(
             items = sampleCineMatch(),
-            onItemClick = { navigate(R.id.movieDetailFragment) },
+            onItemClick = { movie -> openMovieDetail(movie.title) },
             onBookClick = { navigate(R.id.showtimeFragment) }
         )
 
@@ -47,14 +49,14 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHotMovies.adapter = HomeHotMovieAdapter(
             items = sampleHotMovies(),
-            onItemClick = { navigate(R.id.movieDetailFragment) },
+            onItemClick = { movie -> openMovieDetail(movie.title) },
             onBookClick = { navigate(R.id.showtimeFragment) }
         )
 
         binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext())
         upcomingAdapter = HomeUpcomingAdapter(
             items = sampleUpcoming(),
-            onItemClick = { navigate(R.id.movieDetailFragment) },
+            onItemClick = { movie -> openMovieDetail(movie.title) },
             onReminderChanged = { movie, isOn ->
                 showCineMessage(
                     message = if (isOn) "Đã bật nhắc nhở" else "Đã tắt nhắc nhở",
@@ -86,6 +88,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigate(destinationId: Int) = findNavController().navigate(destinationId)
+
+    // Mở Chi tiết phim đúng với phim vừa bấm (truyền tên phim sang màn kia)
+    private fun openMovieDetail(title: String) = findNavController().navigate(
+        R.id.movieDetailFragment,
+        bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to title)
+    )
 
     private fun toast(message: String) = showCineMessage(message)
 
