@@ -1,19 +1,306 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="240dp"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="32dp"
-    android:background="@color/cinenow_surface_container_lowest">
+    android:background="@color/cinenow_white"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp"
+    tools:context=".ui.cinetogether.ConfirmVoteBottomSheet">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Thanh kéo Bottom Sheet (Drag Handle) -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_rounded_icon"
+        android:backgroundTint="@color/cinenow_outline_variant" />
+
+    <!-- Tiêu đề Bottom Sheet -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Xác nhận chốt phim bình chọn"
-        android:textSize="20sp"
-        android:textColor="@color/cinenow_text_primary" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chốt kết quả bình chọn"
+                android:textColor="@color/cinenow_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Bộ phim được đa số thành viên lựa chọn"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_success_container"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="Chiến thắng"
+            android:textColor="@color/cinenow_on_success_container"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Card Phim chiến thắng (Dune 2) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/cinenow_primary"
+        app:strokeWidth="1.5dp"
+        app:cardBackgroundColor="@color/cinenow_primary_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <!-- Poster phim -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="72dp"
+                android:layout_height="102dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/poster_hanh_tinh_cat_2"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dune: Hành Tinh Cát 2"
+                    android:textColor="@color/cinenow_on_primary_container"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Rạp IMAX 2D • Phụ đề tiếng Việt"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp" />
+
+                <!-- Thông tin rạp & giờ -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_home_place"
+                        app:tint="@color/cinenow_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="CGV Landmark 81"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_md_clock"
+                        app:tint="@color/cinenow_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Tối nay (19:30 - Phòng chiếu 01)"
+                        android:textColor="@color/cinenow_text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Tỷ lệ phiếu -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="✓ 2/3 phiếu bình chọn (67%)"
+                    android:textColor="@color/cinenow_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Card Chi phí & Chia tiền -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/cinenow_outline"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/cinenow_white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_ticket"
+                    app:tint="@color/cinenow_primary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Chi phí ước tính / người"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="120.000 đ"
+                    android:textColor="@color/cinenow_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/cinenow_outline" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hình thức thanh toán"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tự động chia đều qua MoMo"
+                    android:textColor="@color/cinenow_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Hộp ghi chú cảnh báo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_info_hint"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_auth_info"
+            app:tint="@color/cinenow_primary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Sau khi chốt, phòng bình chọn sẽ đóng lại và chuyển sang bước giữ chỗ xem phim cho cả nhóm."
+            android:textColor="@color/cinenow_text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Các nút hành động -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmAndCloseVote"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="18dp"
+        android:text="Xác nhận chốt &amp; Xem kết quả"
+        android:textColor="@color/cinenow_white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/cinenow_primary"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_auth_arrow_forward"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/cinenow_white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancelConfirm"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:text="Tiếp tục bình chọn"
+        android:textColor="@color/cinenow_text_secondary"
+        android:textSize="14sp"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/cinenow_outline" />
 
 </LinearLayout>
