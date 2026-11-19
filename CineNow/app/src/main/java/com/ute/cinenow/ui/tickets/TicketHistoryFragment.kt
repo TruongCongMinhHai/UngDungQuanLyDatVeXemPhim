@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentTicketHistoryBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class TicketHistoryFragment : Fragment() {
 
@@ -42,6 +41,13 @@ class TicketHistoryFragment : Fragment() {
      * Chuyển tab giữa Vé sắp xem và Lịch sử
      */
     private fun setupTabNavigation() {
+        // Nút quay lại trên CineHeader: lùi về hoặc sang ticketsFragment nếu backstack rỗng
+        binding.header.onBackClick = {
+            if (!findNavController().popBackStack()) {
+                findNavController().navigate(R.id.ticketsFragment)
+            }
+        }
+
         // Tab Vé sắp xem -> Quay lại màn TicketsFragment (#24)
         binding.btnTabUpcoming.setOnClickListener {
             it.animatePress {
@@ -54,14 +60,7 @@ class TicketHistoryFragment : Fragment() {
         // Tab Lịch sử (đang chọn)
         binding.btnTabHistory.setOnClickListener {
             it.animatePress {
-                Toast.makeText(requireContext(), "Bạn đang ở màn hình Lịch sử vé", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Avatar góc phải -> Chuyển sang màn Cá nhân (#26)
-        binding.imgTopAvatar.setOnClickListener {
-            it.animatePress {
-                findNavController().navigate(R.id.profileFragment)
+                showCineMessage("Bạn đang ở màn hình Lịch sử vé")
             }
         }
     }
