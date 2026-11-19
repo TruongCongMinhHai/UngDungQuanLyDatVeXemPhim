@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -120,10 +120,12 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <!-- Chiếm hết phần trống để 2 nút luôn nằm sát đáy, thẳng hàng giữa các thẻ -->
         <TextView
             android:id="@+id/tvGenre"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="2"
