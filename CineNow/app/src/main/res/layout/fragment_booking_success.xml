@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FC">
+    android:background="@color/cinenow_background">
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -22,9 +21,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingVertical="16dp">
 
-            <!-- Success Icon & Header -->
             <FrameLayout
                 android:layout_width="72dp"
                 android:layout_height="72dp"
@@ -32,19 +31,13 @@
                 android:background="@drawable/bg_camera_circle"
                 android:backgroundTint="#DCFCE7">
 
-                <View
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bg_camera_circle"
-                    android:backgroundTint="#10B981" />
-
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_arrow_back"
-                    app:tint="@android:color/white" />
+                    android:contentDescription="Đặt vé thành công"
+                    android:src="@drawable/ic_md_check_circle"
+                    app:tint="#10B981" />
             </FrameLayout>
 
             <TextView
@@ -65,7 +58,6 @@
                 android:textColor="#64748B"
                 android:textSize="12sp" />
 
-            <!-- CineTogether Sync Badge -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,6 +72,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:contentDescription="Đồng bộ CineTogether"
                     android:src="@drawable/ic_person"
                     app:tint="#5850EC" />
 
@@ -87,13 +80,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="👥 Đã đồng bộ lịch nhóm CineTogether"
+                    android:text="Đã đồng bộ lịch nhóm CineTogether"
                     android:textColor="#5850EC"
                     android:textSize="11.5sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- TICKET CARD CONTAINER -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,13 +99,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Gradient top border -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:background="#5850EC" />
 
-                    <!-- Movie info row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -123,14 +113,15 @@
                         <FrameLayout
                             android:layout_width="56dp"
                             android:layout_height="76dp"
-                            android:background="@drawable/bg_rounded_icon"
-                            android:backgroundTint="#1E293B">
+                            android:background="@drawable/bg_poster_placeholder">
 
                             <ImageView
+                                android:id="@+id/imgSuccessPoster"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:contentDescription="Poster phim"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_cinenow_logo" />
+                                android:src="@drawable/poster_hanh_tinh_cat_2" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -182,14 +173,17 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="🕒 16:45 • Hôm nay, 25/10/2024"
+                                android:drawableStart="@drawable/ic_booking_clock"
+                                android:drawablePadding="4dp"
+                                android:drawableTint="#5850EC"
+                                android:gravity="center_vertical"
+                                android:text="16:45 • Hôm nay, 25/10/2024"
                                 android:textColor="#0F172A"
                                 android:textSize="11.5sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Stats Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -296,14 +290,12 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Dashed Divider / Ticket Perforation Mock -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginHorizontal="16dp"
                         android:background="#CBD5E1" />
 
-                    <!-- QR Section -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -328,8 +320,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
-                        <!-- Mock QR Code Box -->
-                        <!-- Khung chứa QR Code lấy từ thư mục drawable -->
                         <FrameLayout
                             android:layout_width="160dp"
                             android:layout_height="160dp"
@@ -342,50 +332,57 @@
                                 android:id="@+id/imgQrCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:contentDescription="Mã QR đặt vé"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ma_qr" />
                         </FrameLayout>
+
                         <TextView
                             android:layout_width="260dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:gravity="center"
                             android:lineSpacingExtra="2dp"
-                            android:text="Vui lòng xuất trình mã QR này hoặc cung cấp mã #CN-88921-UIT tại quấy vé CineNow để nhận vé cứng hoặc vào cửa trực tiếp."
+                            android:text="Vui lòng xuất trình mã QR này hoặc cung cấp mã #CN-88921-UIT tại quầy vé CineNow để nhận vé cứng hoặc vào cửa trực tiếp."
                             android:textColor="#64748B"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Bottom Buttons -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnViewETicket"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#5850EC"
-                android:text="🎫  Xem chi tiết vé điện tử"
+                android:text="Xem chi tiết vé điện tử"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_booking_ticket"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@android:color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBackToHome"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#E0E7FF"
-                android:text="🏠  Về trang chủ"
+                android:text="Về trang chủ"
                 android:textAllCaps="false"
                 android:textColor="#5850EC"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp" />
-
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_home"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="#5850EC" />
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
