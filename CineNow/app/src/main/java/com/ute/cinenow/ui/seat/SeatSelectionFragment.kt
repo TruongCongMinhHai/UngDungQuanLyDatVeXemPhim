@@ -1,32 +1,54 @@
 package com.ute.cinenow.ui.seat
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import com.ute.cinenow.databinding.FragmentSeatSelectionBinding
 import com.ute.cinenow.ui.movie.MovieDetailFragment
 import com.ute.cinenow.ui.movie.MovieDetailSamples
 import com.ute.cinenow.utils.showCineMessage
+import java.util.Locale
 
 class SeatSelectionFragment : Fragment() {
 
     private var _binding: FragmentSeatSelectionBinding? = null
     private val binding get() = _binding!!
 
-    private val suggestedSeats = listOf("F5", "F6", "F7")
+    private val occupiedSeats = setOf(
+        "A4", "B1", "B2", "B4", "B5", "B9",
+        "C5", "D3", "D8", "E4", "E5", "E6",
+        "F4", "G7"
+    )
+
+    private var suggestedSeats: List<String> = emptyList()
     private val selectedSeats = mutableSetOf<String>()
     private val seatPrice = 165_000
+
     private var useSmartSuggestion: Boolean = false
+    private var peopleCount: Int = 1
+    private var selectedZone: String = "Khu vực trung tâm"
+    private var avoidCorner: Boolean = false
+    private var avoidFrontRow: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        useSmartSuggestion = arguments?.getBoolean(ARG_USE_SMART_SUGGESTION, false) ?: false
-        if (savedInstanceState == null && useSmartSuggestion) {
-            selectedSeats.addAll(suggestedSeats)
+        val args = arguments
+        useSmartSuggestion = args?.getBoolean(ARG_USE_SMART_SUGGESTION, false) ?: false
+        peopleCount = (args?.getInt(ARG_PEOPLE_COUNT, 1) ?: 1).coerceIn(1, 8)
+        selectedZone = args?.getString(ARG_SELECTED_ZONE) ?: "Khu vực trung tâm"
+        avoidCorner = args?.getBoolean(ARG_AVOID_CORNER, false) ?: false
+        avoidFrontRow = args?.getBoolean(ARG_AVOID_FRONT_ROW, false) ?: false
+
+        if (useSmartSuggestion) {
+            suggestedSeats = computeSmartSuggestedSeats()
+            if (savedInstanceState == null) {
+                selectedSeats.clear()
+                selectedSeats.addAll(suggestedSeats)
+            }
         }
     }
 
@@ -49,6 +71,71 @@ class SeatSelectionFragment : Fragment() {
         refreshSeatUI()
     }
 
+    private fun computeSmartSuggestedSeats(): List<String> {
+        val candidateRows = when (selectedZone) {
+            "Gần màn hình" -> listOf("C", "D", "B", "E", "A")
+            "Hàng ghế phía sau" -> listOf("G", "H", "F", "E")
+            "Ghế đôi" -> listOf("G", "F", "H", "E", "D")
+            else -> listOf("F", "E", "D", "G", "C", "H")
+        }
+
+        val filteredRows = mutableListOf<String>()
+        for (row in candidateRows) {
+            if (avoidFrontRow && (row == "A" || row == "B" || row == "C")) {
+                continue
+            }
+            filteredRows.add(row)
+        }
+        val rowsToSearch = filteredRows.ifEmpty { candidateRows }
+
+        val colOrder = if (avoidCorner) {
+            listOf(4, 5, 6, 7, 3, 8)
+        } else {
+            listOf(5, 6, 4, 7, 3, 8, 2, 9, 1, 10)
+        }
+
+        for (row in rowsToSearch) {
+            for (startCol in colOrder) {
+                val block = mutableListOf<String>()
+                var validBlock = true
+                for (offset in 0 until peopleCount) {
+                    val col = startCol + offset
+                    if (col > 10) {
+                        validBlock = false
+                        break
+                    }
+                    if (avoidCorner && col !in 3..8) {
+                        validBlock = false
+                        break
+                    }
+                    val seatCode = "$row$col"
+                    if (occupiedSeats.contains(seatCode)) {
+                        validBlock = false
+                        break
+                    }
+                    block.add(seatCode)
+                }
+                if (validBlock && block.size == peopleCount) {
+                    return block
+                }
+            }
+        }
+
+        val fallback = mutableListOf<String>()
+        for (row in rowsToSearch) {
+            for (col in 1..10) {
+                val seatCode = "$row$col"
+                if (!occupiedSeats.contains(seatCode) && !fallback.contains(seatCode)) {
+                    fallback.add(seatCode)
+                    if (fallback.size == peopleCount) {
+                        return fallback
+                    }
+                }
+            }
+        }
+        return fallback
+    }
+
     private fun setupMovieInfo() {
         val movieTitleArg = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
         val movieDetail = MovieDetailSamples.find(movieTitleArg)
@@ -62,6 +149,7 @@ class SeatSelectionFragment : Fragment() {
         if (useSmartSuggestion) {
             binding.cardSmartSuggestion.visibility = View.VISIBLE
             binding.btnResetSeats.visibility = View.VISIBLE
+            binding.tvSmartSeatReason.text = "Phù hợp $peopleCount người • $selectedZone"
         } else {
             binding.cardSmartSuggestion.visibility = View.GONE
             binding.btnResetSeats.visibility = View.GONE
@@ -111,9 +199,17 @@ class SeatSelectionFragment : Fragment() {
         val seatMap = buildSelectableSeatMap()
         seatMap.forEach { (seatName, seatView) ->
             seatView.setOnClickListener {
+                if (occupiedSeats.contains(seatName)) {
+                    showCineMessage("Ghế $seatName đã được đặt")
+                    return@setOnClickListener
+                }
                 if (selectedSeats.contains(seatName)) {
                     selectedSeats.remove(seatName)
                 } else {
+                    if (selectedSeats.size >= 8) {
+                        showCineMessage("Tối đa 8 ghế mỗi lần đặt")
+                        return@setOnClickListener
+                    }
                     selectedSeats.add(seatName)
                 }
                 refreshSeatUI()
@@ -122,14 +218,30 @@ class SeatSelectionFragment : Fragment() {
     }
 
     private fun refreshSeatUI() {
+        val occupiedBgColor = "#E2E8F0".toColorInt()
+        val occupiedTextColor = "#94A3B8".toColorInt()
+        val selectedBgColor = "#5850EC".toColorInt()
+        val selectedTextColor = "#FFFFFF".toColorInt()
+        val unselectedBgColor = "#F3F0FF".toColorInt()
+        val unselectedTextColor = "#312E81".toColorInt()
+
         val seatMap = buildSelectableSeatMap()
-        seatMap.forEach { (seatName, seatView) ->
-            if (selectedSeats.contains(seatName)) {
-                seatView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-                seatView.setTextColor(Color.WHITE)
-            } else {
-                seatView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F3F0FF"))
-                seatView.setTextColor(Color.parseColor("#312E81"))
+        for (entry in seatMap) {
+            val seatName = entry.key
+            val seatView = entry.value
+            when {
+                occupiedSeats.contains(seatName) -> {
+                    seatView.backgroundTintList = ColorStateList.valueOf(occupiedBgColor)
+                    seatView.setTextColor(occupiedTextColor)
+                }
+                selectedSeats.contains(seatName) -> {
+                    seatView.backgroundTintList = ColorStateList.valueOf(selectedBgColor)
+                    seatView.setTextColor(selectedTextColor)
+                }
+                else -> {
+                    seatView.backgroundTintList = ColorStateList.valueOf(unselectedBgColor)
+                    seatView.setTextColor(unselectedTextColor)
+                }
             }
         }
         updateCheckoutSummary()
@@ -144,12 +256,13 @@ class SeatSelectionFragment : Fragment() {
             val sortedSeats = selectedSeats.sorted().joinToString(", ")
             binding.tvSelectedSeatSummary.text = "Đang chọn: $sortedSeats"
             binding.tvSmartSeatReason.text = if (useSmartSuggestion) {
-                "Thỏa mãn: ${selectedSeats.size} ghế đang chọn tại phòng chiếu IMAX."
+                "Thỏa mãn: ${selectedSeats.size} ghế ($selectedZone) tại phòng chiếu IMAX."
             } else {
                 "Đã chọn thủ công ${selectedSeats.size} ghế trên sơ đồ IMAX."
             }
             val totalPrice = selectedSeats.size * seatPrice
-            val formattedPrice = String.format("%,dđ", totalPrice).replace(',', '.')
+            val formattedPrice = String.format(Locale.getDefault(), "%,dđ", totalPrice)
+                .replace(',', '.')
             binding.tvTotalPrice.text = formattedPrice
         }
     }
@@ -161,5 +274,9 @@ class SeatSelectionFragment : Fragment() {
 
     companion object {
         const val ARG_USE_SMART_SUGGESTION = "arg_use_smart_suggestion"
+        const val ARG_PEOPLE_COUNT = "arg_people_count"
+        const val ARG_SELECTED_ZONE = "arg_selected_zone"
+        const val ARG_AVOID_CORNER = "arg_avoid_corner"
+        const val ARG_AVOID_FRONT_ROW = "arg_avoid_front_row"
     }
 }
