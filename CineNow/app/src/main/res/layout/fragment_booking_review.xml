@@ -3,85 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FC">
+    android:background="@color/cinenow_background">
 
-    <!-- Top Header Bar -->
-    <LinearLayout
-        android:id="@+id/layoutHeader"
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
+        android:layout_height="wrap_content"
+        app:headerShowBack="true"
+        app:headerTitle="Xác nhận đặt vé"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="#1A1A1A" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/bg_rounded_icon"
-            android:backgroundTint="#F3F0FF"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_cinenow_logo" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CineNow"
-                    android:textColor="#5850EC"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xác nhận đặt vé"
-                    android:textColor="#1A1A1A"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/btnProfile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_camera_circle"
-            android:backgroundTint="#5850EC"
-            android:padding="6dp"
-            android:src="@drawable/ic_person"
-            app:tint="@android:color/white" />
-    </LinearLayout>
-
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -91,15 +24,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHeader">
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="@dimen/screen_padding"
+            android:paddingVertical="16dp">
 
-            <!-- CARD 1: Thông tin vé & người đặt -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Dải viền tím trên đỉnh thẻ vé -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
@@ -124,7 +56,6 @@
                         android:orientation="vertical"
                         android:padding="14dp">
 
-                        <!-- Poster + Tên phim -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -133,15 +64,15 @@
                             <FrameLayout
                                 android:layout_width="64dp"
                                 android:layout_height="88dp"
-                                android:background="@drawable/bg_rounded_icon"
-                                android:backgroundTint="#1E293B">
+                                android:background="@drawable/bg_poster_placeholder">
 
                                 <ImageView
                                     android:id="@+id/imgMoviePoster"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:contentDescription="Poster phim"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_cinenow_logo" />
+                                    android:src="@drawable/poster_hanh_tinh_cat_2" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -187,9 +118,12 @@
                                         android:layout_marginStart="6dp"
                                         android:background="@drawable/bg_rounded_icon"
                                         android:backgroundTint="#F3E8FF"
+                                        android:drawableStart="@drawable/ic_booking_seat"
+                                        android:drawablePadding="4dp"
+                                        android:drawableTint="#7E22CE"
                                         android:paddingHorizontal="8dp"
                                         android:paddingVertical="2dp"
-                                        android:text="★ 3 Ghế VIP"
+                                        android:text="3 Ghế VIP"
                                         android:textColor="#7E22CE"
                                         android:textSize="10sp"
                                         android:textStyle="bold" />
@@ -216,21 +150,23 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="6dp"
-                                    android:text="📍 CineNow Landmark 81 • Phòng 03"
+                                    android:drawableStart="@drawable/ic_home_place"
+                                    android:drawablePadding="4dp"
+                                    android:drawableTint="#4338CA"
+                                    android:gravity="center_vertical"
+                                    android:text="CineNow Landmark 81 • Phòng 03"
                                     android:textColor="#4338CA"
                                     android:textSize="11.5sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- Đường kẻ ngang phân cách vé -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginVertical="12dp"
                             android:background="#E2E8F0" />
 
-                        <!-- Box Suất chiếu & Vị trí ghế -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -257,7 +193,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
-                                    android:text="🕒 16:45"
+                                    android:drawableStart="@drawable/ic_booking_clock"
+                                    android:drawablePadding="4dp"
+                                    android:drawableTint="#0F172A"
+                                    android:gravity="center_vertical"
+                                    android:text="16:45"
                                     android:textColor="#0F172A"
                                     android:textSize="13.5sp"
                                     android:textStyle="bold" />
@@ -290,14 +230,17 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
-                                    android:text="🛋️ F5, F6, F7 (VIP)"
+                                    android:drawableStart="@drawable/ic_booking_seat"
+                                    android:drawablePadding="4dp"
+                                    android:drawableTint="#5850EC"
+                                    android:gravity="center_vertical"
+                                    android:text="F5, F6, F7 (VIP)"
                                     android:textColor="#5850EC"
                                     android:textSize="13sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- Box Thông tin khách hàng -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -308,16 +251,15 @@
                             android:orientation="horizontal"
                             android:padding="10dp">
 
-                            <TextView
+                            <ImageView
                                 android:layout_width="34dp"
                                 android:layout_height="34dp"
                                 android:background="@drawable/bg_camera_circle"
                                 android:backgroundTint="#E0E7FF"
-                                android:gravity="center"
-                                android:text="NA"
-                                android:textColor="#4338CA"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:contentDescription="Khách hàng"
+                                android:padding="7dp"
+                                android:src="@drawable/ic_person"
+                                app:tint="#4338CA" />
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -342,18 +284,17 @@
                                     android:textSize="11sp" />
                             </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="✔️"
-                                android:textColor="#5850EC"
-                                android:textSize="14sp" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:contentDescription="Xác thực"
+                                android:src="@drawable/ic_booking_shield_tick"
+                                app:tint="#5850EC" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- CARD 2: Chi tiết thanh toán -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -378,7 +319,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🧾  Chi tiết thanh toán"
+                            android:drawableStart="@drawable/ic_booking_building"
+                            android:drawablePadding="6dp"
+                            android:drawableTint="#5850EC"
+                            android:gravity="center_vertical"
+                            android:text="Chi tiết thanh toán"
                             android:textColor="#0F172A"
                             android:textSize="14.5sp"
                             android:textStyle="bold" />
@@ -397,7 +342,6 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Dòng 1: Vé VIP -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -421,7 +365,6 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Dòng 2: Combo Bắp nước -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -432,7 +375,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Combo Bắp nước Đôi 🍿"
+                            android:drawableEnd="@drawable/ic_info"
+                            android:drawablePadding="4dp"
+                            android:drawableTint="#94A3B8"
+                            android:gravity="center_vertical|start"
+                            android:text="Combo Bắp nước Đôi"
                             android:textColor="#475569"
                             android:textSize="12.5sp" />
 
@@ -445,7 +392,6 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Dòng 3: Mã thành viên -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -456,7 +402,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🏷️ Mã thành viên (-10%)"
+                            android:drawableStart="@drawable/ic_booking_tag"
+                            android:drawablePadding="6dp"
+                            android:drawableTint="#15803D"
+                            android:gravity="center_vertical"
+                            android:text="Mã thành viên (-10%)"
                             android:textColor="#15803D"
                             android:textSize="12.5sp" />
 
@@ -469,7 +419,6 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Dòng 4: Voucher -->
                     <LinearLayout
                         android:id="@+id/rowVoucherDiscount"
                         android:layout_width="match_parent"
@@ -482,7 +431,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🎟️ Voucher CINEMAX20K"
+                            android:drawableStart="@drawable/ic_booking_ticket"
+                            android:drawablePadding="6dp"
+                            android:drawableTint="#15803D"
+                            android:gravity="center_vertical"
+                            android:text="Voucher CINEMAX20K"
                             android:textColor="#15803D"
                             android:textSize="12.5sp" />
 
@@ -502,7 +455,6 @@
                         android:layout_marginVertical="12dp"
                         android:background="#E2E8F0" />
 
-                    <!-- Tổng thanh toán -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -558,7 +510,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- CARD 3: Khuyến mãi & Ưu đãi -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -583,7 +534,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🎫  Khuyến mãi &amp; Ưu đãi"
+                            android:drawableStart="@drawable/ic_booking_ticket"
+                            android:drawablePadding="6dp"
+                            android:drawableTint="#5850EC"
+                            android:gravity="center_vertical"
+                            android:text="Khuyến mãi &amp; Ưu đãi"
                             android:textColor="#0F172A"
                             android:textSize="14.5sp"
                             android:textStyle="bold" />
@@ -592,13 +547,16 @@
                             android:id="@+id/btnViewAllVouchers"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Xem tất cả (4) ›"
+                            android:drawableEnd="@drawable/ic_chevron_right"
+                            android:drawablePadding="2dp"
+                            android:drawableTint="#5850EC"
+                            android:gravity="center_vertical"
+                            android:text="Xem tất cả (4)"
                             android:textColor="#5850EC"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Box Voucher đã chọn -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -609,14 +567,15 @@
                         android:orientation="horizontal"
                         android:padding="12dp">
 
-                        <TextView
+                        <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="#EDE9FE"
-                            android:gravity="center"
-                            android:text="🏷️"
-                            android:textSize="14sp" />
+                            android:contentDescription="Mã ưu đãi"
+                            android:padding="7dp"
+                            android:src="@drawable/ic_booking_tag"
+                            app:tint="#5850EC" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -685,13 +644,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="✓ Tiết kiệm thêm 20.000 đ cho đơn này"
+                        android:drawableStart="@drawable/ic_booking_check_outline"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="#15803D"
+                        android:gravity="center_vertical"
+                        android:text="Tiết kiệm thêm 20.000 đ cho đơn này"
                         android:textColor="#15803D"
                         android:textSize="11.5sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- CARD 4: Phương thức thanh toán -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -709,12 +671,15 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💳  Phương thức thanh toán"
+                        android:drawableStart="@drawable/ic_booking_wallet"
+                        android:drawablePadding="6dp"
+                        android:drawableTint="#5850EC"
+                        android:gravity="center_vertical"
+                        android:text="Phương thức thanh toán"
                         android:textColor="#0F172A"
                         android:textSize="14.5sp"
                         android:textStyle="bold" />
 
-                    <!-- Option 1: Ví điện tử -->
                     <LinearLayout
                         android:id="@+id/optEWallet"
                         android:layout_width="match_parent"
@@ -779,14 +744,14 @@
                                 android:textSize="11sp" />
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="👛"
-                            android:textSize="16sp" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Ví điện tử"
+                            android:src="@drawable/ic_booking_wallet"
+                            app:tint="#5850EC" />
                     </LinearLayout>
 
-                    <!-- Option 2: Thẻ ngân hàng -->
                     <LinearLayout
                         android:id="@+id/optBankCard"
                         android:layout_width="match_parent"
@@ -831,41 +796,49 @@
                                 android:textSize="11sp" />
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💳"
-                            android:textSize="16sp" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Thẻ ngân hàng"
+                            android:src="@drawable/ic_booking_card"
+                            app:tint="#475569" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Action Buttons -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBookNow"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#5850EC"
-                android:text="✓  Đặt vé ngay • 445.000 đ"
+                android:text="Đặt vé ngay • 445.000 đ"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_booking_check_outline"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@android:color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnChangeSeats"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@android:color/white"
-                android:text="💺  Đổi ghế khác"
+                android:text="Đổi ghế khác"
                 android:textAllCaps="false"
                 android:textColor="#4338CA"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:cornerRadius="12dp"
+                app:icon="@drawable/ic_booking_swap_seat"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="#4338CA"
                 app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp" />
 
@@ -878,8 +851,6 @@
                 android:text="Bằng việc bấm Đặt vé, bạn đồng ý với Điều khoản và\nChính sách của CineNow"
                 android:textColor="#64748B"
                 android:textSize="11sp" />
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
