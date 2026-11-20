@@ -1,16 +1,16 @@
 package com.ute.cinenow.ui.cineconnect
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.graphics.toColorInt
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.ute.cinenow.databinding.FragmentFriendsBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class FriendsFragment : Fragment() {
 
@@ -18,7 +18,8 @@ class FriendsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFriendsBinding.inflate(inflater, container, false)
@@ -27,92 +28,152 @@ class FriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupHeaderActions()
-        setupSearchAndFilters()
-        setupFriendActions()
+        setupHeader()
+        setupSearchAndChips()
+        setupFriendCards()
+        setupBottomBar()
     }
 
-    private fun setupHeaderActions() {
-        binding.btnOpenFriendRequests.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở màn hình Lời mời kết bạn", Toast.LENGTH_SHORT).show()
-            // TODO: Chuyển sang FriendRequestsFragment tại đây
+    private fun setupHeader() {
+        binding.header.onBackClick = {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
-    private fun setupSearchAndFilters() {
-        binding.etSearchFriend.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val keyword = s.toString().trim()
-                if (keyword.isNotEmpty()) {
-                    // Logic lọc danh sách bạn bè theo từ khóa
+    private fun setupSearchAndChips() {
+        val allFriendCards: List<Pair<View, String>> = listOf(
+            Pair(binding.cardFriend1, "minh quân khoa học viễn tưởng hành động hành tinh cát 2"),
+            Pair(binding.cardFriend2, "thảo vy tình cảm hoạt hình ghibli mai"),
+            Pair(binding.cardFriend3, "hoàng nam imax fan định dạng lớn thứ 6 cuối tuần"),
+            Pair(binding.cardFriend4, "phương linh kinh dị giật gân trinh thám")
+        )
+
+        val onlineCards: List<View> = listOf(
+            binding.cardFriend1,
+            binding.cardFriend2,
+            binding.cardFriend3
+        )
+
+        binding.etSearchFriends.doAfterTextChanged { editable ->
+            val keyword = editable?.toString()?.trim()?.lowercase().orEmpty()
+            for (item in allFriendCards) {
+                val card = item.first
+                val content = item.second
+                card.visibility = if (keyword.isEmpty() || content.contains(keyword)) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
                 }
             }
-            override fun afterTextChanged(s: Editable?) {}
-        })
+        }
+
+        binding.btnFriendFilter.setOnClickListener {
+            showCineMessage("Đang lọc danh sách bạn bè xem phim")
+        }
 
         binding.chipAllFriends.setOnClickListener {
-            setActiveChip(isAll = true)
-            Toast.makeText(requireContext(), "Hiển thị tất cả 18 bạn bè", Toast.LENGTH_SHORT).show()
+            binding.etSearchFriends.setText("")
+            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#5B3DF5".toColorInt())
+            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            for (item in allFriendCards) {
+                item.first.visibility = View.VISIBLE
+            }
+            showCineMessage("Hiển thị tất cả bạn bè (18)")
         }
 
-        binding.chipOnline.setOnClickListener {
-            setActiveChip(isAll = false)
-            Toast.makeText(requireContext(), "Hiển thị 6 bạn đang online", Toast.LENGTH_SHORT).show()
+        binding.chipOnlineFriends.setOnClickListener {
+            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#EEF2FF".toColorInt())
+            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            for (item in allFriendCards) {
+                item.first.visibility = if (onlineCards.contains(item.first)) View.VISIBLE else View.GONE
+            }
+            showCineMessage("Đang hiển thị bạn bè online")
         }
 
-        binding.chipNearby.setOnClickListener {
-            Toast.makeText(requireContext(), "Lọc theo cụm rạp gần bạn", Toast.LENGTH_SHORT).show()
+        binding.chipSameTaste.setOnClickListener {
+            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#EEF2FF".toColorInt())
+            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            for (item in allFriendCards) {
+                item.first.visibility = View.VISIBLE
+            }
+            showCineMessage("Đã sắp xếp theo độ khớp gu điện ảnh")
         }
     }
 
-    private fun setActiveChip(isAll: Boolean) {
-        if (isAll) {
-            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-            binding.chipAllFriends.setTextColor(Color.WHITE)
+    private fun setupFriendCards() {
+        val chatButtons: List<Pair<View, String>> = listOf(
+            Pair(binding.btnChatFriend1, "Minh Quân"),
+            Pair(binding.btnChatFriend2, "Thảo Vy"),
+            Pair(binding.btnChatFriend3, "Hoàng Nam"),
+            Pair(binding.btnChatFriend4, "Phương Linh")
+        )
 
-            binding.chipOnline.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-            binding.chipOnline.setTextColor(Color.parseColor("#475569"))
-        } else {
-            binding.chipOnline.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-            binding.chipOnline.setTextColor(Color.WHITE)
+        for (item in chatButtons) {
+            val btnChat = item.first
+            val friendName = item.second
+            btnChat.setOnClickListener {
+                showCineMessage("Mở khung trò chuyện với $friendName")
+            }
+        }
 
-            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-            binding.chipAllFriends.setTextColor(Color.parseColor("#475569"))
+        val inviteButtons: List<Pair<MaterialButton, String>> = listOf(
+            Pair(binding.btnInviteFriend1, "Minh Quân"),
+            Pair(binding.btnInviteFriend2, "Thảo Vy"),
+            Pair(binding.btnInviteFriend3, "Hoàng Nam"),
+            Pair(binding.btnInviteFriend4, "Phương Linh")
+        )
+
+        for (item in inviteButtons) {
+            val btnInvite = item.first
+            val friendName = item.second
+            btnInvite.setOnClickListener {
+                showCineMessage(
+                    message = "Đã gửi lời mời xem phim tới $friendName",
+                    actionLabel = "HOÀN TÁC",
+                    onAction = {
+                        showCineMessage("Đã thu hồi lời mời xem phim gửi tới $friendName")
+                    }
+                )
+            }
+        }
+
+        var connectedNearby = false
+        binding.btnNearbyConnect.setOnClickListener {
+            connectedNearby = !connectedNearby
+            if (connectedNearby) {
+                binding.btnNearbyConnect.text = "Đã gửi"
+                showCineMessage(
+                    message = "Đã gửi lời mời kết bạn tại CineNow Landmark 81",
+                    actionLabel = "HOÀN TÁC",
+                    onAction = {
+                        connectedNearby = false
+                        binding.btnNearbyConnect.text = "Kết bạn"
+                        showCineMessage("Đã hủy lời mời kết bạn gần rạp")
+                    }
+                )
+            } else {
+                binding.btnNearbyConnect.text = "Kết bạn"
+                showCineMessage("Đã hủy lời mời kết bạn gần rạp")
+            }
+        }
+
+        binding.btnFriendRequestsBadge.setOnClickListener {
+            showCineMessage("Mở danh sách lời mời kết bạn")
         }
     }
 
-    private fun setupFriendActions() {
-        // --- Minh Quân ---
-        binding.btnChat1.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở khung chat với Minh Quân", Toast.LENGTH_SHORT).show()
+    private fun setupBottomBar() {
+        binding.navTabFriends.setOnClickListener {
+            showCineMessage("Đang ở tab Bạn bè")
         }
-        binding.btnInvite1.setOnClickListener {
-            Toast.makeText(requireContext(), "Gửi lời mời xem phim đến Minh Quân", Toast.LENGTH_SHORT).show()
+        binding.navTabChat.setOnClickListener {
+            showCineMessage("Chuyển sang tab Trò chuyện")
         }
-
-        // --- Thảo Vy ---
-        binding.btnChat2.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở khung chat với Thảo Vy", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnInvite2.setOnClickListener {
-            Toast.makeText(requireContext(), "Gửi lời mời xem phim đến Thảo Vy", Toast.LENGTH_SHORT).show()
-        }
-
-        // --- Hoàng Nam ---
-        binding.btnChat3.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở khung chat với Hoàng Nam", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnInvite3.setOnClickListener {
-            Toast.makeText(requireContext(), "Gửi lời mời xem phim đến Hoàng Nam", Toast.LENGTH_SHORT).show()
-        }
-
-        // --- Gần rạp của bạn ---
-        binding.btnConnectNearby.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã gửi yêu cầu kết nối cộng đồng rạp Landmark 81", Toast.LENGTH_SHORT).show()
-            binding.btnConnectNearby.text = "✓ Đã kết nối"
-            binding.btnConnectNearby.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#10B981"))
+        binding.navTabInviteMovie.setOnClickListener {
+            showCineMessage("Chuyển sang tab Mời phim")
         }
     }
 
