@@ -15,12 +15,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    // Các màn hình có hiện thanh điều hướng dưới
+    // Các màn hình có hiện thanh điều hướng dưới (Đã bổ sung ticketHistoryFragment)
     private val bottomNavScreens = setOf(
         R.id.homeFragment,
         R.id.exploreFragment,
         R.id.cineTogetherFragment,
         R.id.ticketsFragment,
+        R.id.ticketHistoryFragment,
         R.id.profileFragment
     )
 
@@ -50,10 +51,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNav.setupWithNavController(navController)
 
-        // Ẩn bottom nav ở các màn hình như đăng nhập, chọn ghế, chi tiết vé...
+        // Quản lý hiển thị Bottom Navigation
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNav.visibility =
                 if (destination.id in bottomNavScreens) View.VISIBLE else View.GONE
+
+            // Khi ở màn Lịch sử vé, giữ sáng icon "Vé của tôi" trên thanh menu dưới
+            if (destination.id == R.id.ticketHistoryFragment) {
+                binding.bottomNav.menu.findItem(R.id.ticketsFragment)?.isChecked = true
+            }
         }
     }
 }
