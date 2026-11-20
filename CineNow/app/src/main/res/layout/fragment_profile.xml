@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/cinenow_background">
 
+    <!-- Header dùng chung CineHeader: cố định 64dp, không nút back, không nút profile -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerTitle="Cá nhân"
+        app:headerShowBack="false"
+        app:headerShowProfile="false" />
+
+    <!-- Vùng nội dung cuộn bên dưới Header -->
     <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,52 +32,12 @@
             android:paddingTop="12dp"
             android:paddingBottom="40dp">
 
-            <!-- Header -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/imgAppLogo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="Logo CineNow"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_cinenow_logo" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="CineNow"
-                        android:textColor="@color/cinenow_primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.05"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cá nhân"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="22sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </LinearLayout>
-
             <!-- Card thông tin hồ sơ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardProfileInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="@color/cinenow_white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
@@ -259,7 +227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Cài đặt thể loại &amp; gu phim CineMatch"
+                                android:text="Tùy chỉnh thể loại yêu thích (CineMatch #13)"
                                 android:textColor="@color/cinenow_text_secondary"
                                 android:textSize="12sp"/>
                         </LinearLayout>
@@ -278,7 +246,7 @@
                         android:layout_marginEnd="16dp"
                         android:background="@color/cinenow_outline"/>
 
-                    <!-- Mục 2: Nhóm CineTogether -->
+                    <!-- Mục 2: Đi cùng bạn bè (CineTogether) -->
                     <LinearLayout
                         android:id="@+id/itemCineTogether"
                         android:layout_width="match_parent"
@@ -308,7 +276,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Nhóm CineTogether"
+                                android:text="Đi cùng bạn bè"
                                 android:textColor="@color/cinenow_text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold"/>
@@ -317,7 +285,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Quản lý phòng xem chung &amp; nhóm bạn"
+                                android:text="Quản lý phòng xem chung &amp; nhóm bạn (#17)"
                                 android:textColor="@color/cinenow_text_secondary"
                                 android:textSize="12sp"/>
                         </LinearLayout>
@@ -375,7 +343,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Cuống vé điện tử và chi tiết giao dịch"
+                                android:text="Cuống vé điện tử và chi tiết giao dịch (#25)"
                                 android:textColor="@color/cinenow_text_secondary"
                                 android:textSize="12sp"/>
                         </LinearLayout>
@@ -433,7 +401,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Cập nhật mật khẩu đăng nhập tài khoản"
+                                android:text="Cập nhật mật khẩu đăng nhập tài khoản (#28)"
                                 android:textColor="@color/cinenow_text_secondary"
                                 android:textSize="12sp"/>
                         </LinearLayout>
@@ -470,4 +438,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

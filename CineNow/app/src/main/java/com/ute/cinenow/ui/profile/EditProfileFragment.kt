@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentEditProfileBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class EditProfileFragment : Fragment() {
 
@@ -62,11 +62,7 @@ class EditProfileFragment : Fragment() {
                     val currentCount = genreChips.count { (it.tag as? Boolean) == true }
 
                     if (!currentlySelected && currentCount >= 5) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Bạn chỉ được chọn tối đa 5 thể loại phim!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showCineMessage("Bạn chỉ được chọn tối đa 5 thể loại phim")
                     } else {
                         val nextState = !currentlySelected
                         applyChipVisual(chip, nextState)
@@ -110,26 +106,12 @@ class EditProfileFragment : Fragment() {
      * Sự kiện click cho các nút chức năng
      */
     private fun setupClickListeners() {
-        // Nút quay lại
-        binding.btnBack.setOnClickListener {
-            it.animatePress {
-                findNavController().popBackStack()
-            }
-        }
-
-        // Bấm vào Avatar nhỏ góc phải -> Quay về màn Cá nhân
-        binding.imgTopAvatar.setOnClickListener {
-            it.animatePress {
-                if (!findNavController().popBackStack(R.id.profileFragment, false)) {
-                    findNavController().navigate(R.id.profileFragment)
-                }
-            }
-        }
+        // Nút quay lại đã được CineHeader tự động xử lý (findNavController().navigateUp())
 
         // Đổi ảnh đại diện
         val avatarClickAction: (View) -> Unit = { view ->
             view.animatePress {
-                Toast.makeText(requireContext(), "Mở thư viện chọn ảnh đại diện mới", Toast.LENGTH_SHORT).show()
+                showCineMessage("Mở thư viện chọn ảnh đại diện mới")
             }
         }
         binding.btnChangeAvatar.setOnClickListener(avatarClickAction)
@@ -155,7 +137,7 @@ class EditProfileFragment : Fragment() {
                     binding.tilPhone.error = null
                 }
 
-                Toast.makeText(requireContext(), "✅ Đã lưu thông tin hồ sơ thành công!", Toast.LENGTH_SHORT).show()
+                showCineMessage("Đã lưu thông tin hồ sơ thành công")
                 findNavController().popBackStack()
             }
         }
