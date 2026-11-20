@@ -49,7 +49,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Hàng tên phòng + Nút sao chép mã PIN -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,14 +109,13 @@
                             app:iconTint="@color/cinenow_primary" />
                     </LinearLayout>
 
-                    <!-- Divider nhẹ -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginVertical="12dp"
                         android:background="@color/cinenow_outline" />
 
-                    <!-- Hàng Chips trạng thái: Rạp chiếu & Hạn chót -->
+                    <!-- Hàng Chips: Rạp & Hạn chót -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -175,7 +173,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Hàng thành viên & Nút xem chi tiết -->
+                    <!-- Hàng thành viên -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -203,6 +201,32 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Banner QUY TẮC CHỐT PHIM BÌNH CHỌN (MỚI) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_info_hint"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_auth_info"
+                    app:tint="@color/cinenow_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Lưu ý: Phim được chốt dựa trên số phiếu bầu nhiều hơn. Trường hợp hòa phiếu, lựa chọn của trưởng phòng sẽ quyết định."
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="2dp" />
+            </LinearLayout>
 
             <!-- Tiêu đề phần Đề cử phim -->
             <TextView
@@ -246,7 +270,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Poster phim -->
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="70dp"
                             android:layout_height="100dp"
@@ -261,7 +284,6 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <!-- Tên phim + Tag dẫn đầu -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -278,6 +300,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tvLeaderMovie1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_rounded_icon"
@@ -320,7 +343,6 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
 
-                            <!-- Nút bình chọn -->
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnVoteMovie1"
                                 android:layout_width="wrap_content"
@@ -337,7 +359,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Tiến trình vote -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -390,7 +411,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Poster phim -->
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="70dp"
                             android:layout_height="100dp"
@@ -405,13 +425,35 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Mai"
-                                android:textColor="@color/cinenow_text_primary"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Mai"
+                                    android:textColor="@color/cinenow_text_primary"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvLeaderMovie2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    android:background="@drawable/bg_rounded_icon"
+                                    android:backgroundTint="@color/cinenow_success_container"
+                                    android:paddingHorizontal="6dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="Dẫn đầu"
+                                    android:textColor="@color/cinenow_on_success_container"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -443,7 +485,6 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
 
-                            <!-- Nút bình chọn -->
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnVoteMovie2"
                                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -461,7 +502,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Tiến trình vote -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -513,7 +553,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Poster phim -->
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="70dp"
                             android:layout_height="100dp"
@@ -528,13 +567,35 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Gia Tài Của Ngoại"
-                                android:textColor="@color/cinenow_text_primary"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Gia Tài Của Ngoại"
+                                    android:textColor="@color/cinenow_text_primary"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvLeaderMovie3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    android:background="@drawable/bg_rounded_icon"
+                                    android:backgroundTint="@color/cinenow_success_container"
+                                    android:paddingHorizontal="6dp"
+                                    android:paddingVertical="2dp"
+                                    android:text="Dẫn đầu"
+                                    android:textColor="@color/cinenow_on_success_container"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -566,7 +627,6 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
 
-                            <!-- Nút bình chọn -->
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnVoteMovie3"
                                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -584,7 +644,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Tiến trình vote -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -616,7 +675,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Thanh hành động cố định bên dưới (Bottom Bar) -->
+    <!-- Thanh hành động cố định bên dưới -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -633,7 +692,7 @@
             android:paddingTop="12dp"
             android:paddingBottom="20dp">
 
-            <!-- Nút chính: Chốt phim & Đặt vé (mở ConfirmVoteBottomSheet) -->
+            <!-- Nút chính: Chốt phim theo số phiếu -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnConfirmVote"
                 android:layout_width="match_parent"
@@ -648,7 +707,7 @@
                 app:iconGravity="textEnd"
                 app:iconTint="@color/cinenow_white" />
 
-            <!-- Nút phụ: Xem danh sách thành viên (mở RoomMembersBottomSheet) -->
+            <!-- Nút phụ: Xem danh sách thành viên -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOpenMembers"
                 style="@style/Widget.Material3.Button.OutlinedButton"
