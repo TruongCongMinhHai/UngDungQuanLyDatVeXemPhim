@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -18,6 +17,7 @@ import com.ute.cinenow.R
 import com.ute.cinenow.adapter.CastAdapter
 import com.ute.cinenow.adapter.ReviewAdapter
 import com.ute.cinenow.databinding.FragmentMovieDetailBinding
+import com.ute.cinenow.utils.showCineMessage
 import java.util.Locale
 
 class MovieDetailFragment : Fragment() {
@@ -87,8 +87,10 @@ class MovieDetailFragment : Fragment() {
     private fun setupActions() = with(binding) {
         btnBook.setOnClickListener { findNavController().navigate(R.id.showtimeFragment) }
 
-        // Tạm thời chỉ báo, chưa có trailer và màn danh sách bình luận
-        btnPlay.setOnClickListener { toast("Trailer \"${movie.title}\" sắp ra mắt") }
+        // Tạm thời chỉ báo, chưa có trailer
+        btnPlay.setOnClickListener {
+            showCineMessage("Trailer sắp ra mắt", subtitle = movie.title)
+        }
 
         // Bấm "Xem tất cả" để mở thêm bình luận ngay bên dưới, bấm lần nữa để thu gọn
         btnSeeAll.setOnClickListener {
@@ -135,9 +137,6 @@ class MovieDetailFragment : Fragment() {
             }
         }
     }
-
-    private fun toast(message: String) =
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     // 95000 -> "95.000"
     private fun Int.formatVi(): String = String.format(Locale("vi", "VN"), "%,d", this)
