@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentChangePasswordBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class ChangePasswordFragment : Fragment() {
 
@@ -46,21 +46,7 @@ class ChangePasswordFragment : Fragment() {
      * Sự kiện click các nút và kiểm tra mật khẩu
      */
     private fun setupClickListeners() {
-        // Nút quay lại
-        binding.btnBack.setOnClickListener {
-            it.animatePress {
-                findNavController().popBackStack()
-            }
-        }
-
-        // Bấm vào Avatar nhỏ góc phải -> Quay về màn Cá nhân
-        binding.imgTopAvatar.setOnClickListener {
-            it.animatePress {
-                if (!findNavController().popBackStack(R.id.profileFragment, false)) {
-                    findNavController().navigate(R.id.profileFragment)
-                }
-            }
-        }
+        // Nút quay lại đã được CineHeader tự động xử lý (findNavController().navigateUp())
 
         // Nút Hủy
         binding.btnCancelChange.setOnClickListener {
@@ -111,7 +97,7 @@ class ChangePasswordFragment : Fragment() {
         }
 
         if (isValid) {
-            Toast.makeText(requireContext(), "✅ Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show()
+            showCineMessage("Đổi mật khẩu thành công")
             findNavController().popBackStack()
         }
     }

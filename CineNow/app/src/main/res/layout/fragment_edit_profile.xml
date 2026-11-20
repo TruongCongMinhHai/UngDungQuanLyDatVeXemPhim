@@ -1,455 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/cinenow_background"
-    android:fillViewport="true"
     tools:context=".ui.profile.EditProfileFragment">
 
-    <LinearLayout
+    <!-- Header dùng chung CineHeader: cố định 64dp, có nút back, không nút profile -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="40dp">
+        app:headerTitle="Chỉnh sửa hồ sơ"
+        app:headerShowBack="true"
+        app:headerShowProfile="false" />
 
-        <!-- Top Bar: Nút Back + Logo CineNow + Tiêu đề + Avatar nhỏ -->
+    <!-- Vùng nội dung cuộn bên dưới Header -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="40dp">
 
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Quay lại"
-                android:padding="8dp"
-                android:src="@drawable/ic_arrow_back"
-                app:tint="@color/cinenow_text_primary" />
-
-            <!-- Logo CineNow -->
-            <ImageView
-                android:id="@+id/imgAppLogo"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="Logo CineNow"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_cinenow_logo" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CineNow"
-                    android:textColor="@color/cinenow_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.05"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chỉnh sửa hồ sơ"
-                    android:textColor="@color/cinenow_text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Avatar nhỏ góc phải -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgTopAvatar"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:background="@color/cinenow_surface_container_low"
-                android:padding="6dp"
-                android:src="@drawable/ic_person"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                app:strokeColor="@color/cinenow_outline"
-                app:strokeWidth="1dp"
-                app:tint="@color/cinenow_text_secondary" />
-        </LinearLayout>
-
-        <!-- Avatar lớn chính giữa có nút Camera -->
-        <FrameLayout
-            android:id="@+id/layoutAvatarPicker"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgLargeAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/cinenow_surface_container_low"
-                android:padding="16dp"
-                android:src="@drawable/ic_person"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                app:strokeColor="@color/cinenow_outline"
-                app:strokeWidth="2dp"
-                app:tint="@color/cinenow_text_secondary" />
-
-            <!-- Nút camera tròn góc dưới -->
+            <!-- Avatar lớn chính giữa có nút Camera -->
             <FrameLayout
-                android:id="@+id/btnChangeAvatar"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/bg_camera_circle"
-                android:clickable="true"
-                android:focusable="true">
+                android:id="@+id/layoutAvatarPicker"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp">
 
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_camera"
-                    app:tint="@color/cinenow_white" />
-            </FrameLayout>
-        </FrameLayout>
-
-        <!-- Tên người dùng bên dưới avatar (Live Preview khi gõ) -->
-        <TextView
-            android:id="@+id/tvProfileNamePreview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="Nguyễn Tấn Chinh"
-            android:textColor="@color/cinenow_text_primary"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <!-- Card 1: Thông tin cá nhân -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardPersonalInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/cinenow_white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/cinenow_outline"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- Tiêu đề thẻ -->
-                <LinearLayout
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgLargeAvatar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:background="@color/cinenow_surface_container_low"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_person"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                    app:strokeColor="@color/cinenow_outline"
+                    app:strokeWidth="2dp"
+                    app:tint="@color/cinenow_text_secondary" />
+
+                <!-- Nút camera tròn góc dưới -->
+                <FrameLayout
+                    android:id="@+id/btnChangeAvatar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_camera_circle"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_school_cap"
-                        app:tint="@color/cinenow_primary" />
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_camera"
+                        app:tint="@color/cinenow_white" />
+                </FrameLayout>
+            </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Thông tin cá nhân"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+            <!-- Tên người dùng bên dưới avatar (Live Preview khi gõ) -->
+            <TextView
+                android:id="@+id/tvProfileNamePreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Nguyễn Tấn Chinh"
+                android:textColor="@color/cinenow_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <!-- Input: Họ và tên -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="Họ và tên"
-                    android:textColor="@color/cinenow_text_secondary"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:boxBackgroundMode="filled"
-                    app:boxBackgroundColor="@color/cinenow_surface_container_low"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:endIconDrawable="@drawable/ic_auth_user"
-                    app:endIconMode="custom"
-                    app:endIconTint="@color/cinenow_text_tertiary"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="12dp"
-                        android:text="Nguyễn Tấn Chinh"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Input: Số điện thoại -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Số điện thoại"
-                    android:textColor="@color/cinenow_text_secondary"
-                    android:textSize="13sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:boxBackgroundMode="filled"
-                    app:boxBackgroundColor="@color/cinenow_surface_container_low"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:endIconDrawable="@drawable/ic_auth_phone"
-                    app:endIconMode="custom"
-                    app:endIconTint="@color/cinenow_text_tertiary"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:paddingVertical="12dp"
-                        android:text="0901 234 567"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Input: Email kèm nhãn đã xác thực -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Email"
-                        android:textColor="@color/cinenow_text_secondary"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✔ Đã xác thực"
-                        android:textColor="@color/cinenow_success"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:boxBackgroundMode="filled"
-                    app:boxBackgroundColor="@color/cinenow_surface_container_low"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:endIconDrawable="@drawable/ic_auth_mail"
-                    app:endIconMode="custom"
-                    app:endIconTint="@color/cinenow_text_tertiary"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:paddingVertical="12dp"
-                        android:text="chinh.nguyen@email.vn"
-                        android:textColor="@color/cinenow_text_primary"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Card 2: Thể loại phim yêu thích -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardFavoriteGenres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/cinenow_white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/cinenow_outline"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
+            <!-- Card 1: Thông tin cá nhân -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPersonalInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🎬 Thể loại phim yêu thích"
+                        android:text="Thông tin cơ bản"
                         android:textColor="@color/cinenow_text_primary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvGenreCount"
-                        android:layout_width="wrap_content"
+                    <!-- Họ và tên -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilFullName"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="3/5 đã chọn"
+                        android:layout_marginTop="12dp"
+                        android:hint="Họ và tên"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_primary"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFullName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Nguyễn Tấn Chinh"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Số điện thoại -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPhone"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Số điện thoại"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_primary"
+                        app:startIconDrawable="@drawable/ic_phone"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:text="0912 345 678"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Email (Không cho sửa) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEmail"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Email (Cố định theo tài khoản)"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_outline"
+                        app:endIconDrawable="@drawable/ic_lock"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/cinenow_text_tertiary"
+                        app:startIconDrawable="@drawable/ic_auth_mail"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:inputType="textEmailAddress"
+                            android:text="chinh.nguyen@email.vn"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- MSSV / Trường học (Sinh viên UIT) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilMSSV"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="Mã số sinh viên (Xác thực ưu đãi HSSV)"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/cinenow_outline"
+                        app:endIconDrawable="@drawable/ic_shield_check"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/cinenow_secondary"
+                        app:startIconDrawable="@drawable/ic_school_cap"
+                        app:startIconTint="@color/cinenow_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMSSV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:text="21520000 - ĐH Công Nghệ Thông Tin (UIT)"
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Khung ghi chú ưu đãi sinh viên -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_info_hint"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_info"
+                            app:tint="@color/cinenow_secondary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Tài khoản đã xác thực thẻ sinh viên UIT, áp dụng giá vé 45.000đ khi đặt vé online."
+                            android:textColor="@color/cinenow_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 2: Sở thích xem phim CineMatch (Tối đa 5 thể loại) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMoviePreferences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sở thích xem phim (CineMatch)"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <!-- Badge đếm số lượng: 3/5 đã chọn -->
+                        <TextView
+                            android:id="@+id/tvGenreCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="@color/cinenow_surface_container_low"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
+                            android:text="3/5 đã chọn"
+                            android:textColor="@color/cinenow_primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Chọn tối đa 5 thể loại phim để nhận gợi ý và tính điểm phù hợp khi xem chung."
                         android:textColor="@color/cinenow_text_secondary"
                         android:textSize="12sp" />
+
+                    <!-- Danh sách Chip thể loại -->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupGenres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipSciFi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Khoa học viễn tưởng"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipAction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hành động"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipAdventure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phiêu lưu"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipAnimation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ Hoạt hình"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipHorror"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ Kinh dị"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDrama"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ Tâm lý"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeWidth="0dp"
+                            app:checkedIconVisible="false" />
+                    </com.google.android.material.chip.ChipGroup>
+
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Chọn tối đa 5 thể loại phim để nhận gợi ý và tính điểm phù hợp khi xem chung."
-                    android:textColor="@color/cinenow_text_secondary"
-                    android:textSize="12sp" />
+            <!-- Nút Lưu thay đổi -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveProfile"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:text="Lưu thay đổi"
+                android:textColor="@color/cinenow_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/cinenow_primary"
+                app:cornerRadius="14dp"
+                app:icon="@drawable/ic_save"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconTint="@color/cinenow_white"
+                app:rippleColor="@color/cinenow_primary_container" />
 
-                <!-- Danh sách Chip thể loại (Đã cấu hình không viền mặc định) -->
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupGenres"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp">
+            <!-- Nút Hủy -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelEdit"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="6dp"
+                android:text="Hủy"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:rippleColor="@color/cinenow_surface_container" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipSciFi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Khoa học viễn tưởng"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hành động"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAdventure"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phiêu lưu"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAnimation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+ Hoạt hình"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipHorror"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+ Kinh dị"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipDrama"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+ Tâm lý"
-                        app:chipCornerRadius="10dp"
-                        app:chipStrokeWidth="0dp"
-                        app:checkedIconVisible="false" />
-                </com.google.android.material.chip.ChipGroup>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Nút Lưu thay đổi -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSaveProfile"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="24dp"
-            android:text="Lưu thay đổi"
-            android:textColor="@color/cinenow_white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/cinenow_primary"
-            app:cornerRadius="14dp"
-            app:icon="@drawable/ic_save"
-            app:iconGravity="textStart"
-            app:iconPadding="6dp"
-            app:iconTint="@color/cinenow_white"
-            app:rippleColor="@color/cinenow_primary_container" />
-
-        <!-- Nút Hủy -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelEdit"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="6dp"
-            android:text="Hủy"
-            android:textColor="@color/cinenow_text_secondary"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:rippleColor="@color/cinenow_surface_container" />
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>
