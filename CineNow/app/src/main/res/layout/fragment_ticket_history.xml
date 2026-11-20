@@ -9,13 +9,13 @@
     android:background="@color/cinenow_background"
     tools:context=".ui.tickets.TicketHistoryFragment">
 
-    <!-- Header dùng chung CineHeader: cố định 64dp, có nút back, có nút profile góc phải -->
+    <!-- Header dùng chung CineHeader: cố định 64dp, KHÔNG nút back (app:headerShowBack="false"), có nút profile -->
     <com.ute.cinenow.utils.CineHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:headerTitle="Lịch sử đặt vé"
-        app:headerShowBack="true"
+        app:headerShowBack="false"
         app:headerShowProfile="true" />
 
     <!-- Vùng nội dung cuộn bên dưới Header -->
