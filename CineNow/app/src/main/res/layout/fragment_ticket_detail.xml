@@ -33,7 +33,7 @@
             android:paddingTop="12dp"
             android:paddingBottom="40dp">
 
-            <!-- 2. Thẻ vé điện tử chính (Digital Ticket Card) -->
+            <!-- Thẻ vé điện tử chính (Digital Ticket Card) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardMainTicket"
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Header Bar rạp chiếu & IMAX Laser -->
+                    <!-- Header Bar rạp chiếu & Tag định dạng -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -67,6 +67,7 @@
                             app:tint="@color/cinenow_primary" />
 
                         <TextView
+                            android:id="@+id/tvCinemaName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -77,6 +78,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvFormatBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_icon"
@@ -104,6 +106,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tvAgeRating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_rounded_icon"
@@ -116,6 +119,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvMovieTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -125,6 +129,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvMovieSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
@@ -133,7 +138,7 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
-                        <!-- Thumbnail poster thật Hành Tinh Cát 2 -->
+                        <!-- Thumbnail poster thật -->
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/imgDetailPoster"
                             android:layout_width="54dp"
@@ -170,18 +175,20 @@
                                 android:textSize="11sp" />
 
                             <TextView
+                                android:id="@+id/tvShowTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="16:45"
+                                android:text="19:30"
                                 android:textColor="@color/cinenow_primary"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvShowDayOfWeek"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Hôm nay"
+                                android:text="Thứ Sáu"
                                 android:textColor="@color/cinenow_text_tertiary"
                                 android:textSize="11sp" />
                         </LinearLayout>
@@ -208,10 +215,11 @@
                                 android:textSize="11sp" />
 
                             <TextView
+                                android:id="@+id/tvShowDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="20/11/2026"
+                                android:text="24/11/2026"
                                 android:textColor="@color/cinenow_text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -219,7 +227,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Thứ Sáu"
+                                android:text="Chiếu rạp"
                                 android:textColor="@color/cinenow_text_tertiary"
                                 android:textSize="11sp" />
                         </LinearLayout>
@@ -246,6 +254,7 @@
                                 android:textSize="11sp" />
 
                             <TextView
+                                android:id="@+id/tvRoomName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
@@ -255,6 +264,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvRoomFloor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Tầng 5"
@@ -279,6 +289,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tvSeatsCountHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="GHẾ ĐÃ CHỌN (02 VÉ)"
@@ -287,6 +298,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvSeatsDetail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
@@ -298,6 +310,7 @@
 
                         <!-- Badge mã ghế nổi bật -->
                         <TextView
+                            android:id="@+id/tvSeatsBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_icon"
@@ -318,14 +331,12 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Vết khuyết bán nguyệt bên trái -->
                         <View
                             android:layout_width="14dp"
                             android:layout_height="28dp"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="@color/cinenow_background" />
 
-                        <!-- Nét đứt vé -->
                         <View
                             android:layout_width="0dp"
                             android:layout_height="1dp"
@@ -333,7 +344,6 @@
                             android:layout_weight="1"
                             android:background="@color/cinenow_outline" />
 
-                        <!-- Vết khuyết bán nguyệt bên phải -->
                         <View
                             android:layout_width="14dp"
                             android:layout_height="28dp"
@@ -439,7 +449,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 3. Card Chi tiết Đơn hàng & Thanh toán -->
+            <!-- Card Chi tiết Đơn hàng & Thanh toán -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -456,7 +466,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Header: Chi tiết đơn hàng + Badge Đã thanh toán -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -500,6 +509,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvTicketPriceLabel"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -508,6 +518,7 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tvTicketPriceValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="360.000đ"
@@ -518,12 +529,14 @@
 
                     <!-- Hàng 2: Bắp nước Combo -->
                     <LinearLayout
+                        android:id="@+id/layoutComboRow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvComboLabel"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -532,6 +545,7 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tvComboValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="119.000đ"
@@ -540,14 +554,16 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Hàng 3: Giảm giá HSSV UIT -->
+                    <!-- Hàng 3: Giảm giá Voucher -->
                     <LinearLayout
+                        android:id="@+id/layoutDiscountRow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvDiscountLabel"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -556,6 +572,7 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tvDiscountValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-72.000đ"
@@ -592,6 +609,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvPaymentMethod"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Thanh toán qua Ví MoMo"
@@ -600,6 +618,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tvTotalPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="407.000đ"
@@ -611,7 +630,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 4. Card Nhóm xem chung CineTogether (#17) -->
+            <!-- Card Nhóm xem chung CineTogether -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardGroupInfo"
                 android:layout_width="match_parent"
@@ -648,6 +667,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvGroupName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nhóm xem cùng: UIT Movie Club"
@@ -659,7 +679,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Đã chia tiền tự động qua CineTogether (#17)"
+                            android:text="Đã chia tiền tự động qua CineTogether"
                             android:textColor="@color/cinenow_text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -672,7 +692,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 5. Hộp lưu ý quy định rạp -->
+            <!-- Hộp lưu ý quy định rạp -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -697,7 +717,7 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- 6. Nút Lưu vé vào thư viện ảnh -->
+            <!-- Nút Lưu vé vào thư viện ảnh -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveTicketImage"
                 android:layout_width="match_parent"
