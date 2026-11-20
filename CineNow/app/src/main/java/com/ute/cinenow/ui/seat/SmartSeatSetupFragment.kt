@@ -123,15 +123,27 @@ class SmartSeatSetupFragment : Fragment() {
                 message = "Đã áp dụng gợi ý ghế",
                 subtitle = "$peopleCount người • $zone"
             )
-            navigateToSeatSelection(useSmartSuggestion = true)
+            navigateToSeatSelection(
+                useSmartSuggestion = true,
+                zone = zone
+            )
         }
         binding.btnManualSelect.setOnClickListener {
-            navigateToSeatSelection(useSmartSuggestion = false)
+            navigateToSeatSelection(
+                useSmartSuggestion = false,
+                zone = selectedZone ?: "Khu vực trung tâm"
+            )
         }
     }
 
-    private fun navigateToSeatSelection(useSmartSuggestion: Boolean) {
-        val args = bundleOf(SeatSelectionFragment.ARG_USE_SMART_SUGGESTION to useSmartSuggestion)
+    private fun navigateToSeatSelection(useSmartSuggestion: Boolean, zone: String) {
+        val args = bundleOf(
+            SeatSelectionFragment.ARG_USE_SMART_SUGGESTION to useSmartSuggestion,
+            SeatSelectionFragment.ARG_PEOPLE_COUNT to peopleCount,
+            SeatSelectionFragment.ARG_SELECTED_ZONE to zone,
+            SeatSelectionFragment.ARG_AVOID_CORNER to isAvoidCorner,
+            SeatSelectionFragment.ARG_AVOID_FRONT_ROW to isAvoidFrontRow
+        )
         val movieTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
         if (!movieTitle.isNullOrBlank()) {
             args.putString(MovieDetailFragment.ARG_MOVIE_TITLE, movieTitle)
