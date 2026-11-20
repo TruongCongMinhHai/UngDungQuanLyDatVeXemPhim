@@ -64,7 +64,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Card Phim chiến thắng (Dune 2) -->
+    <!-- Card Phim chiến thắng (Hiển thị động) -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,12 +81,13 @@
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <!-- Poster phim -->
+            <!-- Poster phim động -->
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgConfirmPoster"
                 android:layout_width="72dp"
                 android:layout_height="102dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/poster_hanh_tinh_cat_2"
+                android:src="@drawable/poster_mai"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <LinearLayout
@@ -97,18 +98,20 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvConfirmMovieTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dune: Hành Tinh Cát 2"
+                    android:text="Mai"
                     android:textColor="@color/cinenow_on_primary_container"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvConfirmMovieSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="Rạp IMAX 2D • Phụ đề tiếng Việt"
+                    android:text="Rạp 2D Phụ đề tiếng Việt"
                     android:textColor="@color/cinenow_text_secondary"
                     android:textSize="12sp" />
 
@@ -127,6 +130,7 @@
                         app:tint="@color/cinenow_primary" />
 
                     <TextView
+                        android:id="@+id/tvConfirmCinema"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -150,16 +154,18 @@
                         app:tint="@color/cinenow_primary" />
 
                     <TextView
+                        android:id="@+id/tvConfirmShowtime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="Tối nay (19:30 - Phòng chiếu 01)"
+                        android:text="Tối nay (20:15 - Phòng chiếu 03)"
                         android:textColor="@color/cinenow_text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <!-- Tỷ lệ phiếu -->
                 <TextView
+                    android:id="@+id/tvConfirmVoteStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -210,9 +216,10 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tvConfirmPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="120.000 đ"
+                    android:text="95.000 đ"
                     android:textColor="@color/cinenow_text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
