@@ -1,5 +1,7 @@
 package com.ute.cinenow.ui.cinetogether
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,6 @@ class CreateRoomFragment : Fragment() {
     private var _binding: FragmentCreateRoomBinding? = null
     private val binding get() = _binding!!
 
-    // Biến lưu trạng thái tùy chọn
     private var selectedTime = "Cuối tuần này"
     private var selectedMemberCount = "4 người"
     private var isAutoSplitBill = true
@@ -34,11 +35,10 @@ class CreateRoomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupInteractiveSelectors()
         setupActions()
+        // Thiết lập trạng thái ban đầu của Switch
+        updateSplitBillCardVisual(binding.switchSplitBill.isChecked)
     }
 
-    /**
-     * Xử lý tương tác chọn Thời gian, Số lượng thành viên, và Bật/Tắt chia tiền
-     */
     private fun setupInteractiveSelectors() {
         // 1. Tương tác chọn Thời gian dự kiến
         val timeChips = listOf(
@@ -72,19 +72,43 @@ class CreateRoomFragment : Fragment() {
         }
 
         // 3. Tương tác Bật / Tắt tính năng Chia tiền vé tự động
-        binding.cardSplitBill.setOnClickListener {
-            it.animatePress {
-                isAutoSplitBill = !isAutoSplitBill
-                if (isAutoSplitBill) {
-                    binding.ivCheckSplitBill.setImageResource(R.drawable.ic_auth_check_circle)
-                    binding.ivCheckSplitBill.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.cinenow_primary)
-                    showCineMessage("Đã bật chia đều chi phí tự động")
-                } else {
-                    binding.ivCheckSplitBill.setImageResource(R.drawable.ic_auth_shield_outline)
-                    binding.ivCheckSplitBill.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.cinenow_text_tertiary)
-                    showCineMessage("Đã tắt chia tiền tự động")
-                }
+        binding.switchSplitBill.setOnCheckedChangeListener { _, isChecked ->
+            isAutoSplitBill = isChecked
+            updateSplitBillCardVisual(isChecked)
+            if (isChecked) {
+                showCineMessage("Đã bật tự động chia đều tiền vé qua ví điện tử")
+            } else {
+                showCineMessage("Đã tắt tính năng tự động chia tiền vé")
             }
+        }
+
+        binding.cardSplitBill.setOnClickListener {
+            binding.switchSplitBill.toggle()
+        }
+    }
+
+    private fun updateSplitBillCardVisual(isChecked: Boolean) {
+        val primaryColor = ContextCompat.getColor(requireContext(), R.color.cinenow_primary)
+        val outlineColor = ContextCompat.getColor(requireContext(), R.color.cinenow_outline)
+        val containerColor = ContextCompat.getColor(requireContext(), R.color.cinenow_primary_container)
+        val whiteColor = ContextCompat.getColor(requireContext(), R.color.cinenow_white)
+        val offTrackColor = Color.parseColor("#CBD5E1")
+        val offThumbColor = Color.parseColor("#94A3B8")
+
+        if (isChecked) {
+            // Khi BẬT: viền tím, nền tím nhạt, switch tím
+            binding.cardSplitBill.strokeColor = primaryColor
+            binding.cardSplitBill.strokeWidth = 3
+            binding.cardSplitBill.setCardBackgroundColor(ColorStateList.valueOf(containerColor))
+            binding.switchSplitBill.trackTintList = ColorStateList.valueOf(primaryColor)
+            binding.switchSplitBill.thumbTintList = ColorStateList.valueOf(whiteColor)
+        } else {
+            // Khi TẮT: viền xám, nền trắng, switch xám tắt hoàn toàn
+            binding.cardSplitBill.strokeColor = outlineColor
+            binding.cardSplitBill.strokeWidth = 2
+            binding.cardSplitBill.setCardBackgroundColor(ColorStateList.valueOf(whiteColor))
+            binding.switchSplitBill.trackTintList = ColorStateList.valueOf(offTrackColor)
+            binding.switchSplitBill.thumbTintList = ColorStateList.valueOf(offThumbColor)
         }
     }
 
@@ -103,37 +127,31 @@ class CreateRoomFragment : Fragment() {
     }
 
     private fun setupActions() {
-        // Nút back trên CineHeader
         binding.header.onBackClick = {
             if (!findNavController().popBackStack()) {
                 findNavController().navigate(R.id.cineTogetherFragment)
             }
         }
 
-        // Tự động xóa lỗi khi người dùng gõ tên phòng
         binding.etRoomName.doOnTextChanged { _, _, _, _ ->
             binding.tilRoomName.error = null
         }
 
-        // Nút Tạo phòng & Lấy mã PIN
         binding.btnSubmitCreateRoom.setOnClickListener {
             it.animatePress {
                 val roomName = binding.etRoomName.text?.toString()?.trim().orEmpty()
                 if (roomName.isEmpty()) {
                     binding.tilRoomName.error = "Vui lòng nhập tên cho phòng xem phim"
+                    binding.etRoomName.requestFocus()
                     return@animatePress
                 }
 
-                // Sinh mã PIN ngẫu nhiên 4 số
-                val randomPin = (1000..9999).random()
-                showCineMessage("Tạo phòng '$roomName' ($selectedMemberCount) thành công! Mã PIN: #CT-$randomPin")
-
-                // Chuyển thẳng sang Màn #22: Phòng xem phim và bình chọn (VotingRoomFragment)
+                val randomPin = (100000..999999).random()
+                showCineMessage("Tạo phòng '$roomName' thành công! Mã PIN: $randomPin")
                 findNavController().navigate(R.id.votingRoomFragment)
             }
         }
 
-        // Nút Hủy
         binding.btnCancel.setOnClickListener {
             it.animatePress {
                 findNavController().popBackStack()
