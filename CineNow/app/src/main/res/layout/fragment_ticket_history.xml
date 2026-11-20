@@ -14,7 +14,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:headerTitle="Lịch sử đặt vé"
+        app:headerTitle="Vé của tôi"
         app:headerShowBack="false"
         app:headerShowProfile="true" />
 
