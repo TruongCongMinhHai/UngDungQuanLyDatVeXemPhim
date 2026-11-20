@@ -34,7 +34,12 @@ class VoteResultFragment : Fragment() {
 
     private fun bindWinningMovieData() {
         val winningMovieKey = arguments?.getString("winning_movie") ?: "dune"
+        val groupName = arguments?.getString("group_name") ?: "UIT Movie Weekend"
 
+        // Cập nhật tên nhóm trên banner
+        binding.tvResultGroupBanner.text = "Nhóm $groupName đã chọn được bộ phim ưng ý nhất"
+
+        // Cập nhật thông tin chi tiết phim
         when (winningMovieKey) {
             "mai" -> {
                 binding.imgResultPoster.setImageResource(R.drawable.poster_mai)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
@@ -26,25 +27,22 @@ class CineTogetherFragment : Fragment() {
         setupNavigation()
     }
 
-    /**
-     * Cấu hình toàn bộ luồng điều hướng của màn Đi cùng nhóm (#19)
-     */
     private fun setupNavigation() {
-        // 1. Nút Tạo phòng mới -> Chuyển sang Màn #20 (CreateRoomFragment)
+        // 1. Nút Tạo phòng mới -> Màn #20
         binding.btnCreateRoom.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.createRoomFragment)
             }
         }
 
-        // 2. Nút Tham gia phòng bằng mã PIN -> Chuyển sang Màn #21 (JoinRoomFragment)
+        // 2. Nút Tham gia phòng bằng mã PIN -> Màn #21
         binding.btnJoinRoom.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.joinRoomFragment)
             }
         }
 
-        // 3. Bấm vào Card phòng đang mở hoặc Nút Vào phòng -> Chuyển sang Màn #22 (VotingRoomFragment)
+        // 3. Bấm vào Card phòng đang mở hoặc Nút Vào phòng -> Màn #22
         val openVotingRoomAction: (View) -> Unit = { view ->
             view.animatePress {
                 findNavController().navigate(R.id.votingRoomFragment)
@@ -53,15 +51,19 @@ class CineTogetherFragment : Fragment() {
         binding.btnEnterActiveRoom.setOnClickListener(openVotingRoomAction)
         binding.cardActiveRoom.setOnClickListener(openVotingRoomAction)
 
-        // 4. Bấm vào Buổi xem gần đây -> Xem kết quả chốt vé Màn #30 (VoteResultFragment)
+        // 4. Bấm vào Buổi xem gần đây (Hội bạn K17 UIT - Xem phim Mai)
+        // -> Truyền chính xác mã phim Mai và tên nhóm sang Màn #30
         binding.cardRecentGroup.setOnClickListener {
             it.animatePress {
-                findNavController().navigate(R.id.voteResultFragment)
+                val bundle = bundleOf(
+                    "winning_movie" to "mai",
+                    "group_name" to "Hội bạn K17 UIT"
+                )
+                findNavController().navigate(R.id.voteResultFragment, bundle)
             }
         }
     }
 
-    // Hiệu ứng ấn nhả nút co nhún mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.97f).scaleY(0.97f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
