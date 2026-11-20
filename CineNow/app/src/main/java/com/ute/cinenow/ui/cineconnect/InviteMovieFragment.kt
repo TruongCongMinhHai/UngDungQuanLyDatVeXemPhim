@@ -1,25 +1,27 @@
 package com.ute.cinenow.ui.cineconnect
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import com.ute.cinenow.databinding.FragmentInviteMovieBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class InviteMovieFragment : Fragment() {
 
     private var _binding: FragmentInviteMovieBinding? = null
     private val binding get() = _binding!!
 
-    // Biến lưu trạng thái ngày đang chọn (Mặc định là Hôm nay 20/04)
-    private var selectedDateStr = "Hôm nay 20/04"
+    private var selectedDay = "Hôm nay 20/04"
+    private var selectedTime = "19:00"
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInviteMovieBinding.inflate(inflater, container, false)
@@ -28,106 +30,122 @@ class InviteMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupHeader()
-        setupTabs()
-        setupDateSelection()
-        setupInvitationActions()
+        setupTabsAndMatch()
+        setupDaySelection()
+        setupShowtimeSelection()
+        setupInviteButtons()
     }
 
     private fun setupHeader() {
-        binding.btnBack.setOnClickListener {
+        binding.header.onBackClick = {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+    }
 
-        binding.btnCheckSchedule.setOnClickListener {
-            Toast.makeText(requireContext(), "Đang khớp lịch rảnh tuần này với Thảo Vy...", Toast.LENGTH_SHORT).show()
+    private fun setupTabsAndMatch() {
+        binding.btnFreeMatch.setOnClickListener {
+            showCineMessage("Đang khớp lịch rảnh cùng Thảo Vy")
+        }
+
+        binding.tabNowShowing.setOnClickListener {
+            binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
+            showCineMessage("Hiển thị 12 phim đang chiếu")
+        }
+
+        binding.tabSharedList.setOnClickListener {
+            binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
+            binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
+            showCineMessage("Hiển thị 3 phim trùng trong danh sách chung")
         }
     }
 
-    private fun setupTabs() {
-        binding.tabShowing.setOnClickListener {
-            binding.tabShowing.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-            binding.tabShowing.setTextColor(Color.WHITE)
+    private fun setupDaySelection() {
+        val dayViews: List<Pair<TextView, String>> = listOf(
+            Pair(binding.day1, "Hôm nay 20/04"),
+            Pair(binding.day2, "Chủ Nhật 21/04"),
+            Pair(binding.day3, "T2 22/04")
+        )
 
-            binding.tabMatch.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F1F5F9"))
-            binding.tabMatch.setTextColor(Color.parseColor("#475569"))
+        val activeColor = "#5B3DF5".toColorInt()
+        val inactiveColor = "#F1F5F9".toColorInt()
+        val inactiveTextColor = "#334155".toColorInt()
 
-            Toast.makeText(requireContext(), "Hiển thị phim đang chiếu (12 phim)", Toast.LENGTH_SHORT).show()
-        }
+        for (item in dayViews) {
+            val dayView: TextView = item.first
+            val dayLabel: String = item.second
 
-        binding.tabMatch.setOnClickListener {
-            binding.tabMatch.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-            binding.tabMatch.setTextColor(Color.WHITE)
+            dayView.setOnClickListener {
+                selectedDay = dayLabel
 
-            binding.tabShowing.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F1F5F9"))
-            binding.tabShowing.setTextColor(Color.parseColor("#475569"))
+                for (other in dayViews) {
+                    other.first.backgroundTintList = ColorStateList.valueOf(inactiveColor)
+                    other.first.setTextColor(inactiveTextColor)
+                }
 
-            Toast.makeText(requireContext(), "Hiển thị 3 phim trùng sở thích trong Watchlist", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setupDateSelection() {
-        // Xử lý chọn ngày rảnh cho phim Hành Tinh Cát 2
-        binding.btnDate1.setOnClickListener {
-            selectDateButton(1)
-            selectedDateStr = "Hôm nay 20/04"
-            updateShowtimesForDate(selectedDateStr)
-            Toast.makeText(requireContext(), "Đã chọn ngày: $selectedDateStr", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnDate2.setOnClickListener {
-            selectDateButton(2)
-            selectedDateStr = "Chủ Nhật 21/04"
-            updateShowtimesForDate(selectedDateStr)
-            Toast.makeText(requireContext(), "Đã chọn ngày: $selectedDateStr", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnDate3.setOnClickListener {
-            selectDateButton(3)
-            selectedDateStr = "T2 22/04"
-            updateShowtimesForDate(selectedDateStr)
-            Toast.makeText(requireContext(), "Đã chọn ngày: $selectedDateStr", Toast.LENGTH_SHORT).show()
+                dayView.backgroundTintList = ColorStateList.valueOf(activeColor)
+                dayView.setTextColor("#FFFFFF".toColorInt())
+                updateMainInviteButtonText()
+                showCineMessage("Đã chọn ngày: $dayLabel")
+            }
         }
     }
 
-    private fun selectDateButton(index: Int) {
-        val selectedBg = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-        val selectedText = Color.WHITE
-        val unselectedBg = ColorStateList.valueOf(Color.parseColor("#F1F5F9"))
-        val unselectedText = Color.parseColor("#475569")
+    private fun setupShowtimeSelection() {
+        val slotViews: List<Pair<View, String>> = listOf(
+            Pair(binding.showtime1, "19:00"),
+            Pair(binding.showtime2, "20:30"),
+            Pair(binding.showtime3, "21:45")
+        )
 
-        binding.btnDate1.backgroundTintList = if (index == 1) selectedBg else unselectedBg
-        binding.btnDate1.setTextColor(if (index == 1) selectedText else unselectedText)
+        val activeSlotColor = "#EEF2FF".toColorInt()
+        val inactiveSlotColor = "#F8FAFC".toColorInt()
 
-        binding.btnDate2.backgroundTintList = if (index == 2) selectedBg else unselectedBg
-        binding.btnDate2.setTextColor(if (index == 2) selectedText else unselectedText)
+        for (item in slotViews) {
+            val slotView: View = item.first
+            val timeLabel: String = item.second
 
-        binding.btnDate3.backgroundTintList = if (index == 3) selectedBg else unselectedBg
-        binding.btnDate3.setTextColor(if (index == 3) selectedText else unselectedText)
+            slotView.setOnClickListener {
+                selectedTime = timeLabel
+
+                for (other in slotViews) {
+                    other.first.backgroundTintList = ColorStateList.valueOf(inactiveSlotColor)
+                }
+
+                slotView.backgroundTintList = ColorStateList.valueOf(activeSlotColor)
+                updateMainInviteButtonText()
+                showCineMessage("Đã chọn suất chiếu: $timeLabel")
+            }
+        }
     }
 
-    // Cập nhật động nội dung suất chiếu / nút bấm tương ứng với ngày được chọn
-    private fun updateShowtimesForDate(dateStr: String) {
-        binding.btnSendInvite1.text = "🎟️ Gửi lời mời (19:00 - $dateStr)"
+    private fun updateMainInviteButtonText() {
+        binding.btnInviteMovie1.text = "Gửi lời mời ($selectedTime - $selectedDay)"
     }
 
-    private fun setupInvitationActions() {
-        // Gửi lời mời phim Hành Tinh Cát 2 kèm theo ngày đã chọn
-        binding.btnSendInvite1.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã gửi thiệp mời xem 'Hành Tinh Cát: Phần 2' vào lúc 19:00 - $selectedDateStr đến Thảo Vy!", Toast.LENGTH_SHORT).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+    private fun setupInviteButtons() {
+        binding.btnInviteMovie1.setOnClickListener {
+            sendMovieInvite("Hành Tinh Cát: Phần 2 ($selectedTime - $selectedDay)")
         }
 
-        // Gửi lời mời phim Godzilla x Kong
-        binding.btnSendInvite2.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã gửi thiệp mời xem 'Godzilla x Kong' đến Thảo Vy!", Toast.LENGTH_SHORT).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        binding.btnInviteMovie2.setOnClickListener {
+            sendMovieInvite("Godzilla x Kong: Đế Chế (Tối nay 20:00)")
         }
 
-        // Gửi lời mời phim Mai
-        binding.btnSendInvite3.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã gửi thiệp mời xem 'Mai: Kỷ Nguyên Mới' đến Thảo Vy!", Toast.LENGTH_SHORT).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+        binding.btnInviteMovie3.setOnClickListener {
+            sendMovieInvite("Mai: Kỳ Nguyên Mới (19:45 - Rạp 01)")
         }
+    }
+
+    private fun sendMovieInvite(detail: String) {
+        showCineMessage(
+            message = "Đã gửi lời mời xem $detail tới Thảo Vy",
+            actionLabel = "HOÀN TÁC",
+            onAction = {
+                showCineMessage("Đã thu hồi lời mời xem $detail")
+            }
+        )
     }
 
     override fun onDestroyView() {
