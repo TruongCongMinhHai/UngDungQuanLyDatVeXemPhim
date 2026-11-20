@@ -6,9 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ute.cinenow.databinding.FragmentCineConnectBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class CineConnectFragment : Fragment() {
 
@@ -16,7 +16,8 @@ class CineConnectFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCineConnectBinding.inflate(inflater, container, false)
@@ -25,31 +26,26 @@ class CineConnectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupHeader()
         setupTopActions()
         setupSearchAndFilter()
     }
 
-    // 1. Xử lý nút Back trên thanh Header
     private fun setupHeader() {
-        binding.btnBack.setOnClickListener {
+        binding.header.onBackClick = {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
-    // 2. Xử lý các nút điều hướng nhanh phía trên
     private fun setupTopActions() {
         binding.tvViewAllRequests.setOnClickListener {
-            Toast.makeText(requireContext(), "Đang mở danh sách lời mời kết bạn", Toast.LENGTH_SHORT).show()
+            showCineMessage("Đang mở danh sách lời mời kết bạn")
         }
-
         binding.tvViewAllFriends.setOnClickListener {
-            Toast.makeText(requireContext(), "Đang mở danh sách bạn bè trực tuyến", Toast.LENGTH_SHORT).show()
+            showCineMessage("Đang mở danh sách bạn bè trực tuyến")
         }
     }
 
-    // 3. Xử lý tìm kiếm và bộ lọc
     private fun setupSearchAndFilter() {
         binding.etSearchUser.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -65,7 +61,7 @@ class CineConnectFragment : Fragment() {
         })
 
         binding.btnFilter.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở bộ lọc nâng cao", Toast.LENGTH_SHORT).show()
+            showCineMessage("Mở bộ lọc nâng cao")
         }
     }
 
