@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import com.ute.cinenow.databinding.FragmentSeatSelectionBinding
+import com.ute.cinenow.ui.booking.BookingReviewFragment
 import com.ute.cinenow.ui.movie.MovieDetailFragment
 import com.ute.cinenow.ui.movie.MovieDetailSamples
 import com.ute.cinenow.utils.showCineMessage
@@ -45,10 +46,6 @@ class SeatSelectionFragment : Fragment() {
 
         if (useSmartSuggestion) {
             suggestedSeats = computeSmartSuggestedSeats()
-            if (savedInstanceState == null) {
-                selectedSeats.clear()
-                selectedSeats.addAll(suggestedSeats)
-            }
         }
     }
 
@@ -149,7 +146,12 @@ class SeatSelectionFragment : Fragment() {
         if (useSmartSuggestion) {
             binding.cardSmartSuggestion.visibility = View.VISIBLE
             binding.btnResetSeats.visibility = View.VISIBLE
-            binding.tvSmartSeatReason.text = "Phù hợp $peopleCount người • $selectedZone"
+            val suggestionText = if (suggestedSeats.isNotEmpty()) {
+                "Gợi ý: ${suggestedSeats.joinToString(", ")} • $selectedZone"
+            } else {
+                "Phù hợp $peopleCount người • $selectedZone"
+            }
+            binding.tvSmartSeatReason.text = suggestionText
         } else {
             binding.cardSmartSuggestion.visibility = View.GONE
             binding.btnResetSeats.visibility = View.GONE
@@ -161,19 +163,34 @@ class SeatSelectionFragment : Fragment() {
             selectedSeats.clear()
             selectedSeats.addAll(suggestedSeats)
             refreshSeatUI()
-            showCineMessage("Đã khôi phục ghế gợi ý SmartSeat")
+            showCineMessage("Đã áp dụng ghế gợi ý SmartSeat")
         }
 
         binding.btnContinueCheckout.setOnClickListener {
-            if (selectedSeats.isEmpty()) {
-                showCineMessage("Vui lòng chọn ít nhất 1 ghế")
+            val seatsToProceed = if (selectedSeats.isNotEmpty()) {
+                selectedSeats.sorted()
             } else {
-                val seatListText = selectedSeats.sorted().joinToString(", ")
-                showCineMessage(
-                    message = "Đang chuyển sang thanh toán",
-                    subtitle = "Ghế đã chọn: $seatListText"
-                )
+                suggestedSeats.sorted()
             }
+            val totalPrice = seatsToProceed.size * seatPrice
+            val movieTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
+                ?: "Hành Tinh Cát: Phần 2"
+
+            val reviewFragment = BookingReviewFragment().apply {
+                arguments = Bundle().apply {
+                    putString(MovieDetailFragment.ARG_MOVIE_TITLE, movieTitle)
+                    putString("arg_showtime_info", "16:45 • IMAX 2D")
+                    putStringArrayList("arg_selected_seats", ArrayList(seatsToProceed))
+                    putInt("arg_seat_price", seatPrice)
+                    putInt("arg_total_price", totalPrice)
+                }
+            }
+
+            val containerId = (view?.parent as? ViewGroup)?.id ?: return@setOnClickListener
+            parentFragmentManager.beginTransaction()
+                .replace(containerId, reviewFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -250,7 +267,11 @@ class SeatSelectionFragment : Fragment() {
     private fun updateCheckoutSummary() {
         if (selectedSeats.isEmpty()) {
             binding.tvSelectedSeatSummary.text = "Chưa chọn ghế nào"
-            binding.tvSmartSeatReason.text = "Vui lòng chọn ghế trên sơ đồ phòng chiếu."
+            binding.tvSmartSeatReason.text = if (useSmartSuggestion && suggestedSeats.isNotEmpty()) {
+                "Gợi ý SmartSeat: ${suggestedSeats.joinToString(", ")} ($selectedZone)."
+            } else {
+                "Vui lòng chọn ghế trên sơ đồ phòng chiếu."
+            }
             binding.tvTotalPrice.text = "0đ"
         } else {
             val sortedSeats = selectedSeats.sorted().joinToString(", ")
