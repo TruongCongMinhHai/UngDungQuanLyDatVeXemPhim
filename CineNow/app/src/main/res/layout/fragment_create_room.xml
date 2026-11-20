@@ -57,7 +57,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- 1. Tên phòng xem phim -->
+                    <!-- 1. Tên phòng xem phim (Để trống, chỉ để hint mờ) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,12 +87,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapWords"
-                            android:text="UIT Movie Weekend"
                             android:textColor="@color/cinenow_text_primary"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- 2. Rạp chiếu dự kiến -->
+                    <!-- 2. Rạp chiếu dự kiến (Để trống, chỉ để hint mờ) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,7 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:hint="Chọn rạp chiếu gần nhóm bạn"
+                        android:hint="Ví dụ: CGV Landmark 81, Lotte..."
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
@@ -121,7 +120,6 @@
                             android:id="@+id/etCinema"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="CGV Landmark 81 (hoặc các rạp lân cận)"
                             android:textColor="@color/cinenow_text_primary"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -197,7 +195,7 @@
                         </LinearLayout>
                     </HorizontalScrollView>
 
-                    <!-- 4. Số lượng thành viên tối đa (Tương tác bấm chọn) -->
+                    <!-- 4. Số lượng bạn tham gia tối đa -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -281,33 +279,34 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Tính năng Chia tiền vé tự động (Có thể bật/tắt) -->
+            <!-- Card Tính năng Chia tiền vé tự động (NÂNG CẤP NỔI BẬT) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardSplitBill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardBackgroundColor="@color/cinenow_primary_container"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/cinenow_outline"
-                app:strokeWidth="1dp">
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_primary"
+                app:strokeWidth="1.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
 
                     <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/bg_rounded_icon"
-                        android:backgroundTint="@color/cinenow_secondary_container"
-                        android:padding="8dp"
+                        android:backgroundTint="@color/cinenow_white"
+                        android:padding="9dp"
                         android:src="@drawable/ic_ticket"
                         app:tint="@color/cinenow_primary" />
 
@@ -318,29 +317,52 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <TextView
+                        <!-- Hàng tiêu đề + Badge Khuyên dùng -->
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tự động chia tiền vé"
-                            android:textColor="@color/cinenow_text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tự động chia tiền vé"
+                                android:textColor="@color/cinenow_text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_rounded_icon"
+                                android:backgroundTint="@color/cinenow_primary"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="★ Khuyên dùng"
+                                android:textColor="@color/cinenow_white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Chia đều chi phí vé &amp; combo bắp nước qua MoMo/ZaloPay"
+                            android:layout_marginTop="3dp"
+                            android:text="Chia đều chi phí vé &amp; bắp nước qua MoMo/ZaloPay"
                             android:textColor="@color/cinenow_text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivCheckSplitBill"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_auth_check_circle"
-                        app:tint="@color/cinenow_primary" />
+                    <!-- Công tắc Switch nổi bật -->
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchSplitBill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:thumbTint="@color/cinenow_white"
+                        app:trackTint="@color/cinenow_primary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -373,31 +395,28 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubmitCreateRoom"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="22dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
                 android:text="Tạo phòng &amp; Lấy mã PIN"
                 android:textColor="@color/cinenow_white"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/cinenow_primary"
-                app:cornerRadius="14dp"
+                app:cornerRadius="12dp"
                 app:icon="@drawable/ic_auth_arrow_forward"
                 app:iconGravity="textEnd"
-                app:iconPadding="8dp"
                 app:iconTint="@color/cinenow_white" />
 
-            <!-- Nút Hủy -->
+            <!-- Nút Hủy quay lại -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancel"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="6dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
                 android:text="Hủy"
                 android:textColor="@color/cinenow_text_secondary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:rippleColor="@color/cinenow_surface_container" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
