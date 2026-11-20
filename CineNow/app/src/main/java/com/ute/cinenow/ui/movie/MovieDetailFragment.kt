@@ -85,8 +85,6 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun setupActions() = with(binding) {
-        btnBack.setOnClickListener { findNavController().navigateUp() }
-        btnProfile.setOnClickListener { findNavController().navigate(R.id.profileFragment) }
         btnBook.setOnClickListener { findNavController().navigate(R.id.showtimeFragment) }
 
         // Tạm thời chỉ báo, chưa có trailer và màn danh sách bình luận

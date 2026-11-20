@@ -12,7 +12,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:headerTitle="CineMatch - Chọn sở thích"
+        app:headerTitle="Chọn sở thích"
         app:headerShowBack="true" />
 
     <androidx.core.widget.NestedScrollView

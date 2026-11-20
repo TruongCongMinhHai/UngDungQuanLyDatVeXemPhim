@@ -107,7 +107,6 @@ class ExploreFragment : Fragment() {
     }
 
     private fun setupActions() {
-        binding.btnProfile.setOnClickListener { findNavController().navigate(R.id.profileFragment) }
 
         // Nút trong ô tìm kiếm: ẩn/hiện cả khung Bộ lọc
         binding.btnFilterToggle.setOnClickListener {

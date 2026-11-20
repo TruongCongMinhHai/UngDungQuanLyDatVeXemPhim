@@ -7,86 +7,12 @@
     android:background="@color/cinenow_background"
     android:orientation="vertical">
 
-    <!-- ===== Thanh trên ===== -->
-    <LinearLayout
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/cinenow_background"
-        android:elevation="2dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp">
-
-        <FrameLayout
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="Quay lại"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_auth_back"
-                app:tint="@color/cinenow_text_primary" />
-        </FrameLayout>
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="4dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_cinenow_logo" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CineNow"
-                android:textColor="@color/cinenow_primary_variant"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chi tiết phim"
-                android:textColor="@color/cinenow_text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/btnProfile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="Hồ sơ cá nhân"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_md_oval"
-                android:backgroundTint="@color/cinenow_primary"
-                android:importantForAccessibility="no"
-                android:padding="9dp"
-                android:src="@drawable/ic_home_person"
-                app:tint="@color/cinenow_white" />
-        </FrameLayout>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:headerTitle="Chi tiết phim"
+        app:headerShowBack="true" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
