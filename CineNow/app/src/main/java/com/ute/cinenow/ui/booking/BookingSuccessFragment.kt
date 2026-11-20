@@ -4,17 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentBookingSuccessBinding
+import com.ute.cinenow.ui.movie.MovieDetailFragment
+import com.ute.cinenow.ui.movie.MovieDetailSamples
+import com.ute.cinenow.utils.showCineMessage
 
 class BookingSuccessFragment : Fragment() {
 
     private var _binding: FragmentBookingSuccessBinding? = null
     private val binding get() = _binding!!
 
+    private var movieTitle: String = "Hành Tinh Cát 2"
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBookingSuccessBinding.inflate(inflater, container, false)
@@ -24,25 +32,27 @@ class BookingSuccessFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupActionButtons()
+        val passedTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
+        val movie = MovieDetailSamples.find(passedTitle)
+        movieTitle = movie.title
+
+        binding.imgSuccessPoster.setImageResource(movie.posterRes)
+        binding.imgQrCode.setImageResource(R.drawable.ma_qr)
+
+        setupButtons()
     }
 
-    private fun setupActionButtons() {
+    private fun setupButtons() {
         binding.btnViewETicket.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Đang mở vé điện tử mã #CN-88921-UIT...",
-                Toast.LENGTH_SHORT
-            ).show()
+            showCineMessage("Mở chi tiết vé điện tử", subtitle = movieTitle)
+            findNavController().navigate(
+                R.id.ticketDetailFragment,
+                bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
+            )
         }
 
         binding.btnBackToHome.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Đang quay về trang chủ CineNow",
-                Toast.LENGTH_SHORT
-            ).show()
-            // Hoặc thực hiện điều hướng về trang chủ/activity chính ở đây
+            findNavController().popBackStack(R.id.homeFragment, false)
         }
     }
 
