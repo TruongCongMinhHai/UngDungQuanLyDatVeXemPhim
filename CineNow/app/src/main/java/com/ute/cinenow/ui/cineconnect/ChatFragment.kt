@@ -1,14 +1,14 @@
 package com.ute.cinenow.ui.cineconnect
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import com.ute.cinenow.databinding.FragmentChatBinding
+import com.ute.cinenow.utils.showCineMessage
 
 class ChatFragment : Fragment() {
 
@@ -16,7 +16,8 @@ class ChatFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
@@ -25,76 +26,98 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupHeaderActions()
-        setupQuickReplies()
+        setupHeader()
+        setupTopInviteAndSuggestions()
+        setupInviteCardActions()
         setupMessageSending()
-        setupMovieInvitationActions()
     }
 
-    private fun setupHeaderActions() {
-        binding.btnBack.setOnClickListener {
+    private fun setupHeader() {
+        binding.header.onBackClick = {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+    }
 
-        binding.btnQuickInvite.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở bảng chọn suất chiếu để gửi lời mời cho Thảo Vy", Toast.LENGTH_SHORT).show()
+    private fun setupTopInviteAndSuggestions() {
+        binding.btnTopInviteMovie.setOnClickListener {
+            showCineMessage("Mở màn hình chọn phim mời Thảo Vy")
         }
 
-        binding.btnMoreOptions.setOnClickListener {
-            Toast.makeText(requireContext(), "Tùy chọn trò chuyện (Tắt thông báo, Chặn, Xóa lịch sử)", Toast.LENGTH_SHORT).show()
+        binding.chipSuggestCombo.setOnClickListener {
+            binding.etMessageInput.setText("Minh đặt combo bắp nước luôn nhé?")
+        }
+
+        binding.chipSuggestLobby.setOnClickListener {
+            binding.etMessageInput.setText("Hẹn gặp ở sảnh trước 15 phút")
+        }
+
+        binding.btnAddMedia.setOnClickListener {
+            showCineMessage("Đính kèm lịch chiếu hoặc rạp yêu thích")
         }
     }
 
-    private fun setupQuickReplies() {
-        binding.chipQuick1.setOnClickListener {
-            binding.etMessageInput.setText("Mình đặt combo bắp nước luôn nhé?")
+    private fun setupInviteCardActions() {
+        binding.btnAcceptInvite.setOnClickListener {
+            binding.btnAcceptInvite.text = "Đã chấp nhận"
+            showCineMessage(
+                message = "Đã chấp nhận lời mời xem Hành Tinh Cát: Phần 2 (19:30)",
+                actionLabel = "HOÀN TÁC",
+                onAction = {
+                    binding.btnAcceptInvite.text = "Chấp nhận"
+                    showCineMessage("Đã hoàn tác trạng thái chấp nhận lời mời")
+                }
+            )
         }
 
-        binding.chipQuick2.setOnClickListener {
-            binding.etMessageInput.setText("Hẹn gặp ở sảnh trước")
+        binding.btnDeclineInvite.setOnClickListener {
+            binding.cardMovieInviteInChat.visibility = View.GONE
+            showCineMessage(
+                message = "Đã từ chối lời mời xem phim từ Thảo Vy",
+                actionLabel = "HOÀN TÁC",
+                onAction = {
+                    binding.cardMovieInviteInChat.visibility = View.VISIBLE
+                    showCineMessage("Đã khôi phục thẻ lời mời xem phim")
+                }
+            )
         }
     }
 
     private fun setupMessageSending() {
-        binding.btnSend.setOnClickListener {
-            val messageText = binding.etMessageInput.text.toString().trim()
-            if (messageText.isNotEmpty()) {
-                Toast.makeText(requireContext(), "Đã gửi: $messageText", Toast.LENGTH_SHORT).show()
-                binding.etMessageInput.text.clear()
-                // TODO: Thêm tin nhắn mới vào danh sách chat Adapter
-            } else {
-                Toast.makeText(requireContext(), "Vui lòng nhập nội dung tin nhắn", Toast.LENGTH_SHORT).show()
+        binding.btnSendMessage.setOnClickListener {
+            val content = binding.etMessageInput.text?.toString()?.trim().orEmpty()
+            if (content.isEmpty()) {
+                showCineMessage("Vui lòng nhập nội dung tin nhắn")
+                return@setOnClickListener
             }
-        }
 
-        binding.btnAddAttachment.setOnClickListener {
-            Toast.makeText(requireContext(), "Đính kèm hình ảnh hoặc vé xem phim", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnEmoji.setOnClickListener {
-            Toast.makeText(requireContext(), "Mở bảng biểu tượng cảm xúc (Emoji)", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnMovieInvite.setOnClickListener {
-            Toast.makeText(requireContext(), "Gửi thiệp mời đặt vé xem phim nhanh", Toast.LENGTH_SHORT).show()
+            appendSentMessage(content)
+            binding.etMessageInput.setText("")
+            binding.scrollChatMessages.post {
+                binding.scrollChatMessages.fullScroll(View.FOCUS_DOWN)
+            }
         }
     }
 
-    private fun setupMovieInvitationActions() {
-        // Xử lý nút Chấp nhận lời mời xem phim trong khung chat
-        binding.btnAcceptInvite.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã chấp nhận lời mời! Tiến hành giữ ghế và thanh toán.", Toast.LENGTH_SHORT).show()
-            binding.btnAcceptInvite.text = "✓ Đã chấp nhận"
-            binding.btnAcceptInvite.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#10B981"))
-            binding.btnRejectInvite.visibility = View.GONE
+    private fun appendSentMessage(text: String) {
+        val bubble = TextView(requireContext()).apply {
+            this.text = text
+            setTextColor("#FFFFFF".toColorInt())
+            textSize = 12f
+            setBackgroundResource(com.ute.cinenow.R.drawable.bg_rounded_icon)
+            backgroundTintList = android.content.res.ColorStateList.valueOf("#5B3DF5".toColorInt())
+            setPadding(28, 22, 28, 22)
         }
 
-        // Xử lý nút Từ chối lời mời xem phim
-        binding.btnRejectInvite.setOnClickListener {
-            Toast.makeText(requireContext(), "Đã từ chối lời mời xem phim", Toast.LENGTH_SHORT).show()
-            binding.cardMovieInvite.visibility = View.GONE
+        val params = android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topMargin = 16
+            marginStart = 120
+            gravity = android.view.Gravity.END
         }
+
+        binding.layoutChatMessages.addView(bubble, params)
     }
 
     override fun onDestroyView() {
