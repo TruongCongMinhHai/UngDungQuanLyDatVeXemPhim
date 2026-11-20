@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentSmartSeatSetupBinding
+import com.ute.cinenow.ui.movie.MovieDetailFragment
+import com.ute.cinenow.utils.showCineMessage
 
 class SmartSeatSetupFragment : Fragment() {
 
@@ -25,7 +27,8 @@ class SmartSeatSetupFragment : Fragment() {
     private var isAvoidFrontRow = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSmartSeatSetupBinding.inflate(inflater, container, false)
@@ -34,36 +37,26 @@ class SmartSeatSetupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupHeader()
         setupPeopleCounter()
         setupZoneOptions()
         setupExtraPreferences()
         setupNavigationButtons()
     }
 
-    private fun setupHeader() {
-        binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
     private fun setupPeopleCounter() {
         updatePeopleUI()
-
         binding.btnMinus.setOnClickListener {
             if (peopleCount > 1) {
                 peopleCount--
                 updatePeopleUI()
             }
         }
-
         binding.btnPlus.setOnClickListener {
             if (peopleCount < 8) {
                 peopleCount++
                 updatePeopleUI()
             } else {
-                Toast.makeText(requireContext(), "Tối đa 8 ghế liền nhau", Toast.LENGTH_SHORT).show()
+                showCineMessage("Tối đa 8 ghế liền nhau")
             }
         }
     }
@@ -88,20 +81,16 @@ class SmartSeatSetupFragment : Fragment() {
             ZoneOption(binding.optCouple, binding.dotOptCouple, binding.tvOptCoupleTitle, "Ghế đôi")
         )
 
-        options.forEach { clicked ->
+        for (clicked in options) {
             clicked.container.setOnClickListener {
-                // Trả tất cả về nền xám nhạt
-                options.forEach { opt ->
+                for (opt in options) {
                     opt.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F8FAFC"))
                     opt.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E2E8F0"))
                     opt.title.setTextColor(Color.parseColor("#0F172A"))
                 }
-
-                // Bấm vào khu vực nào thì sáng nền tím nhạt + chấm tròn tím đậm
                 clicked.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EDE9FE"))
                 clicked.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
                 clicked.title.setTextColor(Color.parseColor("#312E81"))
-
                 selectedZone = clicked.name
             }
         }
@@ -114,7 +103,6 @@ class SmartSeatSetupFragment : Fragment() {
                 if (isAvoidCorner) Color.parseColor("#5850EC") else Color.parseColor("#CBD5E1")
             )
         }
-
         binding.extraAvoidFrontRow.setOnClickListener {
             isAvoidFrontRow = !isAvoidFrontRow
             binding.checkAvoidFrontRow.backgroundTintList = ColorStateList.valueOf(
@@ -125,24 +113,28 @@ class SmartSeatSetupFragment : Fragment() {
 
     private fun setupNavigationButtons() {
         binding.btnFindSeats.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Đang gợi ý $peopleCount ghế tại $selectedZone...",
-                Toast.LENGTH_SHORT
-            ).show()
-            navigateToSeatSelection()
+            showCineMessage(
+                message = "Đã áp dụng gợi ý ghế",
+                subtitle = "$peopleCount người • $selectedZone"
+            )
+            navigateToSeatSelection(useSmartSuggestion = true)
         }
-
         binding.btnManualSelect.setOnClickListener {
-            navigateToSeatSelection()
+            navigateToSeatSelection(useSmartSuggestion = false)
         }
     }
 
-    private fun navigateToSeatSelection() {
+    private fun navigateToSeatSelection(useSmartSuggestion: Boolean) {
+        val args = bundleOf(SeatSelectionFragment.ARG_USE_SMART_SUGGESTION to useSmartSuggestion)
+        val movieTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
+        if (!movieTitle.isNullOrBlank()) {
+            args.putString(MovieDetailFragment.ARG_MOVIE_TITLE, movieTitle)
+        }
+
         try {
-            findNavController().navigate(R.id.seatSelectionFragment)
+            findNavController().navigate(R.id.seatSelectionFragment, args)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Chuyển sang sơ đồ chọn ghế", Toast.LENGTH_SHORT).show()
+            showCineMessage("Chuyển sang sơ đồ chọn ghế")
         }
     }
 
