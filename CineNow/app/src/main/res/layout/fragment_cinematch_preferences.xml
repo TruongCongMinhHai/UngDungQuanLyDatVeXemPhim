@@ -7,11 +7,12 @@
     android:background="@color/cinenow_background"
     android:orientation="vertical">
 
+    <!-- ===== Header chung (có nút quay lại + nút hồ sơ) ===== -->
     <com.ute.cinenow.utils.CineHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:headerTitle="Chọn sở thích"
+        app:headerTitle="CineMatch - Chọn sở thích"
         app:headerShowBack="true" />
 
     <androidx.core.widget.NestedScrollView
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="@dimen/screen_padding"
             android:paddingTop="12dp"
             android:paddingBottom="24dp">
 
@@ -129,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="Thẻ loại yêu thích"
+                    android:text="Thể loại yêu thích"
                     android:textColor="@color/cinenow_text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
