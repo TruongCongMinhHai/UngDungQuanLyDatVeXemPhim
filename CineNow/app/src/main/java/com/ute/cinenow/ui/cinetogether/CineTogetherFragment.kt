@@ -30,13 +30,6 @@ class CineTogetherFragment : Fragment() {
      * Cấu hình toàn bộ luồng điều hướng của màn Đi cùng nhóm (#19)
      */
     private fun setupNavigation() {
-        // Nút quay lại trên CineHeader: lùi về hoặc sang profileFragment nếu backstack rỗng
-        binding.header.onBackClick = {
-            if (!findNavController().popBackStack()) {
-                findNavController().navigate(R.id.profileFragment)
-            }
-        }
-
         // 1. Nút Tạo phòng mới -> Chuyển sang Màn #20 (CreateRoomFragment)
         binding.btnCreateRoom.setOnClickListener {
             it.animatePress {
