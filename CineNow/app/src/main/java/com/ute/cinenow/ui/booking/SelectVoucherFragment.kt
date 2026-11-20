@@ -4,21 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.databinding.FragmentSelectVoucherBinding
+import com.ute.cinenow.ui.movie.MovieDetailFragment
+import com.ute.cinenow.utils.showCineMessage
+import java.text.NumberFormat
+import java.util.Locale
 
 class SelectVoucherFragment : Fragment() {
 
     private var _binding: FragmentSelectVoucherBinding? = null
     private val binding get() = _binding!!
 
-    // Trạng thái mã đang được chọn (mặc định ban đầu chọn CINEMAX20K giảm 20.000đ)
-    private var selectedVoucherCode: String? = "CINEMAX20K"
-    private var currentDiscountAmount = 20_000
+    private var selectedCode: String = "CINEMAX20K"
+    private var discountAmount: Long = 20_000L
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSelectVoucherBinding.inflate(inflater, container, false)
@@ -27,110 +32,97 @@ class SelectVoucherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupHeader()
-        setupVoucherInteractions()
-        updateVoucherUIStates()
+        updateSavingsDisplay()
+        setupListeners()
     }
 
-    private fun setupHeader() {
-        binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+    private fun formatCurrencyVnd(amount: Long): String {
+        val formatter = NumberFormat.getNumberInstance(Locale("vi", "VN"))
+        return "${formatter.format(amount)} đ"
+    }
+
+    private fun updateSavingsDisplay() {
+        binding.tvTotalSavings.text = formatCurrencyVnd(discountAmount)
+    }
+
+    private fun setupListeners() {
+        binding.btnApplyCode.setOnClickListener {
+            val rawInput = binding.etPromoCode.text?.toString()?.trim().orEmpty()
+            if (rawInput.isEmpty()) {
+                showCineMessage("Vui lòng nhập mã ưu đãi")
+                return@setOnClickListener
+            }
+
+            val normalizedCode = rawInput.uppercase(Locale.ROOT)
+            selectedCode = normalizedCode
+            discountAmount = when (normalizedCode) {
+                "CINEMAX20K" -> 20_000L
+                "CINEVIP15" -> 40_000L
+                "COMBOMAX30" -> 30_000L
+                else -> 20_000L
+            }
+            updateSavingsDisplay()
+            showCineMessage("Đã áp dụng ưu đãi", subtitle = selectedCode)
+        }
+
+        binding.btnActionVoucher1.setOnClickListener {
+            if (selectedCode == "CINEMAX20K" && discountAmount > 0L) {
+                val previousCode = selectedCode
+                val previousDiscount = discountAmount
+                selectedCode = ""
+                discountAmount = 0L
+                updateSavingsDisplay()
+                showCineMessage(
+                    message = "Đã bỏ chọn ưu đãi",
+                    subtitle = previousCode,
+                    actionLabel = "HOÀN TÁC",
+                    onAction = {
+                        selectedCode = previousCode
+                        discountAmount = previousDiscount
+                        updateSavingsDisplay()
+                    }
+                )
+            } else {
+                selectedCode = "CINEMAX20K"
+                discountAmount = 20_000L
+                updateSavingsDisplay()
+                showCineMessage("Đã áp dụng ưu đãi", subtitle = selectedCode)
+            }
+        }
+
+        binding.btnActionVoucher2.setOnClickListener {
+            selectedCode = "CINEVIP15"
+            discountAmount = 40_000L
+            updateSavingsDisplay()
+            showCineMessage("Đã áp dụng ưu đãi", subtitle = selectedCode)
+        }
+
+        binding.btnActionVoucher3.setOnClickListener {
+            selectedCode = "COMBOMAX30"
+            discountAmount = 30_000L
+            updateSavingsDisplay()
+            showCineMessage("Đã áp dụng ưu đãi", subtitle = selectedCode)
         }
 
         binding.btnConfirmVoucher.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Đã áp dụng mã thành công! Tiết kiệm: ${binding.tvTotalSavings.text}",
-                Toast.LENGTH_SHORT
-            ).show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
-    private fun setupVoucherInteractions() {
-        // Nút áp dụng mã thủ công
-        binding.btnApplyCode.setOnClickListener {
-            val code = binding.etPromoCode.text.toString().trim().uppercase()
-            if (code.isEmpty()) {
-                Toast.makeText(requireContext(), "Vui lòng nhập mã khuyến mãi!", Toast.LENGTH_SHORT).show()
-            } else if (code == "CINEMAX20K" || code == "CINEVIP15" || code == "COMBOMAX30") {
-                selectedVoucherCode = code
-                currentDiscountAmount = when (code) {
-                    "CINEMAX20K" -> 20_000
-                    "CINEVIP15" -> 35_000
-                    else -> 30_000
-                }
-                updateVoucherUIStates()
-                Toast.makeText(requireContext(), "Áp dụng mã $code thành công!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Mã giảm giá không hợp lệ hoặc hết hạn!", Toast.LENGTH_SHORT).show()
+            val movieTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE) ?: "Hành Tinh Cát 2"
+            if (selectedCode.isNotEmpty() && discountAmount > 0L) {
+                showCineMessage("Đã áp dụng ưu đãi", subtitle = selectedCode)
             }
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                "selected_voucher_code",
+                selectedCode
+            )
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                "selected_voucher_discount",
+                discountAmount
+            )
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                MovieDetailFragment.ARG_MOVIE_TITLE,
+                movieTitle
+            )
+            findNavController().popBackStack()
         }
-
-        // Voucher 1: CINEMAX20K
-        binding.btnActionVoucher1.setOnClickListener {
-            if (selectedVoucherCode == "CINEMAX20K") {
-                selectedVoucherCode = null
-                currentDiscountAmount = 0
-            } else {
-                selectedVoucherCode = "CINEMAX20K"
-                currentDiscountAmount = 20_000
-            }
-            updateVoucherUIStates()
-        }
-
-        // Voucher 2: CINEVIP15
-        binding.btnActionVoucher2.setOnClickListener {
-            if (selectedVoucherCode == "CINEVIP15") {
-                selectedVoucherCode = null
-                currentDiscountAmount = 0
-            } else {
-                selectedVoucherCode = "CINEVIP15"
-                currentDiscountAmount = 35_000
-            }
-            updateVoucherUIStates()
-        }
-
-        // Voucher 3: COMBOMAX30
-        binding.btnActionVoucher3.setOnClickListener {
-            if (selectedVoucherCode == "COMBOMAX30") {
-                selectedVoucherCode = null
-                currentDiscountAmount = 0
-            } else {
-                selectedVoucherCode = "COMBOMAX30"
-                currentDiscountAmount = 30_000
-            }
-            updateVoucherUIStates()
-        }
-    }
-
-    private fun updateVoucherUIStates() {
-        // Cập nhật trạng thái Card 1 (CINEMAX20K)
-        if (selectedVoucherCode == "CINEMAX20K") {
-            binding.btnActionVoucher1.text = "Bỏ chọn"
-            binding.btnActionVoucher1.setBackgroundColor(android.graphics.Color.parseColor("#F1F5F9"))
-        } else {
-            binding.btnActionVoucher1.text = "Áp dụng"
-        }
-
-        // Cập nhật trạng thái Card 2 (CINEVIP15)
-        if (selectedVoucherCode == "CINEVIP15") {
-            binding.btnActionVoucher2.text = "Bỏ chọn"
-        } else {
-            binding.btnActionVoucher2.text = "Áp dụng"
-        }
-
-        // Cập nhật trạng thái Card 3 (COMBOMAX30)
-        if (selectedVoucherCode == "COMBOMAX30") {
-            binding.btnActionVoucher3.text = "Bỏ chọn"
-        } else {
-            binding.btnActionVoucher3.text = "Áp dụng"
-        }
-
-        // Cập nhật tổng tiền tiết kiệm ở đáy
-        val formattedSavings = String.format("%,d đ", currentDiscountAmount).replace(',', '.')
-        binding.tvTotalSavings.text = formattedSavings
     }
 
     override fun onDestroyView() {
