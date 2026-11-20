@@ -27,27 +27,64 @@ class VoteResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        bindWinningMovieData()
         setupHeader()
         setupListeners()
     }
 
+    private fun bindWinningMovieData() {
+        val winningMovieKey = arguments?.getString("winning_movie") ?: "dune"
+
+        when (winningMovieKey) {
+            "mai" -> {
+                binding.imgResultPoster.setImageResource(R.drawable.poster_mai)
+                binding.tvResultMovieTitle.text = "Mai"
+                binding.tvResultMovieSubtitle.text = "Tâm lý, Tình cảm • 131 phút"
+                binding.tvResultRatingFormat.text = "8.2 ★  |  Rạp 2D Phụ đề"
+                binding.tvResultVoteStats.text = "2/3 thành viên vote (67%)"
+                binding.tvResultCinema.text = "CGV Landmark 81"
+                binding.tvResultShowtime.text = "Tối nay - 20:15"
+                binding.tvResultTotalPrice.text = "285.000 đ"
+                binding.tvResultPerPerson.text = "95.000 đ / người (MoMo)"
+            }
+            "ngoai" -> {
+                binding.imgResultPoster.setImageResource(R.drawable.poster_gia_tai_cua_ngoai)
+                binding.tvResultMovieTitle.text = "Gia Tài Của Ngoại"
+                binding.tvResultMovieSubtitle.text = "Gia đình, Chính kịch • 125 phút"
+                binding.tvResultRatingFormat.text = "8.5 ★  |  Rạp 2D Lồng tiếng"
+                binding.tvResultVoteStats.text = "Hòa phiếu • Trưởng phòng quyết định"
+                binding.tvResultCinema.text = "CGV Landmark 81"
+                binding.tvResultShowtime.text = "Tối nay - 18:00"
+                binding.tvResultTotalPrice.text = "300.000 đ"
+                binding.tvResultPerPerson.text = "100.000 đ / người (MoMo)"
+            }
+            else -> {
+                binding.imgResultPoster.setImageResource(R.drawable.poster_hanh_tinh_cat_2)
+                binding.tvResultMovieTitle.text = "Dune: Hành Tinh Cát 2"
+                binding.tvResultMovieSubtitle.text = "Khoa học viễn tưởng • 166 phút"
+                binding.tvResultRatingFormat.text = "8.9 ★  |  Rạp IMAX 2D"
+                binding.tvResultVoteStats.text = "2/3 thành viên vote (67%)"
+                binding.tvResultCinema.text = "CGV Landmark 81"
+                binding.tvResultShowtime.text = "Tối nay - 19:30"
+                binding.tvResultTotalPrice.text = "360.000 đ"
+                binding.tvResultPerPerson.text = "120.000 đ / người (MoMo)"
+            }
+        }
+    }
+
     private fun setupHeader() {
-        // Nút back trên CineHeader
         binding.header.onBackClick = {
             findNavController().navigateUp()
         }
     }
 
     private fun setupListeners() {
-        // Tiến hành giữ chỗ & Đặt vé
         binding.btnProceedBooking.setOnClickListener {
-            showCineMessage("Đang chuyển sang bước giữ 3 ghế tại CGV Landmark 81...")
+            showCineMessage("Chuyển sang chọn 3 ghế cho nhóm...")
             findNavController().navigate(R.id.seatSelectionFragment)
         }
 
-        // Quay lại màn hình tổng quan CineTogether
         binding.btnBackToCineTogether.setOnClickListener {
-            // Quay về CineTogetherFragment trên backstack
             if (!findNavController().popBackStack(R.id.cineTogetherFragment, false)) {
                 findNavController().navigate(R.id.cineTogetherFragment)
             }
