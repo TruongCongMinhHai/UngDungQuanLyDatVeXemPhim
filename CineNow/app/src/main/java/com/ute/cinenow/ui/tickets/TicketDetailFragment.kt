@@ -27,21 +27,82 @@ class TicketDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bindTicketData()
         setupClickListeners()
     }
 
     /**
-     * Cấu hình toàn bộ sự kiện click trên màn Chi tiết vé
+     * Lấy dữ liệu vé dựa vào ticket_key và binding động lên giao diện
      */
+    private fun bindTicketData() {
+        val ticketKey = arguments?.getString("ticket_key") ?: "dune"
+        val ticket = TicketDataRepository.getTicket(ticketKey)
+
+        // Thông tin rạp & phim
+        binding.tvCinemaName.text = ticket.cinemaName
+        binding.tvFormatBadge.text = ticket.formatTag
+        binding.tvAgeRating.text = ticket.ageRating
+        binding.tvMovieTitle.text = ticket.movieTitle
+        binding.tvMovieSubtitle.text = ticket.movieSubtitle
+        binding.imgDetailPoster.setImageResource(ticket.posterResId)
+
+        // Lịch chiếu
+        binding.tvShowTime.text = ticket.showTime
+        binding.tvShowDate.text = ticket.showDate
+        binding.tvShowDayOfWeek.text = ticket.showDayOfWeek
+        binding.tvRoomName.text = ticket.roomName
+        binding.tvRoomFloor.text = ticket.roomFloor
+
+        // Thông tin ghế
+        binding.tvSeatsCountHeader.text = ticket.seatCountHeader
+        binding.tvSeatsDetail.text = ticket.seatsDetail
+        binding.tvSeatsBadge.text = ticket.seatsBadge
+
+        // Mã đặt chỗ
+        binding.tvBookingCode.text = ticket.bookingCode
+
+        // Bảng giá chi tiết
+        binding.tvTicketPriceLabel.text = ticket.ticketPriceLabel
+        binding.tvTicketPriceValue.text = ticket.ticketPriceValue
+
+        // Combo bắp nước (ẩn nếu không có)
+        if (ticket.comboLabel != null && ticket.comboValue != null) {
+            binding.layoutComboRow.visibility = View.VISIBLE
+            binding.tvComboLabel.text = ticket.comboLabel
+            binding.tvComboValue.text = ticket.comboValue
+        } else {
+            binding.layoutComboRow.visibility = View.GONE
+        }
+
+        // Voucher ưu đãi (ẩn nếu không có)
+        if (ticket.discountLabel != null && ticket.discountValue != null) {
+            binding.layoutDiscountRow.visibility = View.VISIBLE
+            binding.tvDiscountLabel.text = ticket.discountLabel
+            binding.tvDiscountValue.text = ticket.discountValue
+        } else {
+            binding.layoutDiscountRow.visibility = View.GONE
+        }
+
+        binding.tvTotalPrice.text = ticket.totalPrice
+        binding.tvPaymentMethod.text = ticket.paymentMethod
+
+        // Thẻ nhóm xem cùng CineTogether (chỉ hiện khi vé thuộc nhóm)
+        binding.cardGroupInfo.visibility = if (ticket.isGroupTicket) View.VISIBLE else View.GONE
+        if (ticket.isGroupTicket && ticket.groupName != null) {
+            binding.tvGroupName.text = ticket.groupName
+        }
+    }
+
     private fun setupClickListeners() {
-        // 1. Nút Back trên CineHeader: lùi về hoặc sang ticketsFragment nếu backstack rỗng
+        // Nút Back trên CineHeader
         binding.header.onBackClick = {
             if (!findNavController().popBackStack()) {
                 findNavController().navigate(R.id.ticketsFragment)
             }
         }
 
-        // 2. Sao chép Mã đặt chỗ (Booking ID) vào Clipboard hệ thống
+        // Sao chép Mã đặt chỗ (Booking ID) vào Clipboard
         binding.btnCopyBookingCode.setOnClickListener {
             it.animatePress {
                 val bookingCode = binding.tvBookingCode.text.toString().trim()
@@ -52,21 +113,21 @@ class TicketDetailFragment : Fragment() {
             }
         }
 
-        // 3. Bấm vào Nhóm CineTogether -> Chuyển sang màn Đi cùng nhóm (#17)
+        // Bấm vào Nhóm CineTogether -> Chuyển sang màn CineTogether (#19)
         binding.cardGroupInfo.setOnClickListener {
             it.animatePress {
                 findNavController().navigate(R.id.cineTogetherFragment)
             }
         }
 
-        // 4. Nút Lưu vé vào thư viện ảnh
+        // Nút Lưu vé vào thư viện ảnh
         binding.btnSaveTicketImage.setOnClickListener {
             it.animatePress {
                 showCineMessage("Đã lưu vé điện tử vào thư viện ảnh")
             }
         }
 
-        // 5. Bấm vào mã QR lớn hoặc Barcode -> Nhắc nhở người dùng
+        // Bấm vào mã QR lớn hoặc Barcode
         val qrBarcodeAction: (View) -> Unit = { view ->
             view.animatePress {
                 showCineMessage("Mã vé đã sẵn sàng để quét tại quầy soát vé")
@@ -76,7 +137,6 @@ class TicketDetailFragment : Fragment() {
         binding.imgBarcode.setOnClickListener(qrBarcodeAction)
     }
 
-    // Hiệu ứng ấn nhả nút co nhún mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.97f).scaleY(0.97f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {

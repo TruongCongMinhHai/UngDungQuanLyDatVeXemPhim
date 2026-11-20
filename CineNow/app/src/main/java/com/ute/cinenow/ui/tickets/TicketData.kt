@@ -1,0 +1,123 @@
+package com.ute.cinenow.ui.tickets
+
+import com.ute.cinenow.R
+
+data class TicketDetailModel(
+    val ticketKey: String,
+    val movieTitle: String,
+    val movieSubtitle: String,
+    val ageRating: String,
+    val posterResId: Int,
+    val cinemaName: String,
+    val formatTag: String,
+    val showTime: String,
+    val showDate: String,
+    val showDayOfWeek: String,
+    val roomName: String,
+    val roomFloor: String,
+    val seatCountHeader: String,
+    val seatsDetail: String,
+    val seatsBadge: String,
+    val bookingCode: String,
+    val ticketPriceLabel: String,
+    val ticketPriceValue: String,
+    val comboLabel: String?,
+    val comboValue: String?,
+    val discountLabel: String?,
+    val discountValue: String?,
+    val totalPrice: String,
+    val paymentMethod: String,
+    val isGroupTicket: Boolean,
+    val groupName: String? = null
+)
+
+object TicketDataRepository {
+    private val tickets = mapOf(
+        "dune" to TicketDetailModel(
+            ticketKey = "dune",
+            movieTitle = "HÀNH TINH CÁT 2",
+            movieSubtitle = "DUNE: PART TWO • IMAX 2D",
+            ageRating = "T16",
+            posterResId = R.drawable.poster_hanh_tinh_cat_2,
+            cinemaName = "CGV Landmark 81 - Rạp IMAX",
+            formatTag = "IMAX Laser",
+            showTime = "19:30",
+            showDate = "24/11/2026",
+            showDayOfWeek = "Thứ Sáu",
+            roomName = "IMAX 01",
+            roomFloor = "Tầng 5",
+            seatCountHeader = "GHẾ ĐÃ CHỌN (02 VÉ)",
+            seatsDetail = "Ghế: F10, F11 (Standard VIP)",
+            seatsBadge = "F10, F11",
+            bookingCode = "CN-88921-UIT",
+            ticketPriceLabel = "Giá vé IMAX (2 x 180.000đ)",
+            ticketPriceValue = "360.000đ",
+            comboLabel = "Combo Bắp Nước CineCouple",
+            comboValue = "119.000đ",
+            discountLabel = "Ưu đãi Sinh viên UIT (-20%)",
+            discountValue = "-72.000đ",
+            totalPrice = "407.000đ",
+            paymentMethod = "Thanh toán qua Ví MoMo",
+            isGroupTicket = true,
+            groupName = "Nhóm xem cùng: UIT Movie Club"
+        ),
+        "mai" to TicketDetailModel(
+            ticketKey = "mai",
+            movieTitle = "MAI",
+            movieSubtitle = "MAI: KỲ NGUYÊN MỚI • 2D Phụ đề",
+            ageRating = "T18",
+            posterResId = R.drawable.poster_mai,
+            cinemaName = "BHD Star Thảo Điền - Rạp 03",
+            formatTag = "2D Digital",
+            showTime = "20:15",
+            showDate = "25/11/2026",
+            showDayOfWeek = "Thứ Bảy",
+            roomName = "Phòng 03",
+            roomFloor = "Tầng 4",
+            seatCountHeader = "GHẾ ĐÃ CHỌN (02 VÉ)",
+            seatsDetail = "Ghế: H05, H06 (Ghế Standard)",
+            seatsBadge = "H05, H06",
+            bookingCode = "CN-773192",
+            ticketPriceLabel = "Giá vé 2D (2 x 95.000đ)",
+            ticketPriceValue = "190.000đ",
+            comboLabel = "Bắp rang phô mai cỡ lớn",
+            comboValue = "55.000đ",
+            discountLabel = "Voucher giảm giá vé (-20k)",
+            discountValue = "-20.000đ",
+            totalPrice = "225.000đ",
+            paymentMethod = "Thanh toán qua Ví ZaloPay",
+            isGroupTicket = false
+        ),
+        "ngoai" to TicketDetailModel(
+            ticketKey = "ngoai",
+            movieTitle = "GIA TÀI CỦA NGOẠI",
+            movieSubtitle = "HOW TO MAKE MILLIONS... • 2D",
+            ageRating = "T13",
+            posterResId = R.drawable.poster_gia_tai_cua_ngoai,
+            cinemaName = "Lotte Cinema NowZone - Rạp 02",
+            formatTag = "2D Lồng tiếng",
+            showTime = "18:00",
+            showDate = "26/11/2026",
+            showDayOfWeek = "Chủ Nhật",
+            roomName = "Phòng 02",
+            roomFloor = "Tầng 5",
+            seatCountHeader = "GHẾ ĐÃ CHỌN (01 VÉ)",
+            seatsDetail = "Ghế: E12 (Standard VIP)",
+            seatsBadge = "E12",
+            bookingCode = "CN-551048",
+            ticketPriceLabel = "Giá vé 2D VIP (1 x 110.000đ)",
+            ticketPriceValue = "110.000đ",
+            comboLabel = "Nước ngọt Coca 32oz",
+            comboValue = "35.000đ",
+            discountLabel = null,
+            discountValue = null,
+            totalPrice = "145.000đ",
+            paymentMethod = "Thanh toán qua Ví MoMo",
+            isGroupTicket = false
+        )
+    )
+
+    fun getTicket(key: String?): TicketDetailModel {
+        return tickets[key] ?: tickets["dune"]!!
+    }
+}

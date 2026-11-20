@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +18,6 @@ class TicketHistoryFragment : Fragment() {
     private var _binding: FragmentTicketHistoryBinding? = null
     private val binding get() = _binding!!
 
-    // Enum quản lý 3 trạng thái bộ lọc
     private enum class FilterStatus { ALL, USED, CANCELED }
     private var currentFilter = FilterStatus.ALL
 
@@ -37,18 +37,13 @@ class TicketHistoryFragment : Fragment() {
         setupDetailNavigation()
     }
 
-    /**
-     * Chuyển tab giữa Vé sắp xem và Lịch sử
-     */
     private fun setupTabNavigation() {
-        // Nút quay lại trên CineHeader: lùi về hoặc sang ticketsFragment nếu backstack rỗng
         binding.header.onBackClick = {
             if (!findNavController().popBackStack()) {
                 findNavController().navigate(R.id.ticketsFragment)
             }
         }
 
-        // Tab Vé sắp xem -> Quay lại màn TicketsFragment (#24)
         binding.btnTabUpcoming.setOnClickListener {
             it.animatePress {
                 if (!findNavController().popBackStack(R.id.ticketsFragment, false)) {
@@ -57,7 +52,6 @@ class TicketHistoryFragment : Fragment() {
             }
         }
 
-        // Tab Lịch sử (đang chọn)
         binding.btnTabHistory.setOnClickListener {
             it.animatePress {
                 showCineMessage("Bạn đang ở màn hình Lịch sử vé")
@@ -65,9 +59,6 @@ class TicketHistoryFragment : Fragment() {
         }
     }
 
-    /**
-     * Xử lý click chọn bộ lọc: Tất cả / Đã sử dụng / Đã hủy
-     */
     private fun setupFilterChips() {
         binding.chipFilterAll.setOnClickListener {
             it.animatePress {
@@ -115,9 +106,6 @@ class TicketHistoryFragment : Fragment() {
         }
     }
 
-    /**
-     * Tìm kiếm thời gian thực theo tên phim hoặc mã vé
-     */
     private fun setupLiveSearch() {
         binding.etSearchTicket.doOnTextChanged { _, _, _, _ ->
             applyFilterAndSearch()
@@ -127,46 +115,51 @@ class TicketHistoryFragment : Fragment() {
     private fun applyFilterAndSearch() {
         val query = binding.etSearchTicket.text?.toString()?.trim()?.lowercase().orEmpty()
 
-        // Vé 1: Mai (Đã sử dụng, CN-773192)
         val matchFilter1 = (currentFilter == FilterStatus.ALL || currentFilter == FilterStatus.USED)
         val matchQuery1 = query.isEmpty() || "mai".contains(query) || "cn-773192".lowercase().contains(query)
         binding.cardHistoryTicket1.visibility = if (matchFilter1 && matchQuery1) View.VISIBLE else View.GONE
 
-        // Vé 2: Gia Tài Của Ngoại (Đã sử dụng, CN-551048)
         val matchFilter2 = (currentFilter == FilterStatus.ALL || currentFilter == FilterStatus.USED)
         val matchQuery2 = query.isEmpty() || "gia tài".contains(query) || "ngoại".contains(query) || "cn-551048".lowercase().contains(query)
         binding.cardHistoryTicket2.visibility = if (matchFilter2 && matchQuery2) View.VISIBLE else View.GONE
 
-        // Vé 3: Hành Tinh Cát 2 (Đã hủy, CN-894215)
         val matchFilter3 = (currentFilter == FilterStatus.ALL || currentFilter == FilterStatus.CANCELED)
         val matchQuery3 = query.isEmpty() || "hành tinh cát".contains(query) || "dune".contains(query) || "cn-894215".lowercase().contains(query)
         binding.cardHistoryTicket3.visibility = if (matchFilter3 && matchQuery3) View.VISIBLE else View.GONE
     }
 
-    /**
-     * Điều hướng sang màn Chi tiết vé khi click vào từng vé
-     */
     private fun setupDetailNavigation() {
-        val openTicketDetail: (View) -> Unit = { view ->
+        // Vé 1: Mai
+        val openTicketMai: (View) -> Unit = { view ->
             view.animatePress {
-                findNavController().navigate(R.id.ticketDetailFragment)
+                val bundle = bundleOf("ticket_key" to "mai")
+                findNavController().navigate(R.id.ticketDetailFragment, bundle)
             }
         }
+        binding.btnViewDetail1.setOnClickListener(openTicketMai)
+        binding.cardHistoryTicket1.setOnClickListener(openTicketMai)
 
-        // Vé 1
-        binding.btnViewDetail1.setOnClickListener(openTicketDetail)
-        binding.cardHistoryTicket1.setOnClickListener(openTicketDetail)
+        // Vé 2: Gia Tài Của Ngoại
+        val openTicketNgoai: (View) -> Unit = { view ->
+            view.animatePress {
+                val bundle = bundleOf("ticket_key" to "ngoai")
+                findNavController().navigate(R.id.ticketDetailFragment, bundle)
+            }
+        }
+        binding.btnViewDetail2.setOnClickListener(openTicketNgoai)
+        binding.cardHistoryTicket2.setOnClickListener(openTicketNgoai)
 
-        // Vé 2
-        binding.btnViewDetail2.setOnClickListener(openTicketDetail)
-        binding.cardHistoryTicket2.setOnClickListener(openTicketDetail)
-
-        // Vé 3
-        binding.btnViewDetail3.setOnClickListener(openTicketDetail)
-        binding.cardHistoryTicket3.setOnClickListener(openTicketDetail)
+        // Vé 3: Dune 2
+        val openTicketDune: (View) -> Unit = { view ->
+            view.animatePress {
+                val bundle = bundleOf("ticket_key" to "dune")
+                findNavController().navigate(R.id.ticketDetailFragment, bundle)
+            }
+        }
+        binding.btnViewDetail3.setOnClickListener(openTicketDune)
+        binding.cardHistoryTicket3.setOnClickListener(openTicketDune)
     }
 
-    // Hiệu ứng ấn nhả nút co nhún mượt mà
     private fun View.animatePress(action: () -> Unit) {
         animate().scaleX(0.97f).scaleY(0.97f).setDuration(80).withEndAction {
             animate().scaleX(1.0f).scaleY(1.0f).setDuration(80).withEndAction {
