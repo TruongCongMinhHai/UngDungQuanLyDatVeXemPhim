@@ -22,7 +22,7 @@ class SmartSeatSetupFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var peopleCount = 1
-    private var selectedZone = "Khu vực trung tâm"
+    private var selectedZone: String? = null
     private var isAvoidCorner = false
     private var isAvoidFrontRow = false
 
@@ -113,9 +113,15 @@ class SmartSeatSetupFragment : Fragment() {
 
     private fun setupNavigationButtons() {
         binding.btnFindSeats.setOnClickListener {
+            val zone = selectedZone
+            if (zone == null) {
+                showCineMessage("Vui lòng chọn khu vực ngồi")
+                return@setOnClickListener
+            }
+
             showCineMessage(
                 message = "Đã áp dụng gợi ý ghế",
-                subtitle = "$peopleCount người • $selectedZone"
+                subtitle = "$peopleCount người • $zone"
             )
             navigateToSeatSelection(useSmartSuggestion = true)
         }
