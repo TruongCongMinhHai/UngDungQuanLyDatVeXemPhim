@@ -356,13 +356,12 @@
                     </LinearLayout>
 
                     <!-- Công tắc Switch nổi bật -->
+                    <!-- Công tắc Switch: Bỏ tint cứng để đổi màu theo trạng thái bật/tắt -->
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchSplitBill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        app:thumbTint="@color/cinenow_white"
-                        app:trackTint="@color/cinenow_primary" />
+                        android:checked="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
