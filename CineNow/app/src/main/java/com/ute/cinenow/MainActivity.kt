@@ -30,21 +30,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Chỉ áp top inset lên root (đẩy nội dung xuống khỏi status bar)
-        // Áp bottom inset riêng lên bottomNav để nó không bị che bởi system nav bar
+        // Đẩy nội dung ra khỏi thanh trạng thái và thanh điều hướng hệ thống
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val bars = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
-            // Chỉ áp left/top/right lên root – KHÔNG áp bottom
             view.updatePadding(
                 left = bars.left,
                 top = bars.top,
                 right = bars.right,
-                bottom = 0   // ← Đổi từ bars.bottom thành 0
-            )
-            // Áp bottom inset trực tiếp lên BottomNavigationView
-            binding.bottomNav.updatePadding(
                 bottom = bars.bottom
             )
             insets
