@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentBookingSuccessBinding
@@ -45,14 +46,40 @@ class BookingSuccessFragment : Fragment() {
     private fun setupButtons() {
         binding.btnViewETicket.setOnClickListener {
             showCineMessage("Mở chi tiết vé điện tử", subtitle = movieTitle)
-            findNavController().navigate(
-                R.id.ticketDetailFragment,
-                bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
-            )
+            try {
+                findNavController().navigate(
+                    R.id.ticketDetailFragment,
+                    bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
+                )
+            } catch (e: Exception) {
+                try {
+                    findNavController().navigate(R.id.ticketsFragment)
+                } catch (e2: Exception) {}
+            }
         }
 
         binding.btnBackToHome.setOnClickListener {
-            findNavController().popBackStack(R.id.homeFragment, false)
+            // Thử popBackStack về homeFragment trước
+            val popped = try {
+                findNavController().popBackStack(R.id.homeFragment, false)
+            } catch (e: Exception) {
+                false
+            }
+            // Nếu homeFragment không nằm trong stack hiện tại thì điều hướng về homeFragment và dọn sạch stack
+            if (!popped) {
+                try {
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.nav_graph, true)
+                        .build()
+                    findNavController().navigate(R.id.homeFragment, null, navOptions)
+                } catch (e: Exception) {
+                    try {
+                        findNavController().navigate(R.id.homeFragment)
+                    } catch (e2: Exception) {
+                        activity?.onBackPressedDispatcher?.onBackPressed()
+                    }
+                }
+            }
         }
     }
 
