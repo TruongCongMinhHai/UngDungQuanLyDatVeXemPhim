@@ -1,9 +1,12 @@
 package com.ute.cinenow.ui.booking
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -23,7 +26,7 @@ class BookingReviewFragment : Fragment() {
     private var movieTitle: String = "Hành Tinh Cát 2"
     private var voucherCode: String = "CINEMAX20K"
     private var voucherDiscount: Long = 20_000L
-    private var paymentMethod: String = "Ví điện tử"
+    private var paymentMethod: String = PaymentConfirmBottomSheet.METHOD_EWALLET
     private var baseSubtotal: Long = 510_000L
     private val memberDiscount: Long = 45_000L
 
@@ -58,6 +61,7 @@ class BookingReviewFragment : Fragment() {
         updatePaymentSummary()
         setupPaymentSelection()
         setupActions()
+        observePaymentConfirm()
     }
 
     private fun observeVoucherResult() {
@@ -115,24 +119,65 @@ class BookingReviewFragment : Fragment() {
         }
     }
 
+    // --- Chọn phương thức thanh toán: mục được chọn đổi màu (nền, viền, chấm tròn, icon) ---
     private fun setupPaymentSelection() {
-        binding.optEWallet.setOnClickListener {
-            paymentMethod = "Ví điện tử"
-            binding.radioEWallet.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#5850EC"))
-            binding.radioBankCard.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#CBD5E1"))
-            showCineMessage("Đã chọn phương thức thanh toán", subtitle = paymentMethod)
-        }
+        applyPaymentStyle()
 
-        binding.optBankCard.setOnClickListener {
-            paymentMethod = "Thẻ ngân hàng"
-            binding.radioBankCard.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#5850EC"))
-            binding.radioEWallet.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#CBD5E1"))
-            showCineMessage("Đã chọn phương thức thanh toán", subtitle = paymentMethod)
+        binding.optEWallet.setOnClickListener {
+            selectPayment(PaymentConfirmBottomSheet.METHOD_EWALLET)
         }
+        binding.optBankCard.setOnClickListener {
+            selectPayment(PaymentConfirmBottomSheet.METHOD_BANK_CARD)
+        }
+    }
+
+    private fun selectPayment(method: String) {
+        if (paymentMethod == method) return
+        paymentMethod = method
+        applyPaymentStyle()
+        showCineMessage("Đã chọn phương thức thanh toán", subtitle = paymentMethod)
+    }
+
+    private fun applyPaymentStyle() {
+        val isEWallet = paymentMethod == PaymentConfirmBottomSheet.METHOD_EWALLET
+        styleOption(binding.optEWallet, binding.radioEWallet, binding.imgEWallet, isEWallet)
+        styleOption(binding.optBankCard, binding.radioBankCard, binding.imgBankCard, !isEWallet)
+    }
+
+    private fun styleOption(option: View, radio: View, icon: ImageView, selected: Boolean) {
+        option.isSelected = selected   // bg_payment_option: nền tím nhạt + viền tím khi được chọn
+        radio.backgroundTintList =
+            ColorStateList.valueOf(Color.parseColor(if (selected) "#5850EC" else "#CBD5E1"))
+        icon.imageTintList =
+            ColorStateList.valueOf(Color.parseColor(if (selected) "#5850EC" else "#475569"))
+    }
+
+    // --- Màn hình Xác nhận thanh toán (Bottom Sheet) ---
+    private fun currentTotal(): Long =
+        (baseSubtotal - memberDiscount - voucherDiscount).coerceAtLeast(0L)
+
+    private fun showPaymentConfirm() {
+        if (childFragmentManager.findFragmentByTag(PaymentConfirmBottomSheet.TAG) != null) return
+        PaymentConfirmBottomSheet.newInstance(paymentMethod, currentTotal())
+            .show(childFragmentManager, PaymentConfirmBottomSheet.TAG)
+    }
+
+    private fun observePaymentConfirm() {
+        childFragmentManager.setFragmentResultListener(
+            PaymentConfirmBottomSheet.REQUEST_KEY, viewLifecycleOwner
+        ) { _, bundle ->
+            if (bundle.getBoolean(PaymentConfirmBottomSheet.RESULT_CONFIRMED, false)) {
+                completeBooking()
+            }
+        }
+    }
+
+    private fun completeBooking() {
+        showCineMessage("Đang xử lý đặt vé", subtitle = "$movieTitle • $paymentMethod")
+        findNavController().navigate(
+            R.id.bookingSuccessFragment,
+            bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
+        )
     }
 
     private fun handleBackToSeats() {
@@ -171,13 +216,8 @@ class BookingReviewFragment : Fragment() {
         binding.btnViewAllVouchers.setOnClickListener { openVoucher() }
         binding.btnChangeVoucher.setOnClickListener { openVoucher() }
 
-        binding.btnBookNow.setOnClickListener {
-            showCineMessage("Đang xử lý đặt vé", subtitle = "$movieTitle • $paymentMethod")
-            findNavController().navigate(
-                R.id.bookingSuccessFragment,
-                bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
-            )
-        }
+        // Bấm "Đặt vé ngay" -> mở màn Xác nhận thanh toán
+        binding.btnBookNow.setOnClickListener { showPaymentConfirm() }
 
         binding.btnChangeSeats.setOnClickListener {
             handleBackToSeats()

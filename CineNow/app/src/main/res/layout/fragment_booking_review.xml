@@ -685,8 +685,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_rounded_icon"
-                        android:backgroundTint="#F5F3FF"
+                        android:background="@drawable/bg_payment_option"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
@@ -747,6 +746,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:id="@+id/imgEWallet"
                             android:contentDescription="Ví điện tử"
                             android:src="@drawable/ic_booking_wallet"
                             app:tint="#5850EC" />
@@ -757,8 +757,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_rounded_icon"
-                        android:backgroundTint="#F8FAFC"
+                        android:background="@drawable/bg_payment_option"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
@@ -799,6 +798,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:id="@+id/imgBankCard"
                             android:contentDescription="Thẻ ngân hàng"
                             android:src="@drawable/ic_booking_card"
                             app:tint="#475569" />
