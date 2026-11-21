@@ -85,8 +85,9 @@ class VoteResultFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnProceedBooking.setOnClickListener {
-            showCineMessage("Chuyển sang chọn 3 ghế cho nhóm...")
-            findNavController().navigate(R.id.seatSelectionFragment)
+            showCineMessage("Chuyển sang tìm ghế phù hợp cho nhóm...")
+            // Điều hướng sang giao diện Thiết lập SmartSeat (Tìm ghế phù hợp)
+            findNavController().navigate(R.id.smartSeatSetupFragment)
         }
 
         binding.btnBackToCineTogether.setOnClickListener {
