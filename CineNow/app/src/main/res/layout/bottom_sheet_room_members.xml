@@ -1,19 +1,440 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="240dp"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="32dp"
-    android:background="@color/cinenow_surface_container_lowest">
+    android:background="@color/cinenow_white"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp"
+    tools:context=".ui.cinetogether.RoomMembersBottomSheet">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Thanh kéo Bottom Sheet (Drag Handle) -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_rounded_icon"
+        android:backgroundTint="@color/cinenow_outline_variant" />
+
+    <!-- Tiêu đề & Thông tin phòng -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Danh sách thành viên"
-        android:textSize="20sp"
-        android:textColor="@color/cinenow_text_primary" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành viên nhóm (3/4)"
+                android:textColor="@color/cinenow_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Phòng: UIT Movie Weekend"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_success_container"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="Đang hoạt động"
+            android:textColor="@color/cinenow_on_success_container"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Card Mời bạn bè & Sao chép mã PIN -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/cinenow_primary_container"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/cinenow_primary_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_group"
+                app:tint="@color/cinenow_primary" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã PIN mời bạn: 889 966"
+                    android:textColor="@color/cinenow_on_primary_container"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chia sẻ mã để bạn bè cùng tham gia vote"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Nút chép mã PIN -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyInvitePin"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="34dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="0dp"
+                android:text="Sao chép"
+                android:textColor="@color/cinenow_primary"
+                android:textSize="12sp"
+                app:backgroundTint="@color/cinenow_white"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_copy"
+                app:iconSize="13dp"
+                app:iconTint="@color/cinenow_primary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- DANH SÁCH THÀNH VIÊN -->
+
+    <!-- Thành viên 1: Nguyễn Tấn Chinh (Chủ phòng) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <!-- Avatar hình tròn chữ C -->
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_primary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="C"
+                android:textColor="@color/cinenow_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyễn Tấn Chinh (Bạn)"
+                    android:textColor="@color/cinenow_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@color/cinenow_primary_container"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Chủ phòng"
+                    android:textColor="@color/cinenow_primary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="✓ Đã chọn: Dune: Hành Tinh Cát 2"
+                android:textColor="@color/cinenow_success"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinenow_outline" />
+
+    <!-- Thành viên 2: Trương Công Minh Hải -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <!-- Avatar hình tròn chữ H -->
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_secondary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="H"
+                android:textColor="@color/cinenow_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trương Công Minh Hải"
+                    android:textColor="@color/cinenow_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@color/cinenow_outline"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Thành viên"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="✓ Đã chọn: Dune: Hành Tinh Cát 2"
+                android:textColor="@color/cinenow_success"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinenow_outline" />
+
+    <!-- Thành viên 3: Nguyễn Thành Nguyên -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <!-- Avatar hình tròn chữ N -->
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_warning">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="N"
+                android:textColor="@color/cinenow_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyễn Thành Nguyên"
+                    android:textColor="@color/cinenow_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="@color/cinenow_outline"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:text="Thành viên"
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="✓ Đã chọn: Mai"
+                android:textColor="@color/cinenow_success"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinenow_outline" />
+
+    <!-- Slot 4: Vị trí còn trống -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_rounded_icon"
+            android:backgroundTint="@color/cinenow_outline">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="+"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vị trí còn trống (1/4)"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Chờ bạn bè nhập mã PIN..."
+                android:textColor="@color/cinenow_text_tertiary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Nút mời bạn bè -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnInviteFriend"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="34dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="0dp"
+            android:text="Mời ngay"
+            android:textColor="@color/cinenow_primary"
+            android:textSize="12sp"
+            app:cornerRadius="8dp"
+            app:strokeColor="@color/cinenow_primary" />
+    </LinearLayout>
+
+    <!-- Nút Đóng Bottom Sheet -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCloseSheet"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Đóng"
+        android:textColor="@color/cinenow_white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/cinenow_primary"
+        app:cornerRadius="12dp" />
 
 </LinearLayout>

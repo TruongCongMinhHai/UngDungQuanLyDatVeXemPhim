@@ -1,20 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:orientation="vertical"
+    android:background="@color/cinenow_background"
+    tools:context=".ui.cinetogether.JoinRoomFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header dùng chung CineHeader: cố định 64dp, có nút back, không nút profile -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tham gia phòng"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:headerTitle="Tham gia phòng"
+        app:headerShowBack="true"
+        app:headerShowProfile="false" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Vùng nội dung cuộn bên dưới Header -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="40dp">
+
+            <!-- Card Nhập mã PIN phòng -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Icon mã PIN to nổi bật -->
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:padding="14dp"
+                        android:src="@drawable/ic_auth_lock"
+                        app:tint="@color/cinenow_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Nhập mã PIN phòng xem chung"
+                        android:textColor="@color/cinenow_text_primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="Nhập mã phòng 4-6 ký tự do trưởng nhóm chia sẻ để cùng vào bình chọn phim."
+                        android:textColor="@color/cinenow_text_secondary"
+                        android:textSize="13sp" />
+
+                    <!-- Ô nhập mã PIN to, căn giữa -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPinCode"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:boxStrokeColor="@color/cinenow_primary"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPinCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:hint="Ví dụ: CT-8821"
+                            android:inputType="textCapCharacters"
+                            android:letterSpacing="0.1"
+                            android:maxLength="10"
+                            android:paddingVertical="14dp"
+                            android:textColor="@color/cinenow_primary"
+                            android:textColorHint="@color/cinenow_text_tertiary"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Nút Dán nhanh từ bộ nhớ tạm -->
+                    <LinearLayout
+                        android:id="@+id/btnPastePin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_copy"
+                            app:tint="@color/cinenow_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="Dán mã từ bộ nhớ tạm"
+                            android:textColor="@color/cinenow_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Phòng gợi ý đang mở (Chạm để điền nhanh) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="8dp"
+                android:text="HOẶC CHỌN PHÒNG ĐANG MỞ"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSuggestedRoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/cinenow_white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/cinenow_outline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="@color/cinenow_secondary_container"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_group"
+                        app:tint="@color/cinenow_primary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="UIT Movie Weekend"
+                            android:textColor="@color/cinenow_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Mã phòng: CT-8821 • Chạm để điền nhanh"
+                            android:textColor="@color/cinenow_primary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded_icon"
+                        android:backgroundTint="#DCFCE7"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:text="Đang mở"
+                        android:textColor="#16A34A"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Hộp lưu ý quyền lợi nhóm -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_info_hint"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_auth_info"
+                    app:tint="@color/cinenow_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Khi vào phòng, bạn có thể xem danh sách phim đề xuất, bỏ phiếu vote và cùng chốt suất chiếu."
+                    android:textColor="@color/cinenow_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Nút Vào phòng bình chọn -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmitJoinRoom"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="22dp"
+                android:text="Vào phòng bình chọn"
+                android:textColor="@color/cinenow_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/cinenow_primary"
+                app:cornerRadius="14dp"
+                app:icon="@drawable/ic_auth_arrow_forward"
+                app:iconGravity="textEnd"
+                app:iconPadding="8dp"
+                app:iconTint="@color/cinenow_white" />
+
+            <!-- Nút Chưa có phòng? Tạo phòng mới -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoCreateRoom"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:text="Chưa có phòng? Tạo phòng mới ngay"
+                android:textColor="@color/cinenow_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!-- Nút Hủy -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="Hủy"
+                android:textColor="@color/cinenow_text_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
