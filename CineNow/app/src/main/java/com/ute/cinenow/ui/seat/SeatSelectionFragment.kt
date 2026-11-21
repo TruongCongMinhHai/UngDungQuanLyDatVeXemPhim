@@ -31,7 +31,7 @@ class SeatSelectionFragment : Fragment() {
     private var _binding: FragmentSeatSelectionBinding? = null
     private val binding get() = _binding!!
 
-    // Dữ liệu ghế chuẩn từ MockSeatRepository
+    // Dữ liệu ghế từ MockSeatRepository (đã cập nhật VIP D4..D7, E4..E7, F4..F7, G4..G7)
     private val allSeatsMap: Map<String, Seat> by lazy {
         MockSeatRepository.getSeats().associateBy { it.seatId }
     }
@@ -212,6 +212,7 @@ class SeatSelectionFragment : Fragment() {
             val seat = allSeatsMap[seatId] ?: continue
             val colNumber = seat.number.toString()
             val isSelected = selectedSeats.any { it.seatId == seatId }
+            val isVip = seat.seatType == SeatType.VIP
 
             when {
                 seat.status == SeatStatus.BOOKED || seat.status == SeatStatus.BLOCKED -> {
@@ -224,15 +225,17 @@ class SeatSelectionFragment : Fragment() {
                     holder.label.text = colNumber
                     holder.container.backgroundTintList = ColorStateList.valueOf(selectedBgColor)
                     holder.label.setTextColor(selectedTextColor)
-                    holder.star.visibility = if (seat.seatType == SeatType.VIP) View.VISIBLE else View.GONE
+                    holder.star.visibility = if (isVip) View.VISIBLE else View.GONE
                 }
-                seat.seatType == SeatType.VIP -> {
+                isVip -> {
+                    // Đúng 16 ghế VIP (D4..D7, E4..E7, F4..F7, G4..G7)
                     holder.label.text = colNumber
                     holder.container.backgroundTintList = ColorStateList.valueOf(vipBgColor)
                     holder.label.setTextColor(vipTextColor)
                     holder.star.visibility = View.VISIBLE
                 }
                 else -> {
+                    // Tất cả ghế còn lại là Standard
                     holder.label.text = colNumber
                     holder.container.backgroundTintList = ColorStateList.valueOf(standardBgColor)
                     holder.label.setTextColor(standardTextColor)
