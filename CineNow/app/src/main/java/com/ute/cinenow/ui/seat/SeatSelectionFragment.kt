@@ -9,10 +9,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.toColorInt
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentSeatSelectionBinding
-import com.ute.cinenow.ui.booking.BookingReviewFragment
 import com.ute.cinenow.ui.movie.MovieDetailFragment
 import com.ute.cinenow.ui.movie.MovieDetailSamples
 import com.ute.cinenow.utils.showCineMessage
@@ -20,10 +21,6 @@ import java.text.NumberFormat
 import java.util.Locale
 
 class SeatSelectionFragment : Fragment() {
-
-    private enum class SeatType {
-        STANDARD, VIP
-    }
 
     private data class SeatViewHolder(
         val container: FrameLayout,
@@ -34,43 +31,43 @@ class SeatSelectionFragment : Fragment() {
     private var _binding: FragmentSeatSelectionBinding? = null
     private val binding get() = _binding!!
 
-    private val bookedSeats = setOf(
-        "A4", "A5", "B1", "B2", "B4", "B5", "B9",
-        "C5", "D3", "D8", "E4", "E5", "E6",
-        "F4", "G7"
-    )
+    // Dữ liệu ghế chuẩn từ MockSeatRepository
+    private val allSeatsMap: Map<String, Seat> by lazy {
+        MockSeatRepository.getSeats().associateBy { it.seatId }
+    }
 
-    private val vipSeats = setOf(
-        "D1", "D2", "D4", "D5", "D6", "D7", "D9", "D10",
-        "E3", "E7", "E8", "E9", "E10",
-        "F1", "F2", "F3", "F8", "F9", "F10",
-        "G1", "G2", "G3", "G4", "G5", "G6", "G9", "G10"
-    )
-
-    private val standardPrice: Long = 165_000L
-    private val vipPrice: Long = 210_000L
-
-    private var suggestedSeats: List<String> = emptyList()
-    private val selectedSeats = mutableSetOf<String>()
+    // Nhóm ghế ban đầu do SmartSeat gợi ý (dùng để khôi phục chính xác)
+    private var initialSuggestedSeats: List<Seat> = emptyList()
+    // Danh sách ghế đang được người dùng chọn
+    private val selectedSeats = mutableListOf<Seat>()
 
     private var useSmartSuggestion: Boolean = false
+    private var seatPreference: SeatPreference = SeatPreference()
+    private var seatSuggestion: SeatSuggestion? = null
     private var peopleCount: Int = 1
-    private var selectedZone: String = "Khu vực trung tâm"
-    private var avoidCorner: Boolean = false
-    private var avoidFrontRow: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args = arguments
         useSmartSuggestion = args?.getBoolean(ARG_USE_SMART_SUGGESTION, false) ?: false
-        peopleCount = (args?.getInt(ARG_PEOPLE_COUNT, 1) ?: 1).coerceIn(1, 6)
-        selectedZone = args?.getString(ARG_SELECTED_ZONE)?.trim().orEmpty()
-            .ifBlank { "Khu vực trung tâm" }
-        avoidCorner = args?.getBoolean(ARG_AVOID_CORNER, false) ?: false
-        avoidFrontRow = args?.getBoolean(ARG_AVOID_FRONT_ROW, false) ?: false
+
+        val passedPref = args?.getSerializable(ARG_SEAT_PREFERENCE) as? SeatPreference
+        val passedSuggestion = args?.getSerializable(ARG_SEAT_SUGGESTION) as? SeatSuggestion
+
+        peopleCount = passedPref?.numberOfPeople ?: (args?.getInt(ARG_PEOPLE_COUNT, 1) ?: 1).coerceIn(1, 6)
+        seatPreference = passedPref ?: SeatPreference(numberOfPeople = peopleCount)
+        seatSuggestion = passedSuggestion
 
         if (useSmartSuggestion) {
-            suggestedSeats = computeSmartSuggestedSeats()
+            if (passedSuggestion != null && passedSuggestion.isSuccess) {
+                initialSuggestedSeats = passedSuggestion.seats
+            } else {
+                val suggestion = SmartSeatAlgorithm.findBestSeats(seatPreference, MockSeatRepository.getSeats())
+                seatSuggestion = suggestion
+                initialSuggestedSeats = suggestion.seats
+            }
+            selectedSeats.clear()
+            selectedSeats.addAll(initialSuggestedSeats)
         }
     }
 
@@ -85,77 +82,11 @@ class SeatSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupMovieInfo()
         setupSuggestionModeUI()
         setupSeatClickListeners()
         setupActions()
         refreshSeatUI()
-    }
-
-    private fun seatTypeOf(seatId: String): SeatType {
-        return if (vipSeats.contains(seatId)) SeatType.VIP else SeatType.STANDARD
-    }
-
-    private fun priceOf(seatId: String): Long {
-        return if (seatTypeOf(seatId) == SeatType.VIP) vipPrice else standardPrice
-    }
-
-    private fun computeSmartSuggestedSeats(): List<String> {
-        val lower = selectedZone.lowercase(Locale.getDefault())
-        val candidateRows = when {
-            lower.contains("gần màn hình") || lower.contains("gan man hinh") -> listOf("C", "D", "B", "E", "A")
-            lower.contains("phía sau") || lower.contains("phia sau") -> listOf("G", "H", "F", "E")
-            lower.contains("ghế đôi") || lower.contains("ghe doi") -> listOf("G", "F", "H", "E", "D")
-            else -> listOf("F", "E", "D", "G", "C", "H")
-        }
-
-        val rowsToSearch = candidateRows.filterNot { row ->
-            avoidFrontRow && (row == "A" || row == "B")
-        }.ifEmpty { candidateRows }
-
-        val colOrder = if (avoidCorner) {
-            listOf(4, 5, 6, 7, 3, 8)
-        } else {
-            listOf(5, 6, 4, 7, 3, 8, 2, 9, 1, 10)
-        }
-
-        for (row in rowsToSearch) {
-            for (startCol in colOrder) {
-                val block = mutableListOf<String>()
-                var valid = true
-                for (offset in 0 until peopleCount) {
-                    val col = startCol + offset
-                    if (col > 10 || (avoidCorner && (col <= 2 || col >= 9))) {
-                        valid = false
-                        break
-                    }
-                    val seatId = "$row$col"
-                    if (bookedSeats.contains(seatId)) {
-                        valid = false
-                        break
-                    }
-                    block.add(seatId)
-                }
-                if (valid && block.size == peopleCount) {
-                    return block
-                }
-            }
-        }
-
-        val fallback = mutableListOf<String>()
-        for (row in rowsToSearch) {
-            for (col in 1..10) {
-                val seatId = "$row$col"
-                if (!bookedSeats.contains(seatId) && !fallback.contains(seatId)) {
-                    fallback.add(seatId)
-                    if (fallback.size == peopleCount) {
-                        return fallback
-                    }
-                }
-            }
-        }
-        return fallback
     }
 
     private fun setupMovieInfo() {
@@ -168,11 +99,15 @@ class SeatSelectionFragment : Fragment() {
     }
 
     private fun setupSuggestionModeUI() {
-        if (useSmartSuggestion && suggestedSeats.isNotEmpty()) {
+        if (useSmartSuggestion && initialSuggestedSeats.isNotEmpty() && seatSuggestion != null) {
+            val suggestion = seatSuggestion!!
             binding.cardSmartSuggestion.visibility = View.VISIBLE
             binding.btnResetSeats.visibility = View.VISIBLE
-            binding.tvSmartBannerTitle.text = "Gợi ý SmartSeat: ${suggestedSeats.joinToString(", ")}"
-            binding.tvSmartBannerSubtitle.text = "Phù hợp $peopleCount người • $selectedZone"
+
+            val seatNames = initialSuggestedSeats.joinToString(", ") { it.seatId }
+            binding.tvSmartBannerTitle.text = "Gợi ý SmartSeat: $seatNames"
+            binding.tvSmartMatchBadge.text = "${suggestion.matchPercentage}% Tương thích"
+            binding.tvSmartBannerSubtitle.text = suggestion.reason
         } else {
             binding.cardSmartSuggestion.visibility = View.GONE
             binding.btnResetSeats.visibility = View.GONE
@@ -180,47 +115,172 @@ class SeatSelectionFragment : Fragment() {
     }
 
     private fun setupActions() {
+        // Nút Khôi phục về nhóm ghế SmartSeat ban đầu
         binding.btnResetSeats.setOnClickListener {
-            if (suggestedSeats.isEmpty()) {
+            if (initialSuggestedSeats.isEmpty()) {
                 showCineMessage("Không có ghế gợi ý để khôi phục")
                 return@setOnClickListener
             }
             selectedSeats.clear()
-            selectedSeats.addAll(suggestedSeats)
+            selectedSeats.addAll(initialSuggestedSeats)
             refreshSeatUI()
-            showCineMessage("Đã khôi phục ghế gợi ý ban đầu")
+            showCineMessage("Đã khôi phục nhóm ghế SmartSeat ban đầu")
         }
 
+        // Nút Tiếp tục đặt vé
         binding.btnContinueCheckout.setOnClickListener {
-            val seatsToProceed = if (selectedSeats.isNotEmpty()) {
-                selectedSeats.sorted()
-            } else {
-                suggestedSeats.sorted()
-            }
-            if (seatsToProceed.isEmpty()) {
-                showCineMessage("Vui lòng chọn ít nhất 1 ghế")
+            if (selectedSeats.isEmpty()) {
+                showCineMessage("Vui lòng chọn ghế trước khi tiếp tục")
                 return@setOnClickListener
             }
 
-            val totalPrice = seatsToProceed.sumOf { priceOf(it) }
+            if (selectedSeats.size < peopleCount) {
+                showCineMessage("Bạn cần chọn đủ $peopleCount ghế theo yêu cầu")
+                return@setOnClickListener
+            }
+
+            val sortedSeats = selectedSeats.sortedBy { it.seatId }
+            val seatCodes = ArrayList(sortedSeats.map { it.seatId })
+            val totalPrice = sortedSeats.sumOf { it.price }
+
             val movieTitle = arguments?.getString(MovieDetailFragment.ARG_MOVIE_TITLE)
                 ?: "Hành Tinh Cát: Phần 2"
 
-            val reviewFragment = BookingReviewFragment().apply {
-                arguments = Bundle().apply {
-                    putString(MovieDetailFragment.ARG_MOVIE_TITLE, movieTitle)
-                    putString("arg_showtime_info", "16:45 • IMAX 2D")
-                    putStringArrayList("arg_selected_seats", ArrayList(seatsToProceed))
-                    putLong("arg_total_price", totalPrice)
+            val reviewArgs = bundleOf(
+                MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle,
+                "arg_showtime_info" to "16:45 • IMAX 2D",
+                "arg_selected_seats" to seatCodes,
+                "arg_total_price" to totalPrice
+            )
+
+            try {
+                findNavController().navigate(R.id.bookingReviewFragment, reviewArgs)
+            } catch (e: Exception) {
+                showCineMessage("Chuyển sang màn hình kiểm tra đặt vé")
+            }
+        }
+    }
+
+    private fun setupSeatClickListeners() {
+        val seatMap = buildSeatViewMap()
+
+        for ((seatId, holder) in seatMap) {
+            val seatData = allSeatsMap[seatId] ?: continue
+
+            holder.container.setOnClickListener {
+                when (seatData.status) {
+                    SeatStatus.BOOKED -> {
+                        showCineMessage("Ghế $seatId đã được đặt trước")
+                        return@setOnClickListener
+                    }
+                    SeatStatus.BLOCKED -> {
+                        showCineMessage("Ghế $seatId đang bảo trì / tạm khóa")
+                        return@setOnClickListener
+                    }
+                    SeatStatus.AVAILABLE -> {
+                        val isAlreadySelected = selectedSeats.any { it.seatId == seatId }
+
+                        if (isAlreadySelected) {
+                            selectedSeats.removeAll { it.seatId == seatId }
+                        } else {
+                            if (selectedSeats.size >= peopleCount) {
+                                showCineMessage("Tối đa $peopleCount ghế theo số người bạn đã chọn")
+                                return@setOnClickListener
+                            }
+                            selectedSeats.add(seatData)
+                        }
+                        refreshSeatUI()
+                    }
                 }
             }
-
-            val containerId = (view?.parent as? ViewGroup)?.id ?: return@setOnClickListener
-            parentFragmentManager.beginTransaction()
-                .replace(containerId, reviewFragment)
-                .addToBackStack(null)
-                .commit()
         }
+    }
+
+    private fun refreshSeatUI() {
+        val bookedBgColor = "#CBD5E1".toColorInt()
+        val bookedTextColor = "#94A3B8".toColorInt()
+        val selectedBgColor = "#5850EC".toColorInt()
+        val selectedTextColor = "#FFFFFF".toColorInt()
+        val vipBgColor = "#EDE9FE".toColorInt()
+        val vipTextColor = "#312E81".toColorInt()
+        val standardBgColor = "#F1F5F9".toColorInt()
+        val standardTextColor = "#0F172A".toColorInt()
+
+        val seatMap = buildSeatViewMap()
+
+        for ((seatId, holder) in seatMap) {
+            val seat = allSeatsMap[seatId] ?: continue
+            val colNumber = seat.number.toString()
+            val isSelected = selectedSeats.any { it.seatId == seatId }
+
+            when {
+                seat.status == SeatStatus.BOOKED || seat.status == SeatStatus.BLOCKED -> {
+                    holder.label.text = "×"
+                    holder.container.backgroundTintList = ColorStateList.valueOf(bookedBgColor)
+                    holder.label.setTextColor(bookedTextColor)
+                    holder.star.visibility = View.GONE
+                }
+                isSelected -> {
+                    holder.label.text = colNumber
+                    holder.container.backgroundTintList = ColorStateList.valueOf(selectedBgColor)
+                    holder.label.setTextColor(selectedTextColor)
+                    holder.star.visibility = if (seat.seatType == SeatType.VIP) View.VISIBLE else View.GONE
+                }
+                seat.seatType == SeatType.VIP -> {
+                    holder.label.text = colNumber
+                    holder.container.backgroundTintList = ColorStateList.valueOf(vipBgColor)
+                    holder.label.setTextColor(vipTextColor)
+                    holder.star.visibility = View.VISIBLE
+                }
+                else -> {
+                    holder.label.text = colNumber
+                    holder.container.backgroundTintList = ColorStateList.valueOf(standardBgColor)
+                    holder.label.setTextColor(standardTextColor)
+                    holder.star.visibility = View.GONE
+                }
+            }
+        }
+        updateCheckoutSummary()
+    }
+
+    private fun updateCheckoutSummary() {
+        if (selectedSeats.isEmpty()) {
+            binding.tvSelectedSeatSummary.text = "Chưa chọn ghế nào"
+            binding.tvSmartSeatReason.text = if (useSmartSuggestion && initialSuggestedSeats.isNotEmpty()) {
+                "Gợi ý SmartSeat: ${initialSuggestedSeats.joinToString { it.seatId }} (${seatPreference.preferredZone.displayName})."
+            } else {
+                "Vui lòng chọn đủ $peopleCount ghế trên sơ đồ phòng chiếu."
+            }
+            binding.tvTotalPrice.text = formatVnd(0L)
+            return
+        }
+
+        val sorted = selectedSeats.sortedBy { it.seatId }
+        val seatNames = sorted.joinToString(", ") { it.seatId }
+        val vipCount = sorted.count { it.seatType == SeatType.VIP }
+        val stdCount = sorted.count { it.seatType == SeatType.STANDARD }
+
+        val typeSummary = when {
+            vipCount > 0 && stdCount > 0 -> "VIP: $vipCount, Thường: $stdCount"
+            vipCount > 0 -> "Ghế VIP ($vipCount)"
+            else -> "Ghế thường ($stdCount)"
+        }
+
+        binding.tvSelectedSeatSummary.text = "• Đang chọn: $seatNames • $typeSummary"
+
+        binding.tvSmartSeatReason.text = if (sorted.size < peopleCount) {
+            "⚠️ Còn thiếu ${peopleCount - sorted.size} ghế theo yêu cầu (Cần chọn đủ $peopleCount ghế)."
+        } else {
+            "✓ Đã chọn đủ ${sorted.size} ghế tại phòng chiếu 03 IMAX."
+        }
+
+        val totalAmount = sorted.sumOf { it.price }
+        binding.tvTotalPrice.text = formatVnd(totalAmount)
+    }
+
+    private fun formatVnd(amount: Long): String {
+        val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("vi-VN"))
+        return "${formatter.format(amount)}đ"
     }
 
     private fun buildSeatViewMap(): Map<String, SeatViewHolder> = mapOf(
@@ -313,107 +373,6 @@ class SeatSelectionFragment : Fragment() {
         "H10" to SeatViewHolder(binding.seatH10, binding.tvSeatH10, binding.ivStarH10)
     )
 
-    private fun setupSeatClickListeners() {
-        val seatMap = buildSeatViewMap()
-        seatMap.forEach { (seatId, holder) ->
-            holder.container.setOnClickListener {
-                if (bookedSeats.contains(seatId)) {
-                    showCineMessage("Ghế $seatId đã được đặt")
-                    return@setOnClickListener
-                }
-                if (selectedSeats.contains(seatId)) {
-                    selectedSeats.remove(seatId)
-                } else {
-                    if (selectedSeats.size >= peopleCount) {
-                        showCineMessage("Tối đa $peopleCount ghế theo số người đã chọn")
-                        return@setOnClickListener
-                    }
-                    selectedSeats.add(seatId)
-                }
-                refreshSeatUI()
-            }
-        }
-    }
-
-    private fun refreshSeatUI() {
-        val bookedBgColor = "#CBD5E1".toColorInt()
-        val bookedTextColor = "#94A3B8".toColorInt()
-        val selectedBgColor = "#4F46E5".toColorInt()
-        val selectedTextColor = "#FFFFFF".toColorInt()
-        val vipBgColor = "#EDE9FE".toColorInt()
-        val standardBgColor = "#F1F5F9".toColorInt()
-        val vipTextColor = "#312E81".toColorInt()
-        val standardTextColor = "#0F172A".toColorInt()
-
-        val seatMap = buildSeatViewMap()
-        for ((seatId, holder) in seatMap) {
-            val colNumber = seatId.drop(1)
-            val isVip = seatTypeOf(seatId) == SeatType.VIP
-
-            when {
-                bookedSeats.contains(seatId) -> {
-                    holder.label.text = "×"
-                    holder.container.backgroundTintList = ColorStateList.valueOf(bookedBgColor)
-                    holder.label.setTextColor(bookedTextColor)
-                    holder.star.visibility = View.GONE
-                }
-                selectedSeats.contains(seatId) -> {
-                    holder.label.text = colNumber
-                    holder.container.backgroundTintList = ColorStateList.valueOf(selectedBgColor)
-                    holder.label.setTextColor(selectedTextColor)
-                    holder.star.visibility = if (isVip) View.VISIBLE else View.GONE
-                }
-                isVip -> {
-                    holder.label.text = colNumber
-                    holder.container.backgroundTintList = ColorStateList.valueOf(vipBgColor)
-                    holder.label.setTextColor(vipTextColor)
-                    holder.star.visibility = View.VISIBLE
-                }
-                else -> {
-                    holder.label.text = colNumber
-                    holder.container.backgroundTintList = ColorStateList.valueOf(standardBgColor)
-                    holder.label.setTextColor(standardTextColor)
-                    holder.star.visibility = View.GONE
-                }
-            }
-        }
-        updateCheckoutSummary()
-    }
-
-    private fun updateCheckoutSummary() {
-        if (selectedSeats.isEmpty()) {
-            binding.tvSelectedSeatSummary.text = "Chưa chọn ghế nào"
-            binding.tvSmartSeatReason.text = if (useSmartSuggestion && suggestedSeats.isNotEmpty()) {
-                "Gợi ý SmartSeat: ${suggestedSeats.joinToString(", ")} ($selectedZone)."
-            } else {
-                "Vui lòng chọn ghế trên sơ đồ phòng chiếu."
-            }
-            binding.tvTotalPrice.text = formatVnd(0L)
-        } else {
-            val sorted = selectedSeats.sorted()
-            val vipCount = sorted.count { seatTypeOf(it) == SeatType.VIP }
-            val stdCount = sorted.size - vipCount
-            val typeSummary = when {
-                vipCount > 0 && stdCount > 0 -> "VIP: $vipCount, Thường: $stdCount"
-                vipCount > 0 -> "Ghế VIP ($vipCount)"
-                else -> "Ghế thường ($stdCount)"
-            }
-            binding.tvSelectedSeatSummary.text = "Đang chọn: ${sorted.joinToString(", ")} • $typeSummary"
-            binding.tvSmartSeatReason.text = if (sorted.size < peopleCount) {
-                "Còn thiếu ${peopleCount - sorted.size} ghế theo số người đã chọn."
-            } else {
-                "Đã chọn ${sorted.size} ghế ($selectedZone) tại phòng chiếu IMAX."
-            }
-            val total = sorted.sumOf { priceOf(it) }
-            binding.tvTotalPrice.text = formatVnd(total)
-        }
-    }
-
-    private fun formatVnd(amount: Long): String {
-        val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("vi-VN"))
-        return "${formatter.format(amount)}đ"
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -421,10 +380,9 @@ class SeatSelectionFragment : Fragment() {
 
     companion object {
         const val ARG_USE_SMART_SUGGESTION = "arg_use_smart_suggestion"
+        const val ARG_SEAT_PREFERENCE = "arg_seat_preference"
+        const val ARG_SEAT_SUGGESTION = "arg_seat_suggestion"
         const val ARG_PEOPLE_COUNT = "arg_people_count"
         const val ARG_SELECTED_ZONE = "arg_selected_zone"
-        const val ARG_SEAT_TYPE = "arg_seat_type"
-        const val ARG_AVOID_CORNER = "arg_avoid_corner"
-        const val ARG_AVOID_FRONT_ROW = "arg_avoid_front_row"
     }
 }
