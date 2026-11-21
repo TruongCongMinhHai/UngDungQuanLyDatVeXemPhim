@@ -100,6 +100,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvOrderSubtotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="465.000 đ"
@@ -176,12 +177,20 @@
                         android:textColorHint="#94A3B8"
                         android:textSize="11.5sp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnApplyCode"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="38dp"
+                        android:layout_height="36dp"
                         android:backgroundTint="#4F46E5"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:paddingHorizontal="14dp"
+                        android:paddingVertical="0dp"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
                         android:text="Áp dụng"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
@@ -221,7 +230,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- VOUCHER 1: ĐANG ÁP DỤNG (CÓ VIỀN TRÁI ĐẬM NHƯ ẢNH GỐC) -->
+            <!-- VOUCHER 1: CINEMAX20K -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardVoucher1"
                 android:layout_width="match_parent"
@@ -237,6 +246,7 @@
                     android:orientation="horizontal">
 
                     <View
+                        android:id="@+id/indicatorVoucher1"
                         android:layout_width="5dp"
                         android:layout_height="match_parent"
                         android:background="#4338CA" />
@@ -266,6 +276,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tagApplying1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
@@ -287,13 +298,20 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnActionVoucher1"
+                                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="32dp"
                                 android:backgroundTint="#F1F5F9"
                                 android:minWidth="0dp"
-                                android:paddingHorizontal="12dp"
+                                android:minHeight="0dp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="0dp"
+                                android:includeFontPadding="false"
+                                android:gravity="center"
                                 android:text="Bỏ chọn"
                                 android:textAllCaps="false"
                                 android:textColor="#475569"
@@ -326,7 +344,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- VOUCHER 2 -->
+            <!-- VOUCHER 2: CINEVIP15 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardVoucher2"
                 android:layout_width="match_parent"
@@ -365,13 +383,20 @@
                             android:layout_height="0dp"
                             android:layout_weight="1" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnActionVoucher2"
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="32dp"
                             android:backgroundTint="#EEF2FF"
                             android:minWidth="0dp"
-                            android:paddingHorizontal="12dp"
+                            android:minHeight="0dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="0dp"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
                             android:text="Áp dụng"
                             android:textAllCaps="false"
                             android:textColor="#4F46E5"
@@ -403,7 +428,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- VOUCHER 3 -->
+            <!-- VOUCHER 3: COMBOMAX30 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardVoucher3"
                 android:layout_width="match_parent"
@@ -442,13 +467,20 @@
                             android:layout_height="0dp"
                             android:layout_weight="1" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnActionVoucher3"
+                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="32dp"
                             android:backgroundTint="#EEF2FF"
                             android:minWidth="0dp"
-                            android:paddingHorizontal="12dp"
+                            android:minHeight="0dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="0dp"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
                             android:text="Áp dụng"
                             android:textAllCaps="false"
                             android:textColor="#4F46E5"
@@ -580,6 +612,7 @@
 
     <!-- THANH XÁC NHẬN DƯỚI CÙNG -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardBottomAction"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@android:color/white"
