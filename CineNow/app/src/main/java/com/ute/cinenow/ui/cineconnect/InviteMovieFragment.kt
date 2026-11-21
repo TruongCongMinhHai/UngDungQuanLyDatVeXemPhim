@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
@@ -73,7 +72,8 @@ class InviteMovieFragment : Fragment() {
         binding.tabSharedList.setOnClickListener {
             binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
             binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
-            showCineMessage("Danh sách chung", subtitle = "Các phim Thảo Vy đã thêm vào Watchlist")
+            // Đồng bộ tên bạn bè theo người được chọn
+            showCineMessage("Danh sách chung", subtitle = "Các phim $targetFriend đã thêm vào Watchlist")
         }
     }
 
@@ -158,13 +158,13 @@ class InviteMovieFragment : Fragment() {
             )
         }
 
-        // NÚT PHIM 2: Godzilla x Kong / Oppenheimer
+        // NÚT PHIM 2: Godzilla x Kong: Đế Chế (Đã đồng bộ đúng tên phim trên card)
         binding.btnInviteMovie2.setOnClickListener {
             toggleInviteState(
                 button = binding.btnInviteMovie2,
                 isSent = isMovie2Sent,
                 onStateChanged = { isMovie2Sent = it },
-                movieTitle = "Oppenheimer (Tối nay 20:00)",
+                movieTitle = "Godzilla x Kong: Đế Chế (Tối nay 20:00)",
                 defaultText = "Gửi lời mời"
             )
         }

@@ -44,6 +44,7 @@ class CineConnectFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        updateRequestsBadgeText()
         setupDiscoveredUserCards()
     }
 
@@ -57,98 +58,151 @@ class CineConnectFragment : Fragment() {
     }
 
     private fun setupTopActions() {
+        // Cho phép bấm "Xem tất cả" hoặc cả hàng để mở Lời mời kết bạn
         binding.tvViewAllRequests.setOnClickListener {
             findNavController().navigate(R.id.friendRequestsFragment)
         }
+        (binding.tvViewAllRequests.parent as? View)?.setOnClickListener {
+            findNavController().navigate(R.id.friendRequestsFragment)
+        }
 
+        // Cho phép bấm "Xem tất cả" hoặc cả hàng để mở Danh sách bạn bè
         binding.tvViewAllFriends.setOnClickListener {
+            findNavController().navigate(R.id.friendsFragment)
+        }
+        (binding.tvViewAllFriends.parent as? View)?.setOnClickListener {
             findNavController().navigate(R.id.friendsFragment)
         }
     }
 
-    private fun setupOnlineFriendsClick() {
-        val rootScroll = binding.root.getChildAt(1) as? ViewGroup
-        val mainContent = rootScroll?.getChildAt(0) as? LinearLayout ?: return
-
-        for (i in 0 until mainContent.childCount) {
-            val item = mainContent.getChildAt(i)
-            if (item is LinearLayout && item.childCount >= 2) {
-                val headerRow = item.getChildAt(0) as? LinearLayout
-                val firstTv = headerRow?.getChildAt(1) as? TextView
-                if (firstTv?.text?.contains("Bạn bè của bạn", ignoreCase = true) == true) {
-                    val friendsRow = item.getChildAt(1) as? LinearLayout ?: continue
-
-                    for (fIndex in 0 until friendsRow.childCount) {
-                        val friendCol = friendsRow.getChildAt(fIndex) as? LinearLayout ?: continue
-                        val nameTv = friendCol.getChildAt(1) as? TextView ?: continue
-                        val friendName = nameTv.text.toString().trim()
-
-                        friendCol.isClickable = true
-                        friendCol.isFocusable = true
-                        friendCol.setOnClickListener {
-                            if (friendName.contains("Thêm", ignoreCase = true)) {
-                                findNavController().navigate(R.id.matchedPeopleFragment)
-                            } else {
-                                findNavController().navigate(
-                                    R.id.chatFragment,
-                                    bundleOf("friend_name" to friendName)
-                                )
-                            }
-                        }
-                    }
-                    break
+    // Cập nhật số lượng lời mời kết bạn động theo trạng thái thực tế
+    private fun updateRequestsBadgeText() {
+        val count = CineConnectStateManager.pendingReceivedRequests.size
+        fun scanForRequestsText(v: View) {
+            if (v is TextView && v.text.toString().contains("Lời mời kết bạn", ignoreCase = true)) {
+                v.text = "Lời mời kết bạn ($count)"
+                return
+            }
+            if (v is ViewGroup) {
+                for (i in 0 until v.childCount) {
+                    scanForRequestsText(v.getChildAt(i))
                 }
             }
         }
+        scanForRequestsText(binding.root)
+    }
+
+    // Xử lý chạm vào danh sách bạn bè Online ở đầu trang
+    private fun setupOnlineFriendsClick() {
+        fun scanFriendsSection(view: View) {
+            if (view is TextView && view.text.toString().trim() == "Bạn bè của bạn") {
+                val parentSection = view.parent?.parent as? ViewGroup ?: return
+                // Tìm hàng ngang chứa các avatar bạn bè
+                for (i in 0 until parentSection.childCount) {
+                    val child = parentSection.getChildAt(i)
+                    if (child is LinearLayout && child != view.parent) {
+                        for (colIdx in 0 until child.childCount) {
+                            val friendCol = child.getChildAt(colIdx) as? LinearLayout ?: continue
+                            // Tìm TextView tên bạn
+                            var friendName = ""
+                            for (t in 0 until friendCol.childCount) {
+                                val item = friendCol.getChildAt(t)
+                                if (item is TextView && item.text.isNotEmpty() && !item.text.contains("Online") && !item.text.contains("phút")) {
+                                    friendName = item.text.toString().trim()
+                                    break
+                                }
+                            }
+
+                            if (friendName.isNotEmpty()) {
+                                friendCol.isClickable = true
+                                friendCol.isFocusable = true
+                                friendCol.setOnClickListener {
+                                    if (friendName.contains("Thêm", ignoreCase = true)) {
+                                        findNavController().navigate(R.id.matchedPeopleFragment)
+                                    } else {
+                                        findNavController().navigate(
+                                            R.id.chatFragment,
+                                            bundleOf("friend_name" to friendName)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        break
+                    }
+                }
+                return
+            }
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    scanFriendsSection(view.getChildAt(i))
+                }
+            }
+        }
+        scanFriendsSection(binding.root)
     }
 
     private fun setupSearchAndFilter() {
-        val rootScroll = binding.root.getChildAt(1) as? ViewGroup
-        val mainContent = rootScroll?.getChildAt(0) as? LinearLayout ?: return
-
-        for (i in 0 until mainContent.childCount) {
-            val section = mainContent.getChildAt(i)
-            if (section is LinearLayout) {
-                val headerRow = section.getChildAt(0) as? LinearLayout
+        // Tìm và gắn sự kiện cho nút "Xem tất cả" trong mục Khám phá bạn bè
+        fun scanExploreHeader(v: View) {
+            if (v is TextView && v.text.toString().trim() == "Khám phá bạn bè") {
+                val headerRow = v.parent as? ViewGroup
                 if (headerRow != null) {
-                    val titleTv = headerRow.getChildAt(1) as? TextView
-                    val seeAllTv = headerRow.getChildAt(2) as? TextView
-                    if (titleTv?.text?.contains("Khám phá bạn bè", ignoreCase = true) == true) {
-                        seeAllTv?.isClickable = true
-                        seeAllTv?.setOnClickListener {
-                            findNavController().navigate(R.id.matchedPeopleFragment)
-                        }
-                    }
-                }
-
-                for (subIdx in 0 until section.childCount) {
-                    val sub = section.getChildAt(subIdx)
-                    if (sub is HorizontalScrollView) {
-                        val chipContainer = sub.getChildAt(0) as? LinearLayout ?: continue
-                        val chips = mutableListOf<TextView>()
-                        for (c in 0 until chipContainer.childCount) {
-                            val chip = chipContainer.getChildAt(c) as? TextView ?: continue
-                            chips.add(chip)
-                        }
-                        for (chip in chips) {
-                            chip.isClickable = true
-                            chip.setOnClickListener {
-                                val text = chip.text.toString().trim()
-                                for (other in chips) {
-                                    val isCur = (other == chip)
-                                    other.backgroundTintList = ColorStateList.valueOf(
-                                        if (isCur) Color.parseColor("#5850EC") else Color.WHITE
-                                    )
-                                    other.setTextColor(if (isCur) Color.WHITE else Color.parseColor("#475569"))
-                                }
-                                showCineMessage("Bộ lọc", subtitle = "Đang xem: $text")
+                    for (i in 0 until headerRow.childCount) {
+                        val child = headerRow.getChildAt(i)
+                        if (child is TextView && child.text.toString().contains("Xem tất cả", ignoreCase = true)) {
+                            child.isClickable = true
+                            child.setOnClickListener {
+                                findNavController().navigate(R.id.matchedPeopleFragment)
                             }
                         }
                     }
                 }
             }
+            if (v is ViewGroup) {
+                for (i in 0 until v.childCount) {
+                    scanExploreHeader(v.getChildAt(i))
+                }
+            }
         }
+        scanExploreHeader(binding.root)
 
+        // Tìm và gắn sự kiện cho các Chip lọc
+        fun scanChips(v: View) {
+            if (v is HorizontalScrollView) {
+                val chipContainer = v.getChildAt(0) as? LinearLayout
+                if (chipContainer != null) {
+                    val chips = mutableListOf<TextView>()
+                    for (c in 0 until chipContainer.childCount) {
+                        val chip = chipContainer.getChildAt(c) as? TextView ?: continue
+                        chips.add(chip)
+                    }
+                    for (chip in chips) {
+                        chip.isClickable = true
+                        chip.setOnClickListener {
+                            val text = chip.text.toString().trim()
+                            for (other in chips) {
+                                val isCur = (other == chip)
+                                other.backgroundTintList = ColorStateList.valueOf(
+                                    if (isCur) Color.parseColor("#5850EC") else Color.WHITE
+                                )
+                                other.setTextColor(if (isCur) Color.WHITE else Color.parseColor("#475569"))
+                            }
+                            showCineMessage("Bộ lọc", subtitle = "Đang xem: $text")
+                        }
+                    }
+                }
+                return
+            }
+            if (v is ViewGroup) {
+                for (i in 0 until v.childCount) {
+                    scanChips(v.getChildAt(i))
+                }
+            }
+        }
+        scanChips(binding.root)
+
+        // Ô tìm kiếm
         binding.etSearchUser.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -169,10 +223,8 @@ class CineConnectFragment : Fragment() {
         }
     }
 
+    // Quản lý các thẻ gợi ý bạn bè khám phá (Nguyễn Thảo Ly, Trần Bảo Long)
     private fun setupDiscoveredUserCards() {
-        val rootScroll = binding.root.getChildAt(1) as? ViewGroup
-        val mainContent = rootScroll?.getChildAt(0) as? LinearLayout ?: return
-
         fun traverseCards(view: View) {
             if (view is CardView) {
                 var memberName = ""
@@ -209,7 +261,7 @@ class CineConnectFragment : Fragment() {
                 if (memberName.isNotEmpty()) {
                     val finalName = memberName
 
-                    // QUY TẮC: NẾU ĐÃ LÀ BẠN BÈ (NGUYỄN THẢO LY) THÌ ẨN HOÀN TOÀN CARD KHỎI MỤC GỢI Ý KẾT BẠN
+                    // Nếu đã là bạn bè thì ẩn hoàn toàn thẻ khỏi mục gợi ý kết bạn
                     if (CineConnectStateManager.isFriend(finalName)) {
                         view.visibility = View.GONE
                         return
@@ -267,7 +319,7 @@ class CineConnectFragment : Fragment() {
             }
         }
 
-        traverseCards(mainContent)
+        traverseCards(binding.root)
     }
 
     override fun onDestroyView() {

@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -98,6 +101,9 @@ class MatchedPeopleFragment : Fragment() {
             Pair(binding.cardMember4, "lê hoàng minh cinenow landmark 81 tâm lý giật gân nolan")
         )
 
+        // Hiển thị ban đầu đúng số lượng thành viên thực tế (4 thành viên)
+        binding.tvFoundCount.text = "Tìm thấy ${memberCards.size} thành viên"
+
         binding.etSearchPeople.doAfterTextChanged { editable ->
             val keyword = editable?.toString()?.trim()?.lowercase().orEmpty()
             var visibleCount = 0
@@ -110,10 +116,10 @@ class MatchedPeopleFragment : Fragment() {
                 if (matched) visibleCount++
             }
 
-            binding.tvFoundCount.text = if (keyword.isEmpty()) {
-                "Tìm thấy 6 thành viên"
-            } else {
-                "Tìm thấy $visibleCount thành viên"
+            // Đếm động chính xác theo số thẻ hiển thị
+            binding.tvFoundCount.text = when {
+                visibleCount == 0 -> "Không tìm thấy thành viên phù hợp"
+                else -> "Tìm thấy $visibleCount thành viên"
             }
         }
 
@@ -121,6 +127,7 @@ class MatchedPeopleFragment : Fragment() {
             showCineMessage("Bộ lọc", subtitle = "Đang lọc thành viên phù hợp tại khu vực TP.HCM")
         }
 
+        // Đồng bộ màu nền và màu chữ cho Chip để luôn dễ đọc
         val chips = listOf(binding.chipAll, binding.chipArea, binding.chipSciFi)
         fun highlightChip(target: View) {
             for (c in chips) {
@@ -128,6 +135,15 @@ class MatchedPeopleFragment : Fragment() {
                 c.backgroundTintList = ColorStateList.valueOf(
                     if (isSelected) Color.parseColor("#5B3DF5") else Color.WHITE
                 )
+                val textColor = if (isSelected) Color.WHITE else Color.parseColor("#334155")
+                if (c is TextView) {
+                    c.setTextColor(textColor)
+                } else if (c is LinearLayout) {
+                    val icon = c.getChildAt(0) as? ImageView
+                    val tv = c.getChildAt(1) as? TextView
+                    icon?.imageTintList = ColorStateList.valueOf(if (isSelected) Color.WHITE else Color.parseColor("#475569"))
+                    tv?.setTextColor(textColor)
+                }
             }
         }
 
@@ -189,14 +205,13 @@ class MatchedPeopleFragment : Fragment() {
                         message = "Đã gửi lời mời kết bạn tới $memberName",
                         actionLabel = "HOÀN TÁC",
                         onAction = {
-                            // Bấm HOÀN TÁC -> Chuyển lại về "Kết bạn"
                             CineConnectStateManager.cancelFriendRequest(memberName)
                             refreshAllAddButtons()
                             showCineMessage("Đã hủy lời mời kết bạn tới $memberName")
                         }
                     )
                 } else {
-                    // Bấm vào nút "Đã gửi lời mời" -> Hủy lời mời và hiện lại "Kết bạn"
+                    // Bấm vào nút "Đã gửi lời mời" -> Hủy lời mời
                     CineConnectStateManager.cancelFriendRequest(memberName)
                     refreshAllAddButtons()
                     showCineMessage("Đã hủy lời mời kết bạn tới $memberName")

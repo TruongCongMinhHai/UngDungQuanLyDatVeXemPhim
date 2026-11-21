@@ -227,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
-                    android:text="Tìm thấy 6 thành viên"
+                    android:text="Tìm thấy 4 thành viên"
                     android:textColor="#475569"
                     android:textSize="11.5sp"
                     android:textStyle="bold" />
