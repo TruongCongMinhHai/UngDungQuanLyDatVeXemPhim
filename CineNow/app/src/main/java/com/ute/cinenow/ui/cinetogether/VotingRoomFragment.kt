@@ -188,7 +188,7 @@ class VotingRoomFragment : Fragment() {
             3 -> "Gia Tài Của Ngoại (Hòa - Quyết định)"
             else -> "Dune 2 (2/3 vote)"
         }
-        binding.btnConfirmVote.text = "Chốt phim: $winningMovieName →"
+        binding.btnConfirmVote.text = "Chốt phim: $winningMovieName"
     }
 
     override fun onDestroyView() {
