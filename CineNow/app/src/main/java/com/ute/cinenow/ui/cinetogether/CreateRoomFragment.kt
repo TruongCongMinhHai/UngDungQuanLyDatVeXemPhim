@@ -24,6 +24,29 @@ class CreateRoomFragment : Fragment() {
     private var selectedMemberCount = "4 người"
     private var isAutoSplitBill = true
 
+    private var selectedCinema = "CGV Landmark 81 (Bình Thạnh)"
+    private val cinemaAreas = arrayOf(
+        "CGV Landmark 81 (Bình Thạnh)",
+        "CGV Vincom Center Đồng Khởi (Quận 1)",
+        "CGV Sư Vạn Hạnh (Quận 10)",
+        "CGV Giga Mall Thủ Đức (TP. Thủ Đức)",
+        "CGV Crescent Mall (Quận 7)",
+        "Cinestar Sinh Viên (TP. Thủ Đức - Dĩ An)",
+        "Cinestar Quốc Thanh (Quận 1)",
+        "Lotte Cinema Cantavil (TP. Thủ Đức)",
+        "Lotte Cinema Nowzone (Quận 5)",
+        "Galaxy Cinema Nguyễn Du (Quận 1)",
+        "Galaxy Cinema Tân Bình",
+        "Galaxy Cinema Quang Trung (Gò Vấp)",
+        "BHD Star Thảo Điền (TP. Thủ Đức)",
+        "BHD Star 3/2 (Quận 10)",
+        "Beta Cinemas Quang Trung (Gò Vấp)",
+        "Mega GS Cao Thắng (Quận 3)",
+        "Toàn TP. Hồ Chí Minh (Tất cả cụm rạp)",
+        "Toàn Hà Nội (Tất cả cụm rạp)",
+        "Toàn Đà Nẵng (Tất cả cụm rạp)"
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -34,9 +57,28 @@ class CreateRoomFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupInteractiveSelectors()
+        setupCinemaSelector()
         setupActions()
         // Thiết lập trạng thái ban đầu của Switch
         updateSplitBillCardVisual(binding.switchSplitBill.isChecked)
+    }
+
+    private fun setupCinemaSelector() {
+        // Gán danh sách rạp vào dropdown
+        binding.actvCinema.setSimpleItems(cinemaAreas)
+
+        // Đặt giá trị mặc định ban đầu
+        binding.actvCinema.setText(selectedCinema, false)
+
+        // Khi người dùng chạm chọn một rạp từ danh sách
+        binding.actvCinema.setOnItemClickListener { _, _, position, _ ->
+            selectedCinema = cinemaAreas[position]
+        }
+
+        // Chạm vào ô sẽ xổ danh sách lựa chọn ra ngay
+        binding.actvCinema.setOnClickListener {
+            binding.actvCinema.showDropDown()
+        }
     }
 
     private fun setupInteractiveSelectors() {

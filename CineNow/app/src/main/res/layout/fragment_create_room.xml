@@ -91,7 +91,7 @@
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- 2. Rạp chiếu dự kiến (Để trống, chỉ để hint mờ) -->
+                    <!-- 2. Khu vực / Rạp chiếu ưu tiên (Chọn từ danh sách, không cần nhập) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,27 +103,25 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilCinema"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:hint="Chọn khu vực hoặc cụm rạp ưu tiên"
                         app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxStrokeColor="@color/cinenow_primary"
+                        app:endIconTint="@color/cinenow_text_secondary"
                         app:startIconDrawable="@drawable/ic_home_place"
                         app:startIconTint="@color/cinenow_text_secondary">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etCinema"
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/actvCinema"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:focusable="false"
                             android:inputType="none"
-                            android:text="CGV Landmark 81 (hoặc các rạp lân cận)"
                             android:textColor="@color/cinenow_text_primary"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
