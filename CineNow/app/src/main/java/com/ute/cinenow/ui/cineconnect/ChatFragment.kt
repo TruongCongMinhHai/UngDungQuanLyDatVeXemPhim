@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.graphics.toColorInt
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentChatBinding
 import com.ute.cinenow.utils.showCineMessage
 
@@ -14,6 +17,8 @@ class ChatFragment : Fragment() {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
+
+    private var friendName: String = "Thảo Vy"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +31,13 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val passedFriend = arguments?.getString("friend_name")
+        if (!passedFriend.isNullOrBlank()) {
+            friendName = passedFriend
+            binding.header.title = friendName
+        }
+
         setupHeader()
         setupTopInviteAndSuggestions()
         setupInviteCardActions()
@@ -34,25 +46,39 @@ class ChatFragment : Fragment() {
 
     private fun setupHeader() {
         binding.header.onBackClick = {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            val popped = try { findNavController().popBackStack() } catch (_: Exception) { false }
+            if (!popped) {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 
     private fun setupTopInviteAndSuggestions() {
+        // Nút "Rủ xem phim" trên cùng -> Mở màn 37 (InviteMovieFragment)
         binding.btnTopInviteMovie.setOnClickListener {
-            showCineMessage("Mở màn hình chọn phim mời Thảo Vy")
+            findNavController().navigate(
+                R.id.inviteMovieFragment,
+                bundleOf("friend_name" to friendName)
+            )
         }
 
         binding.chipSuggestCombo.setOnClickListener {
-            binding.etMessageInput.setText("Minh đặt combo bắp nước luôn nhé?")
+            binding.etMessageInput.setText("Mình đặt combo bắp nước luôn nhé?")
         }
 
         binding.chipSuggestLobby.setOnClickListener {
-            binding.etMessageInput.setText("Hẹn gặp ở sảnh trước 15 phút")
+            binding.etMessageInput.setText("Hẹn gặp ở sảnh rạp trước 15 phút!")
         }
 
         binding.btnAddMedia.setOnClickListener {
-            showCineMessage("Đính kèm lịch chiếu hoặc rạp yêu thích")
+            showCineMessage("Đính kèm lịch chiếu", subtitle = "Đang mở danh sách suất chiếu của bạn")
+        }
+
+        binding.btnMovieShortcut.setOnClickListener {
+            findNavController().navigate(
+                R.id.inviteMovieFragment,
+                bundleOf("friend_name" to friendName)
+            )
         }
     }
 
@@ -60,11 +86,12 @@ class ChatFragment : Fragment() {
         binding.btnAcceptInvite.setOnClickListener {
             binding.btnAcceptInvite.text = "Đã chấp nhận"
             showCineMessage(
-                message = "Đã chấp nhận lời mời xem Hành Tinh Cát: Phần 2 (19:30)",
-                actionLabel = "HOÀN TÁC",
+                message = "Đã đồng ý xem Hành Tinh Cát 2 (19:30)",
+                subtitle = "Suất chiếu đã được đồng bộ vào lịch rảnh!",
+                actionLabel = "ĐẶT VÉ NGAY",
                 onAction = {
-                    binding.btnAcceptInvite.text = "Chấp nhận"
-                    showCineMessage("Đã hoàn tác trạng thái chấp nhận lời mời")
+                    // Chuyển sang luồng chọn suất chiếu đặt vé
+                    findNavController().navigate(R.id.showtimeFragment)
                 }
             )
         }
@@ -72,7 +99,7 @@ class ChatFragment : Fragment() {
         binding.btnDeclineInvite.setOnClickListener {
             binding.cardMovieInviteInChat.visibility = View.GONE
             showCineMessage(
-                message = "Đã từ chối lời mời xem phim từ Thảo Vy",
+                message = "Đã từ chối lời mời xem phim từ $friendName",
                 actionLabel = "HOÀN TÁC",
                 onAction = {
                     binding.cardMovieInviteInChat.visibility = View.VISIBLE

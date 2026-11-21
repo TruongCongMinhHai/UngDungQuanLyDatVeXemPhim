@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentFriendsBinding
 import com.ute.cinenow.utils.showCineMessage
 
@@ -32,6 +34,11 @@ class FriendsFragment : Fragment() {
         setupSearchAndChips()
         setupFriendCards()
         setupBottomBar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateNearbyButtonState()
     }
 
     private fun setupHeader() {
@@ -79,7 +86,7 @@ class FriendsFragment : Fragment() {
             for (item in allFriendCards) {
                 item.first.visibility = View.VISIBLE
             }
-            showCineMessage("Hiển thị tất cả bạn bè (18)")
+            showCineMessage("Hiển thị tất cả bạn bè")
         }
 
         binding.chipOnlineFriends.setOnClickListener {
@@ -100,6 +107,18 @@ class FriendsFragment : Fragment() {
                 item.first.visibility = View.VISIBLE
             }
             showCineMessage("Đã sắp xếp theo độ khớp gu điện ảnh")
+        }
+    }
+
+    private fun updateNearbyButtonState() {
+        val targetName = "Trần Bảo Long"
+        val isSent = CineConnectStateManager.isRequestSent(targetName)
+        if (isSent) {
+            binding.btnNearbyConnect.text = "Đã gửi"
+            binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#94A3B8".toColorInt())
+        } else {
+            binding.btnNearbyConnect.text = "Kết bạn"
+            binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
         }
     }
 
@@ -140,28 +159,39 @@ class FriendsFragment : Fragment() {
             }
         }
 
-        var connectedNearby = false
+        val nearbyTarget = "Trần Bảo Long"
+        updateNearbyButtonState()
+
         binding.btnNearbyConnect.setOnClickListener {
-            connectedNearby = !connectedNearby
-            if (connectedNearby) {
+            val isSent = CineConnectStateManager.isRequestSent(nearbyTarget)
+            if (!isSent) {
+                CineConnectStateManager.sendFriendRequest(nearbyTarget)
                 binding.btnNearbyConnect.text = "Đã gửi"
+                binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#94A3B8".toColorInt())
                 showCineMessage(
-                    message = "Đã gửi lời mời kết bạn tại CineNow Landmark 81",
+                    message = "Đã gửi lời mời kết bạn tới $nearbyTarget",
                     actionLabel = "HOÀN TÁC",
                     onAction = {
-                        connectedNearby = false
+                        CineConnectStateManager.cancelFriendRequest(nearbyTarget)
                         binding.btnNearbyConnect.text = "Kết bạn"
-                        showCineMessage("Đã hủy lời mời kết bạn gần rạp")
+                        binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
+                        showCineMessage("Đã hủy lời mời kết bạn tới $nearbyTarget")
                     }
                 )
             } else {
+                CineConnectStateManager.cancelFriendRequest(nearbyTarget)
                 binding.btnNearbyConnect.text = "Kết bạn"
-                showCineMessage("Đã hủy lời mời kết bạn gần rạp")
+                binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
+                showCineMessage("Đã hủy lời mời kết bạn tới $nearbyTarget")
             }
         }
 
         binding.btnFriendRequestsBadge.setOnClickListener {
-            showCineMessage("Mở danh sách lời mời kết bạn")
+            try {
+                findNavController().navigate(R.id.friendRequestsFragment)
+            } catch (e: Exception) {
+                showCineMessage("Mở danh sách lời mời kết bạn")
+            }
         }
     }
 
@@ -170,10 +200,18 @@ class FriendsFragment : Fragment() {
             showCineMessage("Đang ở tab Bạn bè")
         }
         binding.navTabChat.setOnClickListener {
-            showCineMessage("Chuyển sang tab Trò chuyện")
+            try {
+                findNavController().navigate(R.id.chatFragment)
+            } catch (e: Exception) {
+                showCineMessage("Chuyển sang tab Trò chuyện")
+            }
         }
         binding.navTabInviteMovie.setOnClickListener {
-            showCineMessage("Chuyển sang tab Mời phim")
+            try {
+                findNavController().navigate(R.id.inviteMovieFragment)
+            } catch (e: Exception) {
+                showCineMessage("Chuyển sang tab Mời phim")
+            }
         }
     }
 

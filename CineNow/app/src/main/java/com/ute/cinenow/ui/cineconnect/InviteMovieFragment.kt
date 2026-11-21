@@ -1,13 +1,17 @@
 package com.ute.cinenow.ui.cineconnect
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.ute.cinenow.databinding.FragmentInviteMovieBinding
 import com.ute.cinenow.utils.showCineMessage
 
@@ -16,6 +20,7 @@ class InviteMovieFragment : Fragment() {
     private var _binding: FragmentInviteMovieBinding? = null
     private val binding get() = _binding!!
 
+    private var targetFriend = "Thảo Vy"
     private var selectedDay = "Hôm nay 20/04"
     private var selectedTime = "19:00"
 
@@ -30,6 +35,14 @@ class InviteMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val passedFriend = arguments?.getString("friend_name")
+        if (!passedFriend.isNullOrBlank()) {
+            targetFriend = passedFriend
+            binding.tvInviteTargetTitle.text = "Mời $targetFriend xem phim"
+            binding.header.title = "Mời $targetFriend xem phim"
+        }
+
         setupHeader()
         setupTabsAndMatch()
         setupDaySelection()
@@ -39,25 +52,28 @@ class InviteMovieFragment : Fragment() {
 
     private fun setupHeader() {
         binding.header.onBackClick = {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            val popped = try { findNavController().popBackStack() } catch (_: Exception) { false }
+            if (!popped) {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 
     private fun setupTabsAndMatch() {
         binding.btnFreeMatch.setOnClickListener {
-            showCineMessage("Đang khớp lịch rảnh cùng Thảo Vy")
+            showCineMessage("Ghép lịch rảnh", subtitle = "Đang đồng bộ khung giờ rảnh cuối tuần cùng $targetFriend")
         }
 
         binding.tabNowShowing.setOnClickListener {
             binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
             binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
-            showCineMessage("Hiển thị 12 phim đang chiếu")
+            showCineMessage("Phim đang chiếu", subtitle = "Hiển thị các phim đang có suất chiếu")
         }
 
         binding.tabSharedList.setOnClickListener {
             binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
             binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
-            showCineMessage("Hiển thị 3 phim trùng trong danh sách chung")
+            showCineMessage("Danh sách chung", subtitle = "Các phim Thảo Vy đã thêm vào Watchlist")
         }
     }
 
@@ -87,7 +103,7 @@ class InviteMovieFragment : Fragment() {
                 dayView.backgroundTintList = ColorStateList.valueOf(activeColor)
                 dayView.setTextColor("#FFFFFF".toColorInt())
                 updateMainInviteButtonText()
-                showCineMessage("Đã chọn ngày: $dayLabel")
+                showCineMessage("Đã chọn ngày chiếu", subtitle = dayLabel)
             }
         }
     }
@@ -115,37 +131,83 @@ class InviteMovieFragment : Fragment() {
 
                 slotView.backgroundTintList = ColorStateList.valueOf(activeSlotColor)
                 updateMainInviteButtonText()
-                showCineMessage("Đã chọn suất chiếu: $timeLabel")
+                showCineMessage("Đã chọn suất chiếu", subtitle = "$timeLabel ($selectedDay)")
             }
         }
     }
 
     private fun updateMainInviteButtonText() {
-        binding.btnInviteMovie1.text = "Gửi lời mời ($selectedTime - $selectedDay)"
+        if (!isMovie1Sent) {
+            binding.btnInviteMovie1.text = "Gửi lời mời ($selectedTime - $selectedDay)"
+        }
     }
+
+    private var isMovie1Sent = false
+    private var isMovie2Sent = false
+    private var isMovie3Sent = false
 
     private fun setupInviteButtons() {
+        // NÚT PHIM 1: Hành Tinh Cát 2
         binding.btnInviteMovie1.setOnClickListener {
-            sendMovieInvite("Hành Tinh Cát: Phần 2 ($selectedTime - $selectedDay)")
+            toggleInviteState(
+                button = binding.btnInviteMovie1,
+                isSent = isMovie1Sent,
+                onStateChanged = { isMovie1Sent = it },
+                movieTitle = "Hành Tinh Cát 2 ($selectedTime - $selectedDay)",
+                defaultText = "Gửi lời mời ($selectedTime - $selectedDay)"
+            )
         }
 
+        // NÚT PHIM 2: Godzilla x Kong / Oppenheimer
         binding.btnInviteMovie2.setOnClickListener {
-            sendMovieInvite("Godzilla x Kong: Đế Chế (Tối nay 20:00)")
+            toggleInviteState(
+                button = binding.btnInviteMovie2,
+                isSent = isMovie2Sent,
+                onStateChanged = { isMovie2Sent = it },
+                movieTitle = "Oppenheimer (Tối nay 20:00)",
+                defaultText = "Gửi lời mời"
+            )
         }
 
+        // NÚT PHIM 3: Mai: Kỳ Nguyên Mới
         binding.btnInviteMovie3.setOnClickListener {
-            sendMovieInvite("Mai: Kỳ Nguyên Mới (19:45 - Rạp 01)")
+            toggleInviteState(
+                button = binding.btnInviteMovie3,
+                isSent = isMovie3Sent,
+                onStateChanged = { isMovie3Sent = it },
+                movieTitle = "Mai: Kỳ Nguyên Mới (19:45 - Rạp 01)",
+                defaultText = "Gửi lời mời"
+            )
         }
     }
 
-    private fun sendMovieInvite(detail: String) {
-        showCineMessage(
-            message = "Đã gửi lời mời xem $detail tới Thảo Vy",
-            actionLabel = "HOÀN TÁC",
-            onAction = {
-                showCineMessage("Đã thu hồi lời mời xem $detail")
-            }
-        )
+    private fun toggleInviteState(
+        button: MaterialButton,
+        isSent: Boolean,
+        onStateChanged: (Boolean) -> Unit,
+        movieTitle: String,
+        defaultText: String
+    ) {
+        if (!isSent) {
+            onStateChanged(true)
+            button.text = "Đã gửi lời mời"
+            button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
+            showCineMessage(
+                message = "Đã gửi lời mời xem $movieTitle tới $targetFriend",
+                actionLabel = "HOÀN TÁC",
+                onAction = {
+                    onStateChanged(false)
+                    button.text = defaultText
+                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5B3DF5"))
+                    showCineMessage("Đã thu hồi lời mời xem $movieTitle")
+                }
+            )
+        } else {
+            onStateChanged(false)
+            button.text = defaultText
+            button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5B3DF5"))
+            showCineMessage("Đã thu hồi lời mời xem $movieTitle")
+        }
     }
 
     override fun onDestroyView() {

@@ -1,12 +1,17 @@
 package com.ute.cinenow.ui.cineconnect
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import com.ute.cinenow.R
 import com.ute.cinenow.databinding.FragmentMatchedPeopleBinding
 import com.ute.cinenow.utils.showCineMessage
 
@@ -14,6 +19,13 @@ class MatchedPeopleFragment : Fragment() {
 
     private var _binding: FragmentMatchedPeopleBinding? = null
     private val binding get() = _binding!!
+
+    private val memberData = listOf(
+        "Trần Bảo Long",
+        "Nguyễn Thảo Ly",
+        "Đặng Tuấn Kiệt",
+        "Lê Hoàng Minh"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +41,52 @@ class MatchedPeopleFragment : Fragment() {
         setupHeader()
         setupSearchAndFilter()
         setupMemberActions()
+
+        val initialKw = arguments?.getString("search_keyword")
+        if (!initialKw.isNullOrBlank()) {
+            binding.etSearchPeople.setText(initialKw)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshAllAddButtons()
     }
 
     private fun setupHeader() {
         binding.header.onBackClick = {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            val popped = try { findNavController().popBackStack() } catch (_: Exception) { false }
+            if (!popped) {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
+
+    private fun refreshAllAddButtons() {
+        val addButtons = listOf(
+            binding.btnAddFriend1 to memberData[0],
+            binding.btnAddFriend2 to memberData[1],
+            binding.btnAddFriend3 to memberData[2],
+            binding.btnAddFriend4 to memberData[3]
+        )
+        for ((btn, name) in addButtons) {
+            val isFriend = CineConnectStateManager.isFriend(name)
+            val isSent = CineConnectStateManager.isRequestSent(name)
+
+            when {
+                isFriend -> {
+                    btn.text = "Nhắn tin"
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#10B981"))
+                }
+                isSent -> {
+                    btn.text = "Đã gửi lời mời"
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
+                }
+                else -> {
+                    btn.text = "Kết bạn"
+                    btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                }
+            }
         }
     }
 
@@ -65,67 +118,87 @@ class MatchedPeopleFragment : Fragment() {
         }
 
         binding.btnFilterPeople.setOnClickListener {
-            showCineMessage("Đang lọc thành viên phù hợp tại khu vực TP.HCM")
+            showCineMessage("Bộ lọc", subtitle = "Đang lọc thành viên phù hợp tại khu vực TP.HCM")
+        }
+
+        val chips = listOf(binding.chipAll, binding.chipArea, binding.chipSciFi)
+        fun highlightChip(target: View) {
+            for (c in chips) {
+                val isSelected = (c == target)
+                c.backgroundTintList = ColorStateList.valueOf(
+                    if (isSelected) Color.parseColor("#5B3DF5") else Color.WHITE
+                )
+            }
         }
 
         binding.chipAll.setOnClickListener {
+            highlightChip(binding.chipAll)
             binding.etSearchPeople.setText("")
-            showCineMessage("Hiển thị tất cả 6 thành viên phù hợp")
+            showCineMessage("Hiển thị tất cả thành viên phù hợp")
         }
 
         binding.chipArea.setOnClickListener {
+            highlightChip(binding.chipArea)
+            binding.etSearchPeople.setText("TP.HCM")
             showCineMessage("Khu vực hiện tại: TP.HCM")
         }
 
         binding.chipSciFi.setOnClickListener {
+            highlightChip(binding.chipSciFi)
             binding.etSearchPeople.setText("Khoa học viễn tưởng")
         }
     }
 
     private fun setupMemberActions() {
-        val profileButtons: List<Pair<MaterialButton, String>> = listOf(
-            Pair(binding.btnViewProfile1, "Trần Bảo Long"),
-            Pair(binding.btnViewProfile2, "Nguyễn Thảo Ly"),
-            Pair(binding.btnViewProfile3, "Đặng Tuấn Kiệt"),
-            Pair(binding.btnViewProfile4, "Lê Hoàng Minh")
+        val profileButtons = listOf(
+            binding.btnViewProfile1 to memberData[0],
+            binding.btnViewProfile2 to memberData[1],
+            binding.btnViewProfile3 to memberData[2],
+            binding.btnViewProfile4 to memberData[3]
         )
 
-        for (item in profileButtons) {
-            val btnProfile = item.first
-            val memberName = item.second
+        for ((btnProfile, memberName) in profileButtons) {
             btnProfile.setOnClickListener {
-                showCineMessage("Đang mở hồ sơ của $memberName")
+                findNavController().navigate(
+                    R.id.userProfileFragment,
+                    bundleOf("user_name" to memberName)
+                )
             }
         }
 
-        val addFriendButtons: List<Pair<MaterialButton, String>> = listOf(
-            Pair(binding.btnAddFriend1, "Trần Bảo Long"),
-            Pair(binding.btnAddFriend2, "Nguyễn Thảo Ly"),
-            Pair(binding.btnAddFriend3, "Đặng Tuấn Kiệt"),
-            Pair(binding.btnAddFriend4, "Lê Hoàng Minh")
+        val addButtons = listOf(
+            binding.btnAddFriend1 to memberData[0],
+            binding.btnAddFriend2 to memberData[1],
+            binding.btnAddFriend3 to memberData[2],
+            binding.btnAddFriend4 to memberData[3]
         )
 
-        for (item in addFriendButtons) {
-            val btnAdd = item.first
-            val memberName = item.second
-            var isSent = false
-
+        for ((btnAdd, memberName) in addButtons) {
             btnAdd.setOnClickListener {
-                if (!isSent) {
-                    isSent = true
-                    btnAdd.text = "Đã gửi lời mời"
+                if (CineConnectStateManager.isFriend(memberName)) {
+                    // Đã là bạn bè -> Mở chat
+                    findNavController().navigate(
+                        R.id.chatFragment,
+                        bundleOf("friend_name" to memberName)
+                    )
+                } else if (!CineConnectStateManager.isRequestSent(memberName)) {
+                    // Chưa gửi -> Gửi lời mời
+                    CineConnectStateManager.sendFriendRequest(memberName)
+                    refreshAllAddButtons()
                     showCineMessage(
                         message = "Đã gửi lời mời kết bạn tới $memberName",
                         actionLabel = "HOÀN TÁC",
                         onAction = {
-                            isSent = false
-                            btnAdd.text = "Kết bạn"
+                            // Bấm HOÀN TÁC -> Chuyển lại về "Kết bạn"
+                            CineConnectStateManager.cancelFriendRequest(memberName)
+                            refreshAllAddButtons()
                             showCineMessage("Đã hủy lời mời kết bạn tới $memberName")
                         }
                     )
                 } else {
-                    isSent = false
-                    btnAdd.text = "Kết bạn"
+                    // Bấm vào nút "Đã gửi lời mời" -> Hủy lời mời và hiện lại "Kết bạn"
+                    CineConnectStateManager.cancelFriendRequest(memberName)
+                    refreshAllAddButtons()
                     showCineMessage("Đã hủy lời mời kết bạn tới $memberName")
                 }
             }
