@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FC">
+    android:background="#F8F9FC"
+    tools:ignore="HardcodedText,Typos">
 
-    <!-- Header chung CineNow -->
     <com.ute.cinenow.utils.CineHeader
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -16,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,7 +35,7 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="16dp">
 
-            <!-- Card thong tin ca nhan -->
+            <!-- Card thông tin cá nhân -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,64 +91,42 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="@baolong_cinema"
+                        android:text="baolong_cinema"
                         android:textColor="#64748B"
                         android:textSize="12sp" />
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/bg_rounded_icon"
                         android:backgroundTint="#EEF2FF"
+                        android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp">
+                        android:paddingVertical="4dp"
+                        android:text="Thành viên thân thiết • 24 vé đã xem"
+                        android:textColor="#4338CA"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_shield_check"
+                        app:drawableTint="#4F46E5" />
 
-                        <ImageView
-                            android:layout_width="13dp"
-                            android:layout_height="13dp"
-                            android:contentDescription="Thành viên thân thiết"
-                            android:src="@drawable/ic_shield_check"
-                            app:tint="#4F46E5" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:text="Thành viên thân thiết • 24 vé đã xem"
-                            android:textColor="#4338CA"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:drawablePadding="4dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:contentDescription="Bảo vệ thông tin"
-                            android:src="@drawable/ic_lock"
-                            app:tint="#94A3B8" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="Thông tin liên lạc cá nhân được bảo vệ an toàn."
-                            android:textColor="#94A3B8"
-                            android:textSize="10.5sp" />
-                    </LinearLayout>
+                        android:text="Thông tin liên lạc cá nhân được bảo vệ an toàn."
+                        android:textColor="#94A3B8"
+                        android:textSize="11sp"
+                        app:drawableStartCompat="@drawable/ic_lock"
+                        app:drawableTint="#94A3B8" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Chi so tuong thich dien anh -->
+            <!-- Card chỉ số tương thích điện ảnh -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,22 +147,18 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:contentDescription="Chỉ số tương thích"
-                            android:src="@drawable/ic_md_star"
-                            app:tint="#FDE047" />
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
                             android:layout_weight="1"
+                            android:drawablePadding="6dp"
+                            android:gravity="center_vertical"
                             android:text="Chỉ số tương thích điện ảnh"
                             android:textColor="@android:color/white"
                             android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            app:drawableStartCompat="@drawable/ic_md_star"
+                            app:drawableTint="#FDE047" />
 
                         <TextView
                             android:id="@+id/tvAlgorithmBadge"
@@ -196,7 +170,7 @@
                             android:paddingVertical="4dp"
                             android:text="Thuật toán khớp gu"
                             android:textColor="@android:color/white"
-                            android:textSize="10.5sp"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -204,7 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="baseline"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
@@ -224,14 +198,13 @@
                             android:textSize="12sp" />
                     </LinearLayout>
 
-                    <!-- 3 o con: The loai, Dinh dang, Khung gio -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:baselineAligned="false"
                         android:orientation="horizontal">
 
-                        <!-- The loai -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -247,7 +220,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Thể loại"
                                 android:textColor="#E0E7FF"
-                                android:textSize="10.5sp" />
+                                android:textSize="11sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -268,7 +241,6 @@
                                 android:progressTint="@android:color/white" />
                         </LinearLayout>
 
-                        <!-- Dinh dang -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -284,7 +256,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Định dạng"
                                 android:textColor="#E0E7FF"
-                                android:textSize="10.5sp" />
+                                android:textSize="11sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -305,7 +277,6 @@
                                 android:progressTint="@android:color/white" />
                         </LinearLayout>
 
-                        <!-- Khung gio -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -321,7 +292,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Khung giờ"
                                 android:textColor="#E0E7FF"
-                                android:textSize="10.5sp" />
+                                android:textSize="11sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -345,7 +316,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tieu de: Diem chung cua hai ban -->
+            <!-- Tiêu đề: Điểm chung của hai bạn -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -353,22 +324,18 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:contentDescription="Điểm chung"
-                    android:src="@drawable/ic_home_people"
-                    app:tint="#4F46E5" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:layout_weight="1"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
                     android:text="Điểm chung của hai bạn"
                     android:textColor="#0F172A"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_home_people"
+                    app:drawableTint="#4F46E5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -379,7 +346,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Diem chung 1: The loai phim ua chuong -->
+            <!-- Điểm chung 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -417,7 +384,7 @@
                             android:layout_height="wrap_content"
                             android:text="THỂ LOẠI PHIM ƯA CHUỘNG"
                             android:textColor="#94A3B8"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -445,7 +412,7 @@
                                 android:paddingVertical="3dp"
                                 android:text="Sci-Fi Epic"
                                 android:textColor="#475569"
-                                android:textSize="10sp" />
+                                android:textSize="11sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -456,13 +423,13 @@
                                 android:paddingVertical="3dp"
                                 android:text="Psychological Thriller"
                                 android:textColor="#475569"
-                                android:textSize="10sp" />
+                                android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Diem chung 2: Cum rap thuong ghe nhat -->
+            <!-- Điểm chung 2 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -500,7 +467,7 @@
                             android:layout_height="wrap_content"
                             android:text="CỤM RẠP THƯỜNG GHÉ NHẤT"
                             android:textColor="#94A3B8"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -523,7 +490,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Diem chung 3: Khung gio vang di xem chung -->
+            <!-- Điểm chung 3 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -561,7 +528,7 @@
                             android:layout_height="wrap_content"
                             android:text="KHUNG GIỜ VÀNG ĐI XEM CHUNG"
                             android:textColor="#94A3B8"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -585,7 +552,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tieu de: Phim tam dac nhat -->
+            <!-- Tiêu đề: Phim tâm đắc nhất -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -593,22 +560,18 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:contentDescription="Phim tâm đắc"
-                    android:src="@drawable/ic_md_star"
-                    app:tint="#E11D48" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:layout_weight="1"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
                     android:text="Phim tâm đắc nhất"
                     android:textColor="#0F172A"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_md_star"
+                    app:drawableTint="#E11D48" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -623,9 +586,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <!-- Phim 1: Hanh Tinh Cat 2 -->
+                <!-- Phim 1: Hành Tinh Cát 2 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -660,7 +624,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="T16"
                                 android:textColor="@android:color/white"
-                                android:textSize="9.5sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -674,7 +638,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="9.8"
                                 android:textColor="#FACC15"
-                                android:textSize="10sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
                     </androidx.cardview.widget.CardView>
@@ -697,7 +661,7 @@
                         android:maxLines="1"
                         android:text="Denis Villeneuve"
                         android:textColor="#64748B"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <!-- Phim 2: Oppenheimer -->
@@ -735,7 +699,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="T18"
                                 android:textColor="@android:color/white"
-                                android:textSize="9.5sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -749,7 +713,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="9.5"
                                 android:textColor="#FACC15"
-                                android:textSize="10sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
                     </androidx.cardview.widget.CardView>
@@ -772,10 +736,10 @@
                         android:maxLines="1"
                         android:text="Christopher Nolan"
                         android:textColor="#64748B"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
-                <!-- Phim 3: Inception -->
+                <!-- Phim 3: Inception (dùng tạm poster_oppenheimer nếu chưa có poster_inception trong res/drawable) -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -798,7 +762,7 @@
                                 android:layout_height="match_parent"
                                 android:contentDescription="Inception"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/poster_inception" />
+                                android:src="@drawable/poster_oppenheimer" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -810,7 +774,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="T16"
                                 android:textColor="@android:color/white"
-                                android:textSize="9.5sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -824,7 +788,7 @@
                                 android:paddingVertical="2dp"
                                 android:text="9.9"
                                 android:textColor="#FACC15"
-                                android:textSize="10sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
                     </androidx.cardview.widget.CardView>
@@ -847,11 +811,11 @@
                         android:maxLines="1"
                         android:text="Kẻ Trộm Giấc Mơ"
                         android:textColor="#64748B"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Card Cong dong dien anh van minh -->
+            <!-- Card cộng đồng điện ảnh văn minh -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -903,7 +867,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Nut Gui loi moi ket ban -->
+            <!-- Nút gửi lời mời kết bạn -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSendFriendRequest"
                 android:layout_width="match_parent"
@@ -920,7 +884,7 @@
                 app:iconGravity="textStart"
                 app:iconTint="@android:color/white" />
 
-            <!-- Luu y duoi nut -->
+            <!-- Lưu ý dưới nút -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -928,8 +892,7 @@
                 android:gravity="center"
                 android:text="Chỉ có thể trò chuyện và rủ xem phim sau khi cả hai đồng ý kết bạn."
                 android:textColor="#94A3B8"
-                android:textSize="10.5sp" />
-
+                android:textSize="11sp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
