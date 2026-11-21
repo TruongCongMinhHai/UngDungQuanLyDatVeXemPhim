@@ -62,7 +62,7 @@
                             android:backgroundTint="#E2E8F0"
                             android:contentDescription="Ảnh đại diện Trần Bảo Long"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_person" />
+                            android:src="@drawable/cast_cillian_murphy" />
 
                         <ImageView
                             android:layout_width="24dp"
@@ -762,7 +762,7 @@
                                 android:layout_height="match_parent"
                                 android:contentDescription="Inception"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/poster_oppenheimer" />
+                                android:src="@drawable/poster_ke_trom_giac_mo" />
 
                             <TextView
                                 android:layout_width="wrap_content"

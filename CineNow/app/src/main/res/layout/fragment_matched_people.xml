@@ -279,9 +279,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Trần Bảo Long"
-                                    android:padding="8dp"
-                                    android:src="@drawable/ic_person"
-                                    app:tint="#475569" />
+                                    android:src="@drawable/cast_cillian_murphy"
+                                    android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
                             <FrameLayout
@@ -497,9 +496,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Nguyễn Thảo Ly"
-                                    android:padding="8dp"
-                                    android:src="@drawable/ic_person"
-                                    app:tint="#475569" />
+                                    android:src="@drawable/cast_phuong_anh_dao"
+                                    android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
                             <FrameLayout
@@ -713,9 +711,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Đặng Tuấn Kiệt"
-                                    android:padding="8dp"
-                                    android:src="@drawable/ic_person"
-                                    app:tint="#475569" />
+                                    android:src="@drawable/cast_tuan_tran"
+                                    android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
                             <FrameLayout
@@ -929,9 +926,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Lê Hoàng Minh"
-                                    android:padding="8dp"
-                                    android:src="@drawable/ic_person"
-                                    app:tint="#475569" />
+                                    android:src="@drawable/cast_christopher_nolan"
+                                    android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
                             <FrameLayout
