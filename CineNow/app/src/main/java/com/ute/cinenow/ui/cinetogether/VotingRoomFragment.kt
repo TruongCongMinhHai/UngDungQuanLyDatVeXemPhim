@@ -183,12 +183,7 @@ class VotingRoomFragment : Fragment() {
         }
 
         // Cập nhật text trên nút chốt phim
-        val winningMovieName = when (myVotedMovieId) {
-            2 -> "Mai (2/3 vote)"
-            3 -> "Gia Tài Của Ngoại (Hòa - Quyết định)"
-            else -> "Dune 2 (2/3 vote)"
-        }
-        binding.btnConfirmVote.text = "Chốt phim: $winningMovieName"
+        binding.btnConfirmVote.text = "Chốt phim"
     }
 
     override fun onDestroyView() {

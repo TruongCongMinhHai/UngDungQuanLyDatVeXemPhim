@@ -697,7 +697,7 @@
                 android:id="@+id/btnConfirmVote"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:text="Chốt phim &amp; Đặt vé"
+                android:text="Chốt phim"
                 android:textColor="@color/cinenow_white"
                 android:textSize="15sp"
                 android:textStyle="bold"
