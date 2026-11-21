@@ -22,7 +22,7 @@ class SmartSeatSetupFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var peopleCount = 1
-    private var selectedZone: String? = null
+    private var selectedZone: String = "Khu vực trung tâm"
     private var isAvoidCorner = false
     private var isAvoidFrontRow = false
 
@@ -81,17 +81,24 @@ class SmartSeatSetupFragment : Fragment() {
             ZoneOption(binding.optCouple, binding.dotOptCouple, binding.tvOptCoupleTitle, "Ghế đôi")
         )
 
+        fun highlightZone(target: ZoneOption) {
+            for (opt in options) {
+                opt.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F8FAFC"))
+                opt.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E2E8F0"))
+                opt.title.setTextColor(Color.parseColor("#0F172A"))
+            }
+            target.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EDE9FE"))
+            target.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+            target.title.setTextColor(Color.parseColor("#312E81"))
+            selectedZone = target.name
+        }
+
+        // Mặc định chọn khu vực đầu tiên nhưng vẫn cho phép bấm đổi sang khu vực khác
+        highlightZone(options.first())
+
         for (clicked in options) {
             clicked.container.setOnClickListener {
-                for (opt in options) {
-                    opt.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F8FAFC"))
-                    opt.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E2E8F0"))
-                    opt.title.setTextColor(Color.parseColor("#0F172A"))
-                }
-                clicked.container.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EDE9FE"))
-                clicked.dot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
-                clicked.title.setTextColor(Color.parseColor("#312E81"))
-                selectedZone = clicked.name
+                highlightZone(clicked)
             }
         }
     }
@@ -113,25 +120,20 @@ class SmartSeatSetupFragment : Fragment() {
 
     private fun setupNavigationButtons() {
         binding.btnFindSeats.setOnClickListener {
-            val zone = selectedZone
-            if (zone == null) {
-                showCineMessage("Vui lòng chọn khu vực ngồi")
-                return@setOnClickListener
-            }
-
             showCineMessage(
                 message = "Đã áp dụng gợi ý ghế",
-                subtitle = "$peopleCount người • $zone"
+                subtitle = "$peopleCount người • $selectedZone"
             )
             navigateToSeatSelection(
                 useSmartSuggestion = true,
-                zone = zone
+                zone = selectedZone
             )
         }
+
         binding.btnManualSelect.setOnClickListener {
             navigateToSeatSelection(
                 useSmartSuggestion = false,
-                zone = selectedZone ?: "Khu vực trung tâm"
+                zone = selectedZone
             )
         }
     }
@@ -148,7 +150,6 @@ class SmartSeatSetupFragment : Fragment() {
         if (!movieTitle.isNullOrBlank()) {
             args.putString(MovieDetailFragment.ARG_MOVIE_TITLE, movieTitle)
         }
-
         try {
             findNavController().navigate(R.id.seatSelectionFragment, args)
         } catch (e: Exception) {
