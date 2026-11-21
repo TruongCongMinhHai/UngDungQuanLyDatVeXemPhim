@@ -24,7 +24,7 @@ class BookingReviewFragment : Fragment() {
     private var voucherCode: String = "CINEMAX20K"
     private var voucherDiscount: Long = 20_000L
     private var paymentMethod: String = "Ví điện tử"
-    private val baseSubtotal: Long = 510_000L
+    private var baseSubtotal: Long = 510_000L
     private val memberDiscount: Long = 45_000L
 
     override fun onCreateView(
@@ -44,6 +44,16 @@ class BookingReviewFragment : Fragment() {
         movieTitle = movie.title
         binding.imgMoviePoster.setImageResource(movie.posterRes)
 
+        // Nhận danh sách ghế và tổng tiền từ màn SeatSelectionFragment
+        val selectedSeats = arguments?.getStringArrayList("arg_selected_seats")
+        val passedPrice = arguments?.getLong("arg_total_price", 0L) ?: 0L
+        if (passedPrice > 0L) {
+            baseSubtotal = passedPrice
+        }
+        if (!selectedSeats.isNullOrEmpty()) {
+            binding.tvTicketSeats.text = selectedSeats.joinToString(", ")
+        }
+
         observeVoucherResult()
         updatePaymentSummary()
         setupPaymentSelection()
@@ -51,6 +61,7 @@ class BookingReviewFragment : Fragment() {
     }
 
     private fun observeVoucherResult() {
+        // Nhận voucher qua savedStateHandle (Navigation Component)
         val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
         savedStateHandle?.getLiveData<String>("selected_voucher_code")
             ?.observe(viewLifecycleOwner) { code ->
@@ -62,6 +73,15 @@ class BookingReviewFragment : Fragment() {
                 voucherDiscount = discount ?: 0L
                 updatePaymentSummary()
             }
+
+        // Dự phòng nhận voucher qua FragmentResult
+        parentFragmentManager.setFragmentResultListener("voucher_result", viewLifecycleOwner) { _, bundle ->
+            val code = bundle.getString("selected_voucher_code", "")
+            val discount = bundle.getLong("selected_voucher_discount", 0L)
+            voucherCode = code
+            voucherDiscount = discount
+            updatePaymentSummary()
+        }
     }
 
     private fun formatCurrencyVnd(amount: Long): String {
@@ -115,20 +135,41 @@ class BookingReviewFragment : Fragment() {
         }
     }
 
+    private fun handleBackToSeats() {
+        // 1. Thử pop qua Navigation Component
+        val poppedNav = try { findNavController().popBackStack() } catch (_: Exception) { false }
+        if (!poppedNav) {
+            // 2. Thử pop qua FragmentManager
+            val poppedFrag = try {
+                if (parentFragmentManager.backStackEntryCount > 0) {
+                    parentFragmentManager.popBackStack()
+                    true
+                } else false
+            } catch (_: Exception) { false }
+
+            // 3. Nếu cả 2 đều không pop được thì navigate trực tiếp về SeatSelectionFragment
+            if (!poppedFrag) {
+                try {
+                    findNavController().navigate(R.id.seatSelectionFragment)
+                } catch (_: Exception) {}
+            }
+        }
+    }
+
     private fun setupActions() {
-        binding.btnViewAllVouchers.setOnClickListener {
-            findNavController().navigate(
-                R.id.selectVoucherFragment,
-                bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
+        binding.header.onBackClick = { handleBackToSeats() }
+
+        val openVoucher = {
+            val bundle = bundleOf(
+                MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle,
+                "arg_subtotal" to baseSubtotal,
+                "current_voucher_code" to voucherCode
             )
+            findNavController().navigate(R.id.selectVoucherFragment, bundle)
         }
 
-        binding.btnChangeVoucher.setOnClickListener {
-            findNavController().navigate(
-                R.id.selectVoucherFragment,
-                bundleOf(MovieDetailFragment.ARG_MOVIE_TITLE to movieTitle)
-            )
-        }
+        binding.btnViewAllVouchers.setOnClickListener { openVoucher() }
+        binding.btnChangeVoucher.setOnClickListener { openVoucher() }
 
         binding.btnBookNow.setOnClickListener {
             showCineMessage("Đang xử lý đặt vé", subtitle = "$movieTitle • $paymentMethod")
@@ -139,7 +180,7 @@ class BookingReviewFragment : Fragment() {
         }
 
         binding.btnChangeSeats.setOnClickListener {
-            findNavController().popBackStack()
+            handleBackToSeats()
         }
     }
 
