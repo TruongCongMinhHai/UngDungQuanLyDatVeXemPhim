@@ -1,20 +1,544 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cinenow_background">
+    android:background="#F8F9FC">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header chung CineNow -->
+    <com.ute.cinenow.utils.CineHeader
+        android:id="@+id/cineHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sơ đồ ghế"
-        android:textSize="22sp"
-        android:textColor="@color/cinenow_text_primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:headerShowBack="true"
+        app:headerShowProfile="true"
+        app:headerTitle="Chọn ghế"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollSeatContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="160dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cineHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Thông tin phòng chiếu & suất chiếu -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Sơ đồ phòng chiếu 03"
+                android:textColor="#0F172A"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvShowtimeInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="16:45 • Hành Tinh Cát: Phần 2 • IMAX 2D"
+                android:textColor="#64748B"
+                android:textSize="11.5sp" />
+
+            <!-- Màn hình chiếu (Screen Curve) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <View
+                    android:layout_width="220dp"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="#5850EC" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="🖥  MÀN HÌNH CHIẾU (SCREEN)"
+                    android:textColor="#64748B"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold" />
+
+                <!-- Chú thích trạng thái ghế -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- Ghế trống -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#F1F5F9" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ghế thường"
+                            android:textColor="#475569"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- Đã đặt -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#CBD5E1"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textColor="#64748B"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đã đặt"
+                            android:textColor="#475569"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- Ghế VIP -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="4dp"
+                            android:contentDescription="Ghế VIP"
+                            android:src="@drawable/ic_auth_star" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ghế VIP"
+                            android:textColor="#475569"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- Đang chọn -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#5850EC" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đang chọn"
+                            android:textColor="#475569"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Gợi ý SmartBanner Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSmartSuggestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="#F3F0FF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvSmartBannerTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Gợi ý SmartSeat: Dãy F5 - F7"
+                            android:textColor="#312E81"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvSmartMatchBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_icon"
+                            android:backgroundTint="#E0E7FF"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="95% Tương thích"
+                            android:textColor="#4338CA"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvSmartBannerSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Vị trí trung tâm tối ưu tầm nhìn và hiệu ứng âm thanh vòm"
+                        android:textColor="#4338CA"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- SƠ ĐỒ GHẾ NGỒI (A - H) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Dãy A (Ghế thường) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="A" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <FrameLayout android:id="@+id/seatA1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarA4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarA5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarA9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatA10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatA10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarA10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="A" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy B (Ghế thường) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="B" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <FrameLayout android:id="@+id/seatB1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarB1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarB2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarB3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarB4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarB5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarB6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarB7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarB8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarB9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatB10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatB10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarB10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="B" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy C (Ghế thường) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="C" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <FrameLayout android:id="@+id/seatC1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="4" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarC5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarC9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatC10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatC10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarC10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="C" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy D: D4..D7 là VIP (sao vàng), D1..D3 và D8..D10 là Thường -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="D" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <!-- D1 (Thường) -->
+                    <FrameLayout android:id="@+id/seatD1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- D2 (Thường) -->
+                    <FrameLayout android:id="@+id/seatD2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- D3 (Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatD3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarD3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- D4 (VIP) -->
+                    <FrameLayout android:id="@+id/seatD4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="4" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- D5 (VIP) -->
+                    <FrameLayout android:id="@+id/seatD5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="5" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- D6 (VIP) -->
+                    <FrameLayout android:id="@+id/seatD6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- D7 (VIP) -->
+                    <FrameLayout android:id="@+id/seatD7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- D8 (Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatD8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarD8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- D9 (Thường) -->
+                    <FrameLayout android:id="@+id/seatD9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarD9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- D10 (Thường) -->
+                    <FrameLayout android:id="@+id/seatD10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatD10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarD10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="D" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy E: E4..E7 là VIP, E1..E3 và E8..E10 là Thường -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="E" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <!-- E1 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E2 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E3 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E4 (VIP Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatE4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarE4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E5 (VIP Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatE5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarE5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E6 (VIP Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatE6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarE6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E7 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatE7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- E8 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E9 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarE9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- E10 (Thường) -->
+                    <FrameLayout android:id="@+id/seatE10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatE10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarE10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="E" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy F: F4..F7 là VIP, F1..F3 và F8..F10 là Thường -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="F" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <!-- F1 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F2 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F3 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F4 (VIP Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatF4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarF4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F5 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatF5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="5" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- F6 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatF6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- F7 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatF7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- F8 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F9 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarF9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- F10 (Thường) -->
+                    <FrameLayout android:id="@+id/seatF10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatF10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarF10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="F" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy G: G4..G7 là VIP, G1..G3 và G8..G10 là Thường -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="4dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="G" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <!-- G1 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G2 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G3 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G4 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatG4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="4" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- G5 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatG5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="5" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- G6 (VIP Trống) -->
+                    <FrameLayout android:id="@+id/seatG6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#EDE9FE" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#312E81" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" /></FrameLayout>
+                    <!-- G7 (VIP Đã đặt) -->
+                    <FrameLayout android:id="@+id/seatG7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#CBD5E1" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="×" android:textColor="#94A3B8" android:textSize="11sp" android:textStyle="bold" /><ImageView android:id="@+id/ivStarG7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G8 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G9 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarG9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <!-- G10 (Thường) -->
+                    <FrameLayout android:id="@+id/seatG10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatG10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarG10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="G" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Dãy H (Ghế thường / Ghế đôi) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:gravity="center" android:orientation="horizontal">
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="H" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                    <FrameLayout android:id="@+id/seatH1" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH1" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="1" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH2" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH2" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="2" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH3" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH3" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="3" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH4" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH4" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="4" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH4" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH5" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH5" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="5" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH5" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH6" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH6" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="6" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH6" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH7" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH7" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="7" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH7" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH8" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH8" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="8" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH8" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH9" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH9" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="9" android:textColor="#0F172A" android:textSize="10.5sp" /><ImageView android:id="@+id/ivStarH9" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <FrameLayout android:id="@+id/seatH10" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginHorizontal="1.5dp" android:background="@drawable/bg_rounded_icon" android:backgroundTint="#F1F5F9" android:clickable="true" android:focusable="true"><TextView android:id="@+id/tvSeatH10" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:includeFontPadding="false" android:text="10" android:textColor="#0F172A" android:textSize="10sp" /><ImageView android:id="@+id/ivStarH10" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="top|end" android:layout_margin="1dp" android:src="@drawable/ic_auth_star" android:visibility="gone" /></FrameLayout>
+                    <TextView android:layout_width="16dp" android:layout_height="wrap_content" android:gravity="center" android:text="H" android:textColor="#64748B" android:textSize="11sp" android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Hướng dẫn thao tác -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="👉 Nhấn trực tiếp lên ghế để đổi vị trí thủ công bất kỳ lúc nào"
+                android:textColor="#64748B"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Action Summary Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="12dp"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvSelectedSeatSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="• Đang chọn: F5, F6, F7"
+                    android:textColor="#0F172A"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnResetSeats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_icon"
+                    android:backgroundTint="#F1F5F9"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="🔄 Khôi phục"
+                    android:textColor="#475569"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSmartSeatReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="✓ Thỏa mãn: 3 ghế VIP liên tiếp tại hàng F (Khu vực trung tâm)."
+                android:textColor="#059669"
+                android:textSize="11.5sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#F1F5F9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TỔNG THANH TOÁN"
+                        android:textColor="#64748B"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="630.000đ"
+                        android:textColor="#5850EC"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnContinueCheckout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:backgroundTint="#5850EC"
+                    android:paddingHorizontal="24dp"
+                    android:text="Tiếp tục đặt vé →"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
