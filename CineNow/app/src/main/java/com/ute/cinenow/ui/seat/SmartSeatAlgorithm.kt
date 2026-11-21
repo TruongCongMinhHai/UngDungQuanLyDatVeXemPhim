@@ -3,12 +3,12 @@ package com.ute.cinenow.ui.seat
 import kotlin.math.abs
 
 /**
- * Thuật toán SmartSeat độc lập với Android UI
+ * Thuật toán SmartSeat tự động tìm nhóm ghế tối ưu
  * Thang điểm 100:
- * - Đúng khu vực mong muốn: max 40đ
- * - Gần trung tâm màn hình: max 30đ
- * - Không sát góc: max 15đ
- * - Không quá gần màn hình: max 15đ
+ * - Đúng khu vực mong muốn: tối đa 40 điểm
+ * - Gần trung tâm màn hình: tối đa 30 điểm
+ * - Không sát góc (cột 1,2 và 9,10): tối đa 15 điểm
+ * - Không quá gần màn hình (hàng A, B): tối đa 15 điểm
  */
 object SmartSeatAlgorithm {
 
@@ -22,24 +22,23 @@ object SmartSeatAlgorithm {
     fun findBestSeats(preference: SeatPreference, allSeats: List<Seat>): SeatSuggestion {
         val peopleCount = preference.numberOfPeople.coerceIn(1, 6)
 
-        // 1. Lọc ghế AVAILABLE
+        // 1. Chỉ lấy ghế AVAILABLE
         val availableSeats = allSeats.filter { it.status == SeatStatus.AVAILABLE }
 
-        // 2. Lọc theo loại ghế bắt buộc
+        // 2. Lọc theo loại ghế
         val candidatePool = when (preference.preferredSeatType) {
             SeatTypePreference.VIP -> availableSeats.filter { it.seatType == SeatType.VIP }
             SeatTypePreference.STANDARD -> availableSeats.filter { it.seatType == SeatType.STANDARD }
             SeatTypePreference.ANY -> availableSeats
         }
 
-        // 3. Tìm các nhóm N ghế liền kề
+        // 3. Tìm nhóm N ghế liền kề
         val candidateGroups = if (peopleCount == 1) {
             candidatePool.map { listOf(it) }
         } else {
             findConsecutiveSeatGroups(candidatePool, peopleCount, preference.preferredSeatType)
         }
 
-        // Nếu không có nhóm ghế thỏa mãn
         if (candidateGroups.isEmpty()) {
             val typeText = when (preference.preferredSeatType) {
                 SeatTypePreference.VIP -> "ghế VIP"
@@ -62,7 +61,7 @@ object SmartSeatAlgorithm {
             scoreCandidate(group, preference)
         }
 
-        // 5. Chọn ứng viên có điểm cao nhất (ưu tiên độ cân đối trung tâm)
+        // 5. Chọn ứng viên có điểm cao nhất
         val bestCandidate = scoredList.minWithOrNull(
             compareByDescending<ScoredCandidate> { it.score }
                 .thenBy { it.colOffset }
@@ -100,7 +99,6 @@ object SmartSeatAlgorithm {
             for (i in 0..(sorted.size - peopleCount)) {
                 val sub = sorted.subList(i, i + peopleCount)
 
-                // Kiểm tra liền kề
                 var isConsecutive = true
                 for (j in 0 until sub.size - 1) {
                     val current = sub[j]
@@ -113,7 +111,6 @@ object SmartSeatAlgorithm {
 
                 if (!isConsecutive) continue
 
-                // Nếu người dùng chọn riêng một loại ghế thì không được trộn
                 if (seatTypePref == SeatTypePreference.VIP && sub.any { it.seatType != SeatType.VIP }) {
                     continue
                 }
@@ -149,7 +146,7 @@ object SmartSeatAlgorithm {
             }
         }
 
-        // 2. Vị trí gần trung tâm màn hình (Tối đa 30 điểm)
+        // 2. Gần trung tâm màn hình (Tối đa 30 điểm)
         val avgCol = (seats.first().positionX + seats.last().positionX) / 2.0
         val colOffset = abs(avgCol - 5.5)
 
