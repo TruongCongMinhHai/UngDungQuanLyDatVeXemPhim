@@ -953,7 +953,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -961,12 +960,12 @@
                                 android:textColor="#0F172A"
                                 android:textSize="13.5sp"
                                 android:textStyle="bold" />
-
+                            <!-- Lỗi 4: Sửa đúng chính tả câu văn -->
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Có 2 mọt phim thường xuyên ghé rạp này có cùng sở thích với bạn."
+                                android:text="Có 2 phim thường xuyên ghé rạp này mà bạn cũng thích."
                                 android:textColor="#475569"
                                 android:textSize="11sp" />
                         </LinearLayout>
@@ -978,7 +977,7 @@
                             android:layout_height="36dp"
                             android:layout_marginStart="8dp"
                             android:backgroundTint="#5B3DF5"
-                            android:text="Kết bạn"
+                            android:text="Xem người cùng rạp"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="11.5sp"

@@ -30,7 +30,6 @@ class FriendsFragment : Fragment() {
     private var _binding: FragmentFriendsBinding? = null
     private val binding get() = _binding!!
 
-    // Lưu trữ các thẻ bạn bè được thêm động (khi vừa chấp nhận kết bạn)
     private val dynamicFriendCards = mutableListOf<Pair<View, String>>()
 
     override fun onCreateView(
@@ -48,12 +47,12 @@ class FriendsFragment : Fragment() {
         setupSearchAndChips()
         setupFriendCards()
         setupBottomBar()
+        setupNearbyCinema()
     }
 
     override fun onResume() {
         super.onResume()
-        updateNearbyButtonState()
-        renderNewlyAddedFriends()
+        renderAllFriends()
     }
 
     private fun setupHeader() {
@@ -62,33 +61,47 @@ class FriendsFragment : Fragment() {
         }
     }
 
-    // Hiển thị các bạn bè mới được chấp nhận từ CineConnectStateManager
-    private fun renderNewlyAddedFriends() {
-        val container = binding.cardFriend1.parent as? ViewGroup ?: return
+    // Lỗi 4: Xử lý thẻ "Gần rạp của bạn" - Mở danh sách người cùng rạp, KHÔNG gửi lời mời
+    private fun setupNearbyCinema() {
+        binding.btnNearbyConnect.text = "Xem người cùng rạp"
+        binding.btnNearbyConnect.setOnClickListener {
+            findNavController().navigate(
+                R.id.matchedPeopleFragment,
+                bundleOf("search_keyword" to "Landmark 81")
+            )
+        }
+    }
 
-        // Xóa các thẻ động cũ trước khi render lại để không bị trùng lặp
+    // Lỗi 5, 8, 12: Hiển thị đồng nhất toàn bộ bạn bè từ CineConnectStateManager
+    private fun renderAllFriends() {
+        val friends = CineConnectStateManager.getFriends()
+        val totalFriendsCount = friends.size
+        binding.header.title = "Bạn bè xem phim ($totalFriendsCount)"
+
+        val container = binding.cardFriend1.parent as? ViewGroup ?: return
         for (item in dynamicFriendCards) {
             container.removeView(item.first)
         }
         dynamicFriendCards.clear()
 
-        val defaultNames = listOf("Minh Quân", "Thảo Vy", "Hoàng Nam", "Phương Linh")
-        val newFriends = CineConnectStateManager.friendList.filter { friend ->
-            !defaultNames.any { it.equals(friend.name, ignoreCase = true) }
-        }
+        // Ẩn 4 thẻ mẫu tĩnh trong XML để render dữ liệu chuẩn từ CineConnectStateManager
+        binding.cardFriend1.visibility = View.GONE
+        binding.cardFriend2.visibility = View.GONE
+        binding.cardFriend3.visibility = View.GONE
+        binding.cardFriend4.visibility = View.GONE
 
         val density = resources.displayMetrics.density
         val baseIndex = container.indexOfChild(binding.cardFriend1)
 
-        for ((offset, friend) in newFriends.withIndex()) {
+        for ((idx, friend) in friends.withIndex()) {
             val card = createFriendCardView(friend, density)
-            val searchKey = "${friend.name} ${friend.role} ${friend.subtitle}".lowercase()
+            val searchKey = "${friend.name} ${friend.genres.joinToString(" ")} ${friend.favoriteCinema}".lowercase()
             dynamicFriendCards.add(Pair(card, searchKey))
-            container.addView(card, baseIndex + offset)
+            container.addView(card, baseIndex + idx)
         }
     }
 
-    private fun createFriendCardView(friend: CineConnectStateManager.FriendItem, density: Float): View {
+    private fun createFriendCardView(friend: CineConnectStateManager.CineUser, density: Float): View {
         val dp = { value: Int -> (value * density).toInt() }
 
         val card = CardView(requireContext()).apply {
@@ -125,7 +138,7 @@ class FriendsFragment : Fragment() {
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
         val avatarImg = ImageView(requireContext()).apply {
-            setImageResource(R.drawable.ic_person)
+            setImageResource(friend.avatarRes)
             imageTintList = ColorStateList.valueOf(Color.parseColor("#475569"))
             setPadding(dp(7), dp(7), dp(7), dp(7))
         }
@@ -156,7 +169,7 @@ class FriendsFragment : Fragment() {
             setTypeface(null, Typeface.BOLD)
         }
         val tvRole = TextView(requireContext()).apply {
-            text = "Thích: ${friend.role}"
+            text = "Rạp: ${friend.favoriteCinema}"
             textSize = 11f
             setTextColor(Color.parseColor("#64748B"))
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
@@ -180,7 +193,7 @@ class FriendsFragment : Fragment() {
         topRow.addView(nameCol)
         topRow.addView(tvMatch)
 
-        // Hàng 2: Trạng thái (Vừa kết bạn mới)
+        // Hàng 2: Trạng thái & Gu phim
         val statusRow = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -200,7 +213,7 @@ class FriendsFragment : Fragment() {
             layoutParams = LinearLayout.LayoutParams(dp(13), dp(13))
         }
         val tvStatus = TextView(requireContext()).apply {
-            text = friend.subtitle
+            text = "Thích: ${friend.genres.joinToString(", ")}"
             textSize = 11f
             setTextColor(Color.parseColor("#0F172A"))
             setTypeface(null, Typeface.BOLD)
@@ -270,155 +283,32 @@ class FriendsFragment : Fragment() {
     }
 
     private fun setupSearchAndChips() {
-        val staticFriendCards: List<Pair<View, String>> = listOf(
-            Pair(binding.cardFriend1, "minh quân khoa học viễn tưởng hành động hành tinh cát 2"),
-            Pair(binding.cardFriend2, "thảo vy tình cảm hoạt hình ghibli mai"),
-            Pair(binding.cardFriend3, "hoàng nam imax fan định dạng lớn thứ 6 cuối tuần"),
-            Pair(binding.cardFriend4, "phương linh kinh dị giật gân trinh thám")
-        )
-
-        val onlineCards: List<View> = listOf(
-            binding.cardFriend1,
-            binding.cardFriend2,
-            binding.cardFriend3
-        )
-
         binding.etSearchFriends.doAfterTextChanged { editable ->
             val keyword = editable?.toString()?.trim()?.lowercase().orEmpty()
-            val allCards = dynamicFriendCards + staticFriendCards
-            for (item in allCards) {
+            for (item in dynamicFriendCards) {
                 val card = item.first
                 val content = item.second
-                card.visibility = if (keyword.isEmpty() || content.contains(keyword)) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+                card.visibility = if (keyword.isEmpty() || content.contains(keyword)) View.VISIBLE else View.GONE
             }
-        }
-
-        binding.btnFriendFilter.setOnClickListener {
-            showCineMessage("Đang lọc danh sách bạn bè xem phim")
         }
 
         binding.chipAllFriends.setOnClickListener {
             binding.etSearchFriends.setText("")
-            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#5B3DF5".toColorInt())
-            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            val allCards = dynamicFriendCards + staticFriendCards
-            for (item in allCards) {
-                item.first.visibility = View.VISIBLE
-            }
-            showCineMessage("Hiển thị tất cả bạn bè")
+            for (item in dynamicFriendCards) item.first.visibility = View.VISIBLE
         }
 
         binding.chipOnlineFriends.setOnClickListener {
-            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#EEF2FF".toColorInt())
-            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            val allCards = dynamicFriendCards + staticFriendCards
-            for (item in allCards) {
-                val isOnline = onlineCards.contains(item.first) || dynamicFriendCards.any { it.first == item.first }
+            val friends = CineConnectStateManager.getFriends()
+            for ((index, item) in dynamicFriendCards.withIndex()) {
+                val isOnline = if (index < friends.size) friends[index].isOnline else false
                 item.first.visibility = if (isOnline) View.VISIBLE else View.GONE
             }
-            showCineMessage("Đang hiển thị bạn bè online")
-        }
-
-        binding.chipSameTaste.setOnClickListener {
-            binding.chipSameTaste.backgroundTintList = ColorStateList.valueOf("#EEF2FF".toColorInt())
-            binding.chipAllFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            binding.chipOnlineFriends.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
-            val allCards = dynamicFriendCards + staticFriendCards
-            for (item in allCards) {
-                item.first.visibility = View.VISIBLE
-            }
-            showCineMessage("Đã sắp xếp theo độ khớp gu điện ảnh")
-        }
-    }
-
-    private fun updateNearbyButtonState() {
-        val targetName = "Trần Bảo Long"
-        val isSent = CineConnectStateManager.isRequestSent(targetName)
-        if (isSent) {
-            binding.btnNearbyConnect.text = "Đã gửi"
-            binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#94A3B8".toColorInt())
-        } else {
-            binding.btnNearbyConnect.text = "Kết bạn"
-            binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
         }
     }
 
     private fun setupFriendCards() {
-        val chatButtons: List<Pair<View, String>> = listOf(
-            Pair(binding.btnChatFriend1, "Minh Quân"),
-            Pair(binding.btnChatFriend2, "Thảo Vy"),
-            Pair(binding.btnChatFriend3, "Hoàng Nam"),
-            Pair(binding.btnChatFriend4, "Phương Linh")
-        )
-
-        for (item in chatButtons) {
-            val btnChat = item.first
-            val friendName = item.second
-            btnChat.setOnClickListener {
-                findNavController().navigate(
-                    R.id.chatFragment,
-                    bundleOf("friend_name" to friendName)
-                )
-            }
-        }
-
-        val inviteButtons: List<Pair<MaterialButton, String>> = listOf(
-            Pair(binding.btnInviteFriend1, "Minh Quân"),
-            Pair(binding.btnInviteFriend2, "Thảo Vy"),
-            Pair(binding.btnInviteFriend3, "Hoàng Nam"),
-            Pair(binding.btnInviteFriend4, "Phương Linh")
-        )
-
-        for (item in inviteButtons) {
-            val btnInvite = item.first
-            val friendName = item.second
-            btnInvite.setOnClickListener {
-                findNavController().navigate(
-                    R.id.inviteMovieFragment,
-                    bundleOf("friend_name" to friendName)
-                )
-            }
-        }
-
-        val nearbyTarget = "Trần Bảo Long"
-        updateNearbyButtonState()
-
-        binding.btnNearbyConnect.setOnClickListener {
-            val isSent = CineConnectStateManager.isRequestSent(nearbyTarget)
-            if (!isSent) {
-                CineConnectStateManager.sendFriendRequest(nearbyTarget)
-                binding.btnNearbyConnect.text = "Đã gửi"
-                binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#94A3B8".toColorInt())
-                showCineMessage(
-                    message = "Đã gửi lời mời kết bạn tới $nearbyTarget",
-                    actionLabel = "HOÀN TÁC",
-                    onAction = {
-                        CineConnectStateManager.cancelFriendRequest(nearbyTarget)
-                        binding.btnNearbyConnect.text = "Kết bạn"
-                        binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
-                        showCineMessage("Đã hủy lời mời kết bạn tới $nearbyTarget")
-                    }
-                )
-            } else {
-                CineConnectStateManager.cancelFriendRequest(nearbyTarget)
-                binding.btnNearbyConnect.text = "Kết bạn"
-                binding.btnNearbyConnect.backgroundTintList = ColorStateList.valueOf("#5850EC".toColorInt())
-                showCineMessage("Đã hủy lời mời kết bạn tới $nearbyTarget")
-            }
-        }
-
         binding.btnFriendRequestsBadge.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.friendRequestsFragment)
-            } catch (e: Exception) {
-                showCineMessage("Mở danh sách lời mời kết bạn")
-            }
+            findNavController().navigate(R.id.friendRequestsFragment)
         }
     }
 
@@ -427,18 +317,10 @@ class FriendsFragment : Fragment() {
             showCineMessage("Đang ở tab Bạn bè")
         }
         binding.navTabChat.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.chatFragment)
-            } catch (e: Exception) {
-                showCineMessage("Chuyển sang tab Trò chuyện")
-            }
+            findNavController().navigate(R.id.chatFragment)
         }
         binding.navTabInviteMovie.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.inviteMovieFragment)
-            } catch (e: Exception) {
-                showCineMessage("Chuyển sang tab Mời phim")
-            }
+            findNavController().navigate(R.id.inviteMovieFragment)
         }
     }
 

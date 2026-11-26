@@ -58,56 +58,52 @@ class CineConnectFragment : Fragment() {
     }
 
     private fun setupTopActions() {
-        // Cho phép bấm "Xem tất cả" hoặc cả hàng để mở Lời mời kết bạn
+        // 1. Bấm "Xem tất cả" hoặc cả hàng để mở Lời mời kết bạn
         binding.tvViewAllRequests.setOnClickListener {
             findNavController().navigate(R.id.friendRequestsFragment)
         }
         (binding.tvViewAllRequests.parent as? View)?.setOnClickListener {
             findNavController().navigate(R.id.friendRequestsFragment)
         }
-
-        // Cho phép bấm "Xem tất cả" hoặc cả hàng để mở Danh sách bạn bè
+        // 2. Bấm "Xem tất cả" hoặc cả hàng để mở Danh sách bạn bè
         binding.tvViewAllFriends.setOnClickListener {
             findNavController().navigate(R.id.friendsFragment)
         }
         (binding.tvViewAllFriends.parent as? View)?.setOnClickListener {
             findNavController().navigate(R.id.friendsFragment)
         }
-    }
-
-    // Cập nhật số lượng lời mời kết bạn động theo trạng thái thực tế
-    private fun updateRequestsBadgeText() {
-        val count = CineConnectStateManager.pendingReceivedRequests.size
-        fun scanForRequestsText(v: View) {
-            if (v is TextView && v.text.toString().contains("Lời mời kết bạn", ignoreCase = true)) {
-                v.text = "Lời mời kết bạn ($count)"
-                return
-            }
-            if (v is ViewGroup) {
-                for (i in 0 until v.childCount) {
-                    scanForRequestsText(v.getChildAt(i))
-                }
-            }
+        // 3. Bấm "Xem tất cả" bên phải "Khám phá bạn bè" -> Nhảy qua trang Người phù hợp
+        binding.tvViewAllExplore.setOnClickListener {
+            findNavController().navigate(R.id.matchedPeopleFragment)
         }
-        scanForRequestsText(binding.root)
+        // Cho phép bấm cả cụm text + icon mũi tên bên cạnh
+        (binding.tvViewAllExplore.parent as? View)?.setOnClickListener {
+            findNavController().navigate(R.id.matchedPeopleFragment)
+        }
     }
 
-    // Xử lý chạm vào danh sách bạn bè Online ở đầu trang
+    // Cập nhật số lượng lời mời kết bạn chính xác theo dữ liệu thực tế
+    private fun updateRequestsBadgeText() {
+        // Lấy số lượng lời mời đang chờ nhận từ CineConnectStateManager
+        val count = CineConnectStateManager.getReceivedRequests().size
+        binding.tvFriendRequestsTitle.text = "Lời mời kết bạn ($count)"
+    }
+
+    // Lỗi 1: Bấm Hoàng Nam, Vũ Mai Anh, Bảo Minh mở đúng chat của người đó
     private fun setupOnlineFriendsClick() {
         fun scanFriendsSection(view: View) {
             if (view is TextView && view.text.toString().trim() == "Bạn bè của bạn") {
                 val parentSection = view.parent?.parent as? ViewGroup ?: return
-                // Tìm hàng ngang chứa các avatar bạn bè
                 for (i in 0 until parentSection.childCount) {
                     val child = parentSection.getChildAt(i)
                     if (child is LinearLayout && child != view.parent) {
                         for (colIdx in 0 until child.childCount) {
                             val friendCol = child.getChildAt(colIdx) as? LinearLayout ?: continue
-                            // Tìm TextView tên bạn
                             var friendName = ""
                             for (t in 0 until friendCol.childCount) {
                                 val item = friendCol.getChildAt(t)
-                                if (item is TextView && item.text.isNotEmpty() && !item.text.contains("Online") && !item.text.contains("phút")) {
+                                if (item is TextView && item.text.isNotEmpty() &&
+                                    !item.text.contains("Online") && !item.text.contains("phút") && !item.text.contains("Hôm qua")) {
                                     friendName = item.text.toString().trim()
                                     break
                                 }
@@ -143,77 +139,6 @@ class CineConnectFragment : Fragment() {
     }
 
     private fun setupSearchAndFilter() {
-        // Tìm và gắn sự kiện cho nút "Xem tất cả" trong mục Khám phá bạn bè
-        fun scanExploreHeader(v: View) {
-            if (v is TextView && v.text.toString().trim() == "Khám phá bạn bè") {
-                val headerRow = v.parent as? ViewGroup
-                if (headerRow != null) {
-                    for (i in 0 until headerRow.childCount) {
-                        val child = headerRow.getChildAt(i)
-                        if (child is TextView && child.text.toString().contains("Xem tất cả", ignoreCase = true)) {
-                            child.isClickable = true
-                            child.setOnClickListener {
-                                findNavController().navigate(R.id.matchedPeopleFragment)
-                            }
-                        }
-                    }
-                }
-            }
-            if (v is ViewGroup) {
-                for (i in 0 until v.childCount) {
-                    scanExploreHeader(v.getChildAt(i))
-                }
-            }
-        }
-        scanExploreHeader(binding.root)
-
-        // Tìm và gắn sự kiện cho các Chip lọc
-        fun scanChips(v: View) {
-            if (v is HorizontalScrollView) {
-                val chipContainer = v.getChildAt(0) as? LinearLayout
-                if (chipContainer != null) {
-                    val chips = mutableListOf<TextView>()
-                    for (c in 0 until chipContainer.childCount) {
-                        val chip = chipContainer.getChildAt(c) as? TextView ?: continue
-                        chips.add(chip)
-                    }
-                    for (chip in chips) {
-                        chip.isClickable = true
-                        chip.setOnClickListener {
-                            val text = chip.text.toString().trim()
-                            for (other in chips) {
-                                val isCur = (other == chip)
-                                other.backgroundTintList = ColorStateList.valueOf(
-                                    if (isCur) Color.parseColor("#5850EC") else Color.WHITE
-                                )
-                                other.setTextColor(if (isCur) Color.WHITE else Color.parseColor("#475569"))
-                            }
-                            showCineMessage("Bộ lọc", subtitle = "Đang xem: $text")
-                        }
-                    }
-                }
-                return
-            }
-            if (v is ViewGroup) {
-                for (i in 0 until v.childCount) {
-                    scanChips(v.getChildAt(i))
-                }
-            }
-        }
-        scanChips(binding.root)
-
-        // Ô tìm kiếm
-        binding.etSearchUser.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val keyword = s.toString().trim()
-                if (keyword.isNotEmpty()) {
-                    binding.btnFilter.text = "Tìm kiếm"
-                }
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
         binding.btnFilter.setOnClickListener {
             val kw = binding.etSearchUser.text.toString().trim()
             findNavController().navigate(
@@ -223,7 +148,7 @@ class CineConnectFragment : Fragment() {
         }
     }
 
-    // Quản lý các thẻ gợi ý bạn bè khám phá (Nguyễn Thảo Ly, Trần Bảo Long)
+    // Lỗi 5, 6, 7, 8: Thẻ người dùng đồng bộ rạp, % khớp gu và trạng thái bạn bè
     private fun setupDiscoveredUserCards() {
         fun traverseCards(view: View) {
             if (view is CardView) {
@@ -260,23 +185,22 @@ class CineConnectFragment : Fragment() {
 
                 if (memberName.isNotEmpty()) {
                     val finalName = memberName
-
-                    // Nếu đã là bạn bè thì ẩn hoàn toàn thẻ khỏi mục gợi ý kết bạn
-                    if (CineConnectStateManager.isFriend(finalName)) {
-                        view.visibility = View.GONE
-                        return
-                    } else {
-                        view.visibility = View.VISIBLE
-                    }
+                    val user = CineConnectStateManager.getUser(finalName)
 
                     fun refreshBtnUI() {
-                        val isSent = CineConnectStateManager.isRequestSent(finalName)
-                        if (isSent) {
-                            actionBtn?.text = "Đã gửi lời mời"
-                            actionBtn?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
-                        } else {
-                            actionBtn?.text = "Kết bạn"
-                            actionBtn?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                        when (user.status) {
+                            CineConnectStateManager.ConnectionStatus.FRIEND -> {
+                                actionBtn?.text = "Nhắn tin"
+                                actionBtn?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                            }
+                            CineConnectStateManager.ConnectionStatus.REQUEST_SENT -> {
+                                actionBtn?.text = "Đã gửi lời mời"
+                                actionBtn?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
+                            }
+                            else -> {
+                                actionBtn?.text = "Kết bạn"
+                                actionBtn?.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                            }
                         }
                     }
 
@@ -290,8 +214,12 @@ class CineConnectFragment : Fragment() {
                     }
 
                     actionBtn?.setOnClickListener {
-                        val isSent = CineConnectStateManager.isRequestSent(finalName)
-                        if (!isSent) {
+                        if (CineConnectStateManager.isFriend(finalName)) {
+                            findNavController().navigate(
+                                R.id.chatFragment,
+                                bundleOf("friend_name" to finalName)
+                            )
+                        } else if (!CineConnectStateManager.isRequestSent(finalName)) {
                             CineConnectStateManager.sendFriendRequest(finalName)
                             refreshBtnUI()
                             showCineMessage(

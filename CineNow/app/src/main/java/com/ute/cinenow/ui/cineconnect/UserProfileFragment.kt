@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -41,19 +42,40 @@ class UserProfileFragment : Fragment() {
         updateFriendButtonUI()
     }
 
+    // Lỗi 6, 7, 8: Load toàn bộ dữ liệu từ CineConnectStateManager duy nhất
     private fun loadUserDataFromArguments() {
         val passedName = arguments?.getString("user_name")
         if (!passedName.isNullOrBlank()) {
             currentUserName = passedName
-            binding.tvUserName.text = passedName
-            binding.tvUserHandle.text = when (passedName) {
-                "Nguyễn Thảo Ly" -> "thaoly_cinema"
-                "Đặng Tuấn Kiệt" -> "tuankiet_cine"
-                "Lê Hoàng Minh" -> "hoangminh_imax"
-                else -> "baolong_cinema"
-            }
-            binding.header.title = "Hồ sơ: $passedName"
         }
+
+        val user = CineConnectStateManager.getUser(currentUserName)
+        binding.tvUserName.text = user.name
+        binding.tvUserHandle.text = user.handle
+        binding.ivAvatar.setImageResource(user.avatarRes)
+        binding.header.title = "Hồ sơ: ${user.name}"
+
+        // Điểm số và rạp thường ghé
+        val container = binding.root
+        findTextViewByPartial(container, "vé đã xem")?.text = "Thành viên thân thiết • ${user.watchedTickets} vé đã xem"
+        findTextViewByPartial(container, "CineNow")?.text = user.favoriteCinema
+        findTextViewByPartial(container, "Độ khớp gu điện ảnh")?.let {
+            val parent = it.parent as? ViewGroup
+            (parent?.getChildAt(0) as? TextView)?.text = "${user.matchPercent}%"
+        }
+    }
+
+    private fun findTextViewByPartial(parent: ViewGroup, partial: String): TextView? {
+        for (i in 0 until parent.childCount) {
+            val v = parent.getChildAt(i)
+            if (v is TextView && v.text.contains(partial, ignoreCase = true)) {
+                return v
+            } else if (v is ViewGroup) {
+                val found = findTextViewByPartial(v, partial)
+                if (found != null) return found
+            }
+        }
+        return null
     }
 
     private fun setupHeader() {
@@ -65,45 +87,49 @@ class UserProfileFragment : Fragment() {
         }
     }
 
+    // Lỗi 11: Nút kết bạn màu tím (#5850EC), hiện chú thích "Chỉ nhắn tin được sau khi cả hai đồng ý kết bạn."
     private fun updateFriendButtonUI() {
         val isAlreadyFriend = CineConnectStateManager.isFriend(currentUserName)
         val isSent = CineConnectStateManager.isRequestSent(currentUserName)
 
+        val noticeView = binding.root.findViewById<TextView>(R.id.tvUserName)?.let {
+            findTextViewByPartial(binding.root as ViewGroup, "Chỉ có thể trò chuyện")
+        }
+
         when {
             isAlreadyFriend -> {
                 binding.btnSendFriendRequest.text = "Nhắn tin cho bạn bè"
-                binding.btnSendFriendRequest.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#10B981"))
+                binding.btnSendFriendRequest.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                noticeView?.visibility = View.GONE
             }
             isSent -> {
                 binding.btnSendFriendRequest.text = "Đã gửi lời mời kết bạn"
                 binding.btnSendFriendRequest.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
+                noticeView?.visibility = View.VISIBLE
+                noticeView?.text = "Chỉ nhắn tin được sau khi cả hai đồng ý kết bạn."
             }
             else -> {
-                binding.btnSendFriendRequest.text = "Gửi lời mời kết bạn"
+                binding.btnSendFriendRequest.text = "Kết bạn"
                 binding.btnSendFriendRequest.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5850EC"))
+                noticeView?.visibility = View.VISIBLE
+                noticeView?.text = "Chỉ nhắn tin được sau khi cả hai đồng ý kết bạn."
             }
         }
     }
 
     private fun setupActions() {
-        binding.tvAlgorithmBadge.setOnClickListener {
-            showCineMessage("Độ khớp gu 92%", subtitle = "Tính theo thể loại, định dạng rạp và khung giờ ưa thích")
-        }
-
         binding.btnSendFriendRequest.setOnClickListener {
             val isAlreadyFriend = CineConnectStateManager.isFriend(currentUserName)
             val isSent = CineConnectStateManager.isRequestSent(currentUserName)
 
             when {
                 isAlreadyFriend -> {
-                    // Đã là bạn bè -> Mở ngay màn hình chat
                     findNavController().navigate(
                         R.id.chatFragment,
                         bundleOf("friend_name" to currentUserName)
                     )
                 }
                 !isSent -> {
-                    // Chưa gửi -> Gửi lời mời kết bạn
                     CineConnectStateManager.sendFriendRequest(currentUserName)
                     updateFriendButtonUI()
                     showCineMessage(
@@ -117,7 +143,6 @@ class UserProfileFragment : Fragment() {
                     )
                 }
                 else -> {
-                    // Đang là "Đã gửi lời mời kết bạn" bấm lần nữa -> Hủy và hiện lại "Gửi lời mời kết bạn"
                     CineConnectStateManager.cancelFriendRequest(currentUserName)
                     updateFriendButtonUI()
                     showCineMessage("Đã hủy lời mời kết bạn tới $currentUserName")

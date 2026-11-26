@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:headerShowBack="true"
-        app:headerTitle="Movie Invitation Selection"
+        app:headerTitle="Mời xem phim"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -365,7 +365,9 @@
                                     android:textSize="10.5sp" />
                             </LinearLayout>
 
+                            <!-- Lỗi 2: Gán ID để gán text động theo tên người được mời -->
                             <TextView
+                                android:id="@+id/tvMovie1SavedNote"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
@@ -373,7 +375,7 @@
                                 android:backgroundTint="#FAF5FF"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="3dp"
-                                android:text="Thảo Vy đã lưu tháng trước"
+                                android:text="Đã lưu tháng trước"
                                 android:textColor="#7E22CE"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
@@ -826,14 +828,16 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
+                        <!-- Lỗi 2: Gán ID cho nhãn watchlist phim 3 -->
                         <TextView
+                            android:id="@+id/tvMovie3WatchlistNote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_icon"
                             android:backgroundTint="#FAF5FF"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="3dp"
-                            android:text="Thảo Vy đã thêm vào Watchlist"
+                            android:text="Đã thêm vào Watchlist"
                             android:textColor="#7E22CE"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -1070,12 +1074,14 @@
                     android:src="@drawable/ic_info"
                     app:tint="#64748B" />
 
+                <!-- Lỗi 3: Gán ID cho ghi chú cuối trang -->
                 <TextView
+                    android:id="@+id/tvInviteFooterNotice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Lời mời sẽ được gửi thẳng vào cuộc trò chuyện cùng Thảo Vy với thời hạn phản hồi 24 giờ. Ghế sẽ được giữ tạm thời khi bạn bè bấm chấp nhận."
+                    android:text="Lời mời sẽ được gửi thẳng vào cuộc trò chuyện cùng bạn bè với thời hạn phản hồi 24 giờ. Ghế sẽ được giữ tạm thời khi bạn bè bấm chấp nhận."
                     android:textColor="#64748B"
                     android:textSize="11sp" />
             </LinearLayout>

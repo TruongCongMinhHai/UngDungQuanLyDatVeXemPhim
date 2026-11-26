@@ -13,6 +13,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.ute.cinenow.databinding.FragmentInviteMovieBinding
 import com.ute.cinenow.utils.showCineMessage
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class InviteMovieFragment : Fragment() {
 
@@ -35,12 +38,18 @@ class InviteMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val passedFriend = arguments?.getString("friend_name")
+        val passedFriend = arguments?.getString("friend_name") ?: arguments?.getString("user_name")
         if (!passedFriend.isNullOrBlank()) {
             targetFriend = passedFriend
-            binding.tvInviteTargetTitle.text = "Mời $targetFriend xem phim"
-            binding.header.title = "Mời $targetFriend xem phim"
         }
+
+        // Lỗi 2, 10: Tiêu đề và nhãn theo đúng người đang được mời
+        binding.header.title = "Mời $targetFriend xem phim"
+        binding.tvInviteTargetTitle.text = "Mời $targetFriend xem phim"
+        binding.tvMovie1SavedNote.text = "$targetFriend đã lưu tháng trước"
+        binding.tvMovie3WatchlistNote.text = "$targetFriend đã thêm vào Watchlist"
+        binding.tvInviteFooterNotice.text =
+            "Lời mời sẽ được gửi thẳng vào cuộc trò chuyện cùng $targetFriend với thời hạn phản hồi 24 giờ. Ghế sẽ được giữ tạm thời khi bạn bè bấm chấp nhận."
 
         setupHeader()
         setupTabsAndMatch()
@@ -72,7 +81,6 @@ class InviteMovieFragment : Fragment() {
         binding.tabSharedList.setOnClickListener {
             binding.tabSharedList.backgroundTintList = ColorStateList.valueOf("#FFFFFF".toColorInt())
             binding.tabNowShowing.backgroundTintList = ColorStateList.valueOf("#00000000".toColorInt())
-            // Đồng bộ tên bạn bè theo người được chọn
             showCineMessage("Danh sách chung", subtitle = "Các phim $targetFriend đã thêm vào Watchlist")
         }
     }
@@ -94,12 +102,10 @@ class InviteMovieFragment : Fragment() {
 
             dayView.setOnClickListener {
                 selectedDay = dayLabel
-
                 for (other in dayViews) {
                     other.first.backgroundTintList = ColorStateList.valueOf(inactiveColor)
                     other.first.setTextColor(inactiveTextColor)
                 }
-
                 dayView.backgroundTintList = ColorStateList.valueOf(activeColor)
                 dayView.setTextColor("#FFFFFF".toColorInt())
                 updateMainInviteButtonText()
@@ -124,11 +130,9 @@ class InviteMovieFragment : Fragment() {
 
             slotView.setOnClickListener {
                 selectedTime = timeLabel
-
                 for (other in slotViews) {
                     other.first.backgroundTintList = ColorStateList.valueOf(inactiveSlotColor)
                 }
-
                 slotView.backgroundTintList = ColorStateList.valueOf(activeSlotColor)
                 updateMainInviteButtonText()
                 showCineMessage("Đã chọn suất chiếu", subtitle = "$timeLabel ($selectedDay)")
@@ -153,18 +157,20 @@ class InviteMovieFragment : Fragment() {
                 button = binding.btnInviteMovie1,
                 isSent = isMovie1Sent,
                 onStateChanged = { isMovie1Sent = it },
-                movieTitle = "Hành Tinh Cát 2 ($selectedTime - $selectedDay)",
+                movieTitle = "Hành Tinh Cát: Phần 2",
+                showtimeDetail = "$selectedTime • $selectedDay • CineNow Landmark 81",
                 defaultText = "Gửi lời mời ($selectedTime - $selectedDay)"
             )
         }
 
-        // NÚT PHIM 2: Godzilla x Kong: Đế Chế (Đã đồng bộ đúng tên phim trên card)
+        // NÚT PHIM 2: Godzilla x Kong
         binding.btnInviteMovie2.setOnClickListener {
             toggleInviteState(
                 button = binding.btnInviteMovie2,
                 isSent = isMovie2Sent,
                 onStateChanged = { isMovie2Sent = it },
-                movieTitle = "Godzilla x Kong: Đế Chế (Tối nay 20:00)",
+                movieTitle = "Godzilla x Kong: Đế Chế",
+                showtimeDetail = "20:00 • Tối nay • CineNow Landmark 81",
                 defaultText = "Gửi lời mời"
             )
         }
@@ -175,23 +181,41 @@ class InviteMovieFragment : Fragment() {
                 button = binding.btnInviteMovie3,
                 isSent = isMovie3Sent,
                 onStateChanged = { isMovie3Sent = it },
-                movieTitle = "Mai: Kỳ Nguyên Mới (19:45 - Rạp 01)",
+                movieTitle = "Mai: Kỳ Nguyên Mới",
+                showtimeDetail = "19:45 • Rạp 01 • CineNow Hai Bà Trưng",
                 defaultText = "Gửi lời mời"
             )
         }
     }
 
+    // Lỗi 3: Gửi lời mời xuất hiện đúng trong chat của người nhận
     private fun toggleInviteState(
         button: MaterialButton,
         isSent: Boolean,
         onStateChanged: (Boolean) -> Unit,
         movieTitle: String,
+        showtimeDetail: String,
         defaultText: String
     ) {
         if (!isSent) {
             onStateChanged(true)
             button.text = "Đã gửi lời mời"
             button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#94A3B8"))
+
+            val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            CineConnectStateManager.addMessage(
+                userName = targetFriend,
+                message = CineConnectStateManager.ChatMessage(
+                    senderName = "Tôi",
+                    message = "Mình gửi lời mời đi xem phim $movieTitle nhé!",
+                    time = currentTime,
+                    isMe = true,
+                    isMovieInvite = true,
+                    movieTitle = movieTitle,
+                    movieShowtime = showtimeDetail
+                )
+            )
+
             showCineMessage(
                 message = "Đã gửi lời mời xem $movieTitle tới $targetFriend",
                 actionLabel = "HOÀN TÁC",
@@ -199,14 +223,14 @@ class InviteMovieFragment : Fragment() {
                     onStateChanged(false)
                     button.text = defaultText
                     button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5B3DF5"))
-                    showCineMessage("Đã thu hồi lời mời xem $movieTitle")
+                    showCineMessage("Đã thu hồi lời mời xem phim gửi tới $targetFriend")
                 }
             )
         } else {
             onStateChanged(false)
             button.text = defaultText
             button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5B3DF5"))
-            showCineMessage("Đã thu hồi lời mời xem $movieTitle")
+            showCineMessage("Đã thu hồi lời mời xem phim gửi tới $targetFriend")
         }
     }
 

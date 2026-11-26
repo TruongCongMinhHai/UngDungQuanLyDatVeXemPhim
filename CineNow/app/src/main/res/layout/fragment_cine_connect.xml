@@ -102,11 +102,12 @@
                     app:tint="#5850EC" />
 
                 <TextView
+                    android:id="@+id/tvFriendRequestsTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Lời mời kết bạn (3)"
+                    android:text="Lời mời kết bạn"
                     android:textColor="#0F172A"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -385,6 +386,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvViewAllExplore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Xem tất cả"

@@ -1,5 +1,6 @@
 package com.ute.cinenow.ui.cineconnect
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
@@ -58,25 +59,22 @@ class FriendRequestsFragment : Fragment() {
         }
     }
 
+    // Lỗi 5: Cập nhật badge tab Đã nhận và Đã gửi động
     private fun updateBadgesAndVisibility() {
-        val remainingReceived = CineConnectStateManager.pendingReceivedRequests
+        val remainingReceived = CineConnectStateManager.getReceivedRequests()
         binding.tvReceivedBadge.text = remainingReceived.size.toString()
-        binding.cardRequest1.visibility = if (remainingReceived.contains("Nguyễn Thảo Ly")) View.VISIBLE else View.GONE
-        binding.cardRequest2.visibility = if (remainingReceived.contains("Đặng Tuấn Kiệt")) View.VISIBLE else View.GONE
+        binding.cardRequest1.visibility = if (remainingReceived.any { it.name == "Nguyễn Thảo Ly" }) View.VISIBLE else View.GONE
+        binding.cardRequest2.visibility = if (remainingReceived.any { it.name == "Đặng Tuấn Kiệt" }) View.VISIBLE else View.GONE
 
-        val sentList = CineConnectStateManager.sentRequestList
+        val sentList = CineConnectStateManager.getSentRequests()
         binding.tvSentBadge.text = sentList.size.toString()
     }
 
-    // Hiển thị danh sách động tất cả lời mời đã gửi (Trần Bảo Long, Bảo Huy, Thảo Vy...)
     private fun renderDynamicSentRequests() {
-        val sentList = CineConnectStateManager.sentRequestList
+        val sentList = CineConnectStateManager.getSentRequests()
         val sentContainer = binding.layoutSentContainer
-
-        // Ẩn thẻ tĩnh mặc định trong XML để hiển thị danh sách đồng bộ từ Manager
         binding.cardSentRequest1.visibility = View.GONE
 
-        // Xóa các card đã render động trước đó (giữ lại cardSentRequest1 tĩnh của xml)
         val viewsToRemove = mutableListOf<View>()
         for (i in 0 until sentContainer.childCount) {
             val child = sentContainer.getChildAt(i)
@@ -86,21 +84,19 @@ class FriendRequestsFragment : Fragment() {
         }
         viewsToRemove.forEach { sentContainer.removeView(it) }
 
-        // Render từng người có trong sentRequestList
-        for (personName in sentList) {
+        for (user in sentList) {
             val density = resources.displayMetrics.density
 
             val card = CardView(requireContext()).apply {
                 radius = 20f * density
                 cardElevation = 1f * density
                 setCardBackgroundColor(Color.WHITE)
-                val lp = LinearLayout.LayoutParams(
+                layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
                     topMargin = (12 * density).toInt()
                 }
-                layoutParams = lp
             }
 
             val cardContent = LinearLayout(requireContext()).apply {
@@ -109,7 +105,6 @@ class FriendRequestsFragment : Fragment() {
                 setPadding(p, p, p, p)
             }
 
-            // Hàng trên: Avatar tròn + Thông tin tên
             val topRow = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
@@ -119,12 +114,11 @@ class FriendRequestsFragment : Fragment() {
                 radius = 24f * density
                 cardElevation = 0f
                 setCardBackgroundColor(Color.parseColor("#E2E8F0"))
-                val lp = LinearLayout.LayoutParams((48 * density).toInt(), (48 * density).toInt())
-                layoutParams = lp
+                layoutParams = LinearLayout.LayoutParams((48 * density).toInt(), (48 * density).toInt())
             }
 
             val avatarImg = ImageView(requireContext()).apply {
-                setImageResource(R.drawable.ic_person)
+                setImageResource(user.avatarRes)
                 imageTintList = ColorStateList.valueOf(Color.parseColor("#64748B"))
                 val pad = (8 * density).toInt()
                 setPadding(pad, pad, pad, pad)
@@ -133,35 +127,28 @@ class FriendRequestsFragment : Fragment() {
 
             val infoCol = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.VERTICAL
-                val lp = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
                     marginStart = (12 * density).toInt()
                 }
-                layoutParams = lp
             }
 
             val tvName = TextView(requireContext()).apply {
-                text = personName
+                text = user.name
                 textSize = 14.5f
                 setTextColor(Color.parseColor("#0F172A"))
                 setTypeface(null, Typeface.BOLD)
             }
 
             val tvSub = TextView(requireContext()).apply {
-                text = when (personName) {
-                    "Trần Bảo Long" -> "Đã gửi vừa xong • 92% Khớp gu • Landmark 81"
-                    "Bảo Huy & 1 người khác" -> "Đã gửi tại CineNow Landmark 81"
-                    "Phạm Thảo Vy" -> "Đã gửi 2 giờ trước • 95% Khớp gu"
-                    else -> "Đã gửi lời mời kết bạn"
-                }
+                text = "Đã gửi • ${user.matchPercent}% Khớp gu • ${user.favoriteCinema}"
                 textSize = 11.5f
                 setTextColor(Color.parseColor("#64748B"))
-                val lp = LinearLayout.LayoutParams(
+                layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
                     topMargin = (2 * density).toInt()
                 }
-                layoutParams = lp
             }
 
             infoCol.addView(tvName)
@@ -170,7 +157,7 @@ class FriendRequestsFragment : Fragment() {
             topRow.addView(avatarCard)
             topRow.addView(infoCol)
 
-            // Nút Hủy lời mời đã gửi
+            // Lỗi 14: Hiện hộp thoại xác nhận khi bấm "Hủy lời mời đã gửi"
             val btnCancel = MaterialButton(requireContext()).apply {
                 text = "Hủy lời mời đã gửi"
                 textSize = 12f
@@ -179,19 +166,33 @@ class FriendRequestsFragment : Fragment() {
                 setTextColor(Color.parseColor("#334155"))
                 backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F1F5F9"))
                 cornerRadius = (14 * density).toInt()
-                val lp = LinearLayout.LayoutParams(
+                layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     (42 * density).toInt()
                 ).apply {
                     topMargin = (12 * density).toInt()
                 }
-                layoutParams = lp
 
                 setOnClickListener {
-                    CineConnectStateManager.cancelFriendRequest(personName)
-                    updateBadgesAndVisibility()
-                    renderDynamicSentRequests()
-                    showCineMessage("Đã hủy lời mời kết bạn gửi tới $personName")
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Hủy lời mời")
+                        .setMessage("Bạn có chắc chắn muốn hủy lời mời kết bạn gửi tới ${user.name}?")
+                        .setPositiveButton("Hủy lời mời") { _, _ ->
+                            CineConnectStateManager.cancelFriendRequest(user.name)
+                            updateBadgesAndVisibility()
+                            renderDynamicSentRequests()
+                            showCineMessage(
+                                message = "Đã hủy lời mời kết bạn gửi tới ${user.name}",
+                                actionLabel = "HOÀN TÁC",
+                                onAction = {
+                                    CineConnectStateManager.sendFriendRequest(user.name)
+                                    updateBadgesAndVisibility()
+                                    renderDynamicSentRequests()
+                                }
+                            )
+                        }
+                        .setNegativeButton("Đóng", null)
+                        .show()
                 }
             }
 
@@ -199,11 +200,10 @@ class FriendRequestsFragment : Fragment() {
             cardContent.addView(btnCancel)
             card.addView(cardContent)
 
-            // Cho phép bấm vào thẻ để xem hồ sơ cá nhân
             card.setOnClickListener {
                 findNavController().navigate(
                     R.id.userProfileFragment,
-                    bundleOf("user_name" to personName)
+                    bundleOf("user_name" to user.name)
                 )
             }
 
@@ -266,6 +266,7 @@ class FriendRequestsFragment : Fragment() {
         }
     }
 
+    // Lỗi 5 & 14: Xác nhận khi từ chối, cập nhật tức thì danh sách bạn bè
     private fun setupRequestActions() {
         val items = listOf(
             Triple(binding.cardRequest1, binding.btnAccept1, binding.btnDecline1) to "Nguyễn Thảo Ly",
@@ -281,7 +282,7 @@ class FriendRequestsFragment : Fragment() {
 
                 showCineMessage(
                     message = "Đã đồng ý kết bạn với $name",
-                    subtitle = "$name đã trở thành bạn bè và được chuyển vào danh sách Bạn bè!",
+                    subtitle = "$name đã có trong Bạn bè của bạn!",
                     actionLabel = "XEM BẠN BÈ",
                     onAction = {
                         findNavController().navigate(R.id.friendsFragment)
@@ -290,20 +291,25 @@ class FriendRequestsFragment : Fragment() {
             }
 
             btnDecline.setOnClickListener {
-                CineConnectStateManager.declineFriendRequest(name)
-                updateBadgesAndVisibility()
-
-                showCineMessage(
-                    message = "Đã từ chối lời mời kết bạn của $name",
-                    actionLabel = "HOÀN TÁC",
-                    onAction = {
-                        if (!CineConnectStateManager.pendingReceivedRequests.contains(name)) {
-                            CineConnectStateManager.pendingReceivedRequests.add(name)
-                        }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Từ chối lời mời")
+                    .setMessage("Bạn có chắc chắn muốn từ chối lời mời kết bạn của $name?")
+                    .setPositiveButton("Từ chối") { _, _ ->
+                        CineConnectStateManager.declineFriendRequest(name)
                         updateBadgesAndVisibility()
-                        showCineMessage("Đã khôi phục lời mời kết bạn của $name")
+
+                        showCineMessage(
+                            message = "Đã từ chối lời mời kết bạn của $name",
+                            actionLabel = "HOÀN TÁC",
+                            onAction = {
+                                CineConnectStateManager.getUser(name).status = CineConnectStateManager.ConnectionStatus.REQUEST_RECEIVED
+                                updateBadgesAndVisibility()
+                                showCineMessage("Đã khôi phục lời mời kết bạn của $name")
+                            }
+                        )
                     }
-                )
+                    .setNegativeButton("Hủy", null)
+                    .show()
             }
         }
     }
