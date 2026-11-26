@@ -43,6 +43,11 @@ class InviteMovieFragment : Fragment() {
             targetFriend = passedFriend
         }
 
+        val user = CineConnectStateManager.getUser(targetFriend)
+        binding.ivInviteTargetAvatar.setImageResource(user.avatarRes)
+        binding.ivInviteTargetAvatar.imageTintList = null
+        binding.ivInviteTargetAvatar.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+
         // Lỗi 2, 10: Tiêu đề và nhãn theo đúng người đang được mời
         binding.header.title = "Mời $targetFriend xem phim"
         binding.tvInviteTargetTitle.text = "Mời $targetFriend xem phim"

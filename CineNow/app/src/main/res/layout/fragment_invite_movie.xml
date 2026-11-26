@@ -50,13 +50,14 @@
                     android:layout_height="42dp">
 
                     <ImageView
+                        android:id="@+id/ivInviteTargetAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_camera_circle"
                         android:backgroundTint="#E2E8F0"
-                        android:contentDescription="Thảo Vy"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_person" />
+                        android:contentDescription="Avatar"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avatar_thao_vy" />
 
                     <View
                         android:layout_width="10dp"

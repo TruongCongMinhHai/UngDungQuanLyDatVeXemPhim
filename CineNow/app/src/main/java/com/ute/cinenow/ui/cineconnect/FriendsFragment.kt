@@ -76,23 +76,22 @@ class FriendsFragment : Fragment() {
     private fun renderAllFriends() {
         val friends = CineConnectStateManager.getFriends()
         val totalFriendsCount = friends.size
+        val onlineCount = friends.count { it.isOnline }
+        // Đồng bộ số lượng bạn bè và số người online thực tế
         binding.header.title = "Bạn bè xem phim ($totalFriendsCount)"
-
+        binding.tvChipAllCount.text = totalFriendsCount.toString()
+        binding.tvChipOnlineCount.text = onlineCount.toString()
         val container = binding.cardFriend1.parent as? ViewGroup ?: return
         for (item in dynamicFriendCards) {
             container.removeView(item.first)
         }
         dynamicFriendCards.clear()
-
-        // Ẩn 4 thẻ mẫu tĩnh trong XML để render dữ liệu chuẩn từ CineConnectStateManager
         binding.cardFriend1.visibility = View.GONE
         binding.cardFriend2.visibility = View.GONE
         binding.cardFriend3.visibility = View.GONE
         binding.cardFriend4.visibility = View.GONE
-
         val density = resources.displayMetrics.density
         val baseIndex = container.indexOfChild(binding.cardFriend1)
-
         for ((idx, friend) in friends.withIndex()) {
             val card = createFriendCardView(friend, density)
             val searchKey = "${friend.name} ${friend.genres.joinToString(" ")} ${friend.favoriteCinema}".lowercase()
@@ -139,8 +138,8 @@ class FriendsFragment : Fragment() {
         }
         val avatarImg = ImageView(requireContext()).apply {
             setImageResource(friend.avatarRes)
-            imageTintList = ColorStateList.valueOf(Color.parseColor("#475569"))
-            setPadding(dp(7), dp(7), dp(7), dp(7))
+            imageTintList = null
+            scaleType = ImageView.ScaleType.CENTER_CROP
         }
         avatarCard.addView(avatarImg)
         avatarFrame.addView(avatarCard)
@@ -283,6 +282,7 @@ class FriendsFragment : Fragment() {
     }
 
     private fun setupSearchAndChips() {
+        // Tìm kiếm theo từ khóa tên hoặc rạp
         binding.etSearchFriends.doAfterTextChanged { editable ->
             val keyword = editable?.toString()?.trim()?.lowercase().orEmpty()
             for (item in dynamicFriendCards) {
@@ -291,18 +291,60 @@ class FriendsFragment : Fragment() {
                 card.visibility = if (keyword.isEmpty() || content.contains(keyword)) View.VISIBLE else View.GONE
             }
         }
-
+        // Đổi màu giao diện Chip khi được chọn
+        fun updateChipUI(activeChip: View) {
+            val chips = listOf(binding.chipAllFriends, binding.chipOnlineFriends, binding.chipSameTaste)
+            for (c in chips) {
+                val isSelected = (c == activeChip)
+                c.backgroundTintList = ColorStateList.valueOf(
+                    if (isSelected) Color.parseColor("#5B3DF5") else Color.WHITE
+                )
+                for (i in 0 until c.childCount) {
+                    val child = c.getChildAt(i)
+                    if (child is TextView) {
+                        if (child.id == R.id.tvChipAllCount || child.id == R.id.tvChipOnlineCount) {
+                            child.backgroundTintList = ColorStateList.valueOf(
+                                if (isSelected) Color.parseColor("#7C63F7") else Color.parseColor("#F1F5F9")
+                            )
+                            child.setTextColor(if (isSelected) Color.WHITE else Color.parseColor("#475569"))
+                        } else {
+                            child.setTextColor(if (isSelected) Color.WHITE else Color.parseColor("#334155"))
+                        }
+                    } else if (child is ImageView) {
+                        child.imageTintList = ColorStateList.valueOf(if (isSelected) Color.WHITE else Color.parseColor("#5B3DF5"))
+                    }
+                }
+            }
+        }
+        // Bấm "Tất cả bạn bè"
         binding.chipAllFriends.setOnClickListener {
+            updateChipUI(binding.chipAllFriends)
             binding.etSearchFriends.setText("")
             for (item in dynamicFriendCards) item.first.visibility = View.VISIBLE
+            showCineMessage("Hiển thị tất cả bạn bè")
         }
-
+        // Bấm "Đang online"
         binding.chipOnlineFriends.setOnClickListener {
+            updateChipUI(binding.chipOnlineFriends)
             val friends = CineConnectStateManager.getFriends()
             for ((index, item) in dynamicFriendCards.withIndex()) {
                 val isOnline = if (index < friends.size) friends[index].isOnline else false
                 item.first.visibility = if (isOnline) View.VISIBLE else View.GONE
             }
+            showCineMessage("Đang lọc bạn bè đang online")
+        }
+        // Bấm "Cùng gu" (lọc những người có độ khớp gu >= 90%)
+        binding.chipSameTaste.setOnClickListener {
+            updateChipUI(binding.chipSameTaste)
+            val friends = CineConnectStateManager.getFriends()
+            for ((index, item) in dynamicFriendCards.withIndex()) {
+                val matchHigh = if (index < friends.size) friends[index].matchPercent >= 90 else false
+                item.first.visibility = if (matchHigh) View.VISIBLE else View.GONE
+            }
+            showCineMessage("Đang lọc bạn bè có độ khớp gu cao (>= 90%)")
+        }
+        binding.btnFriendFilter.setOnClickListener {
+            showCineMessage("Bộ lọc", subtitle = "Đang sắp xếp theo độ khớp gu điện ảnh cao nhất")
         }
     }
 
@@ -323,6 +365,7 @@ class FriendsFragment : Fragment() {
             findNavController().navigate(R.id.inviteMovieFragment)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

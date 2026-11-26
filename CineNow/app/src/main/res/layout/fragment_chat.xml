@@ -41,12 +41,12 @@
                 app:cardElevation="0dp">
 
                 <ImageView
+                    android:id="@+id/ivChatUserAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="Thảo Vy"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="#475569" />
+                    android:contentDescription="Avatar"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar_thao_vy" />
             </androidx.cardview.widget.CardView>
 
             <FrameLayout

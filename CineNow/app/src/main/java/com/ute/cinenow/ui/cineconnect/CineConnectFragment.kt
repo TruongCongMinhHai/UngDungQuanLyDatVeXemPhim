@@ -139,6 +139,71 @@ class CineConnectFragment : Fragment() {
     }
 
     private fun setupSearchAndFilter() {
+        // Lọc thẻ khi gõ vào ô tìm kiếm
+        fun filterCards(keyword: String) {
+            val kw = keyword.lowercase().trim()
+            val lyKeywords = "nguyễn thảo ly 22 tuổi cinenow landmark 81 khoa học viễn tưởng imax anime tp.hcm".lowercase()
+            val longKeywords = "trần bảo long 25 tuổi cinenow hai bà trưng tâm lý hành động kịch tính tp.hcm".lowercase()
+
+            val showLy = kw.isEmpty() || kw == "tất cả" || lyKeywords.contains(kw)
+            val showLong = kw.isEmpty() || kw == "tất cả" || longKeywords.contains(kw)
+
+            if (!CineConnectStateManager.isFriend("Nguyễn Thảo Ly")) {
+                binding.cardExploreUser1.visibility = if (showLy) View.VISIBLE else View.GONE
+            }
+            if (!CineConnectStateManager.isFriend("Trần Bảo Long")) {
+                binding.cardExploreUser2.visibility = if (showLong) View.VISIBLE else View.GONE
+            }
+        }
+
+        // Tìm và gắn sự kiện click cho các Chip thể loại (Tất cả, Khoa học viễn tưởng, Hành động, Anime, TP.HCM)
+        fun scanChips(v: View) {
+            if (v is HorizontalScrollView) {
+                val chipContainer = v.getChildAt(0) as? LinearLayout
+                if (chipContainer != null) {
+                    val chips = mutableListOf<TextView>()
+                    for (c in 0 until chipContainer.childCount) {
+                        val chip = chipContainer.getChildAt(c) as? TextView ?: continue
+                        chips.add(chip)
+                    }
+                    for (chip in chips) {
+                        chip.isClickable = true
+                        chip.setOnClickListener {
+                            val text = chip.text.toString().trim()
+                            for (other in chips) {
+                                val isCur = (other == chip)
+                                other.backgroundTintList = ColorStateList.valueOf(
+                                    if (isCur) Color.parseColor("#5850EC") else Color.WHITE
+                                )
+                                other.setTextColor(if (isCur) Color.WHITE else Color.parseColor("#475569"))
+                            }
+                            // Áp dụng bộ lọc lên các thẻ
+                            filterCards(if (text.equals("Tất cả", ignoreCase = true)) "" else text)
+                            showCineMessage("Bộ lọc", subtitle = "Đang xem: $text")
+                        }
+                    }
+                }
+                return
+            }
+            if (v is ViewGroup) {
+                for (i in 0 until v.childCount) {
+                    scanChips(v.getChildAt(i))
+                }
+            }
+        }
+        scanChips(binding.root)
+
+        // Ô tìm kiếm: gõ tới đâu lọc trực tiếp tới đó
+        binding.etSearchUser.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val keyword = s.toString().trim()
+                filterCards(keyword)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Nút Bộ lọc: bấm chuyển sang màn Người phù hợp kèm từ khóa
         binding.btnFilter.setOnClickListener {
             val kw = binding.etSearchUser.text.toString().trim()
             findNavController().navigate(

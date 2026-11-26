@@ -279,7 +279,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Trần Bảo Long"
-                                    android:src="@drawable/cast_cillian_murphy"
+                                    android:src="@drawable/avatar_bao_long"
                                     android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
@@ -496,7 +496,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Nguyễn Thảo Ly"
-                                    android:src="@drawable/cast_phuong_anh_dao"
+                                    android:src="@drawable/avatar_thao_ly"
                                     android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
@@ -711,7 +711,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Đặng Tuấn Kiệt"
-                                    android:src="@drawable/cast_tuan_tran"
+                                    android:src="@drawable/avatar_tuan_kiet"
                                     android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 
@@ -926,7 +926,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:contentDescription="Lê Hoàng Minh"
-                                    android:src="@drawable/cast_christopher_nolan"
+                                    android:src="@drawable/avatar_le_hoang_minh"
                                     android:scaleType="centerCrop" />
                             </androidx.cardview.widget.CardView>
 

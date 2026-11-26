@@ -119,9 +119,8 @@ class FriendRequestsFragment : Fragment() {
 
             val avatarImg = ImageView(requireContext()).apply {
                 setImageResource(user.avatarRes)
-                imageTintList = ColorStateList.valueOf(Color.parseColor("#64748B"))
-                val pad = (8 * density).toInt()
-                setPadding(pad, pad, pad, pad)
+                imageTintList = null
+                scaleType = ImageView.ScaleType.CENTER_CROP
             }
             avatarCard.addView(avatarImg)
 

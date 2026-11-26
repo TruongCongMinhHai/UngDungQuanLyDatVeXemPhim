@@ -53,13 +53,30 @@ class ChatFragment : Fragment() {
 
     private fun loadFriendProfile() {
         val user = CineConnectStateManager.getUser(friendName)
-        // Lỗi 1: Đồng bộ tên, avatar, trạng thái, % khớp gu theo đúng friendName
+        // Đồng bộ avatar, tên, trạng thái, % khớp gu theo đúng friendName
+        binding.ivChatUserAvatar.setImageResource(user.avatarRes)
+        binding.ivChatUserAvatar.imageTintList = null
+        binding.ivChatUserAvatar.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
         binding.topUserBar.findViewById<TextView>(R.id.header)?.text = "Trò chuyện"
 
         // Quét các text view trong topUserBar
         findTextViewByText(binding.topUserBar, "Thảo Vy")?.text = user.name
         findTextViewByText(binding.topUserBar, "Đang hoạt động")?.text =
             "${user.onlineStatusText} • ${user.matchPercent}% khớp gu"
+
+        // Cập nhật avatar trong các tin nhắn nhận
+        fun updateBubblesAvatar(view: View) {
+            if (view is android.widget.ImageView && view.contentDescription == "Thảo Vy") {
+                view.setImageResource(user.avatarRes)
+                view.imageTintList = null
+                view.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+            } else if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    updateBubblesAvatar(view.getChildAt(i))
+                }
+            }
+        }
+        updateBubblesAvatar(binding.layoutChatMessages)
 
         // Điểm tương thích gu phim banner
         val matchBanner = binding.layoutChatMessages.getChildAt(0)

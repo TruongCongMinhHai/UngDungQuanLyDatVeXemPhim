@@ -6,6 +6,8 @@
     android:background="#F8F9FC">
 
     <!-- Header chung CineNow -->
+
+    <!-- Scrollable Content -->
     <com.ute.cinenow.utils.CineHeader
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -13,10 +15,10 @@
         app:headerShowBack="true"
         app:headerTitle="CineConnect"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -205,8 +207,8 @@
                                 android:background="@drawable/bg_camera_circle"
                                 android:backgroundTint="#E2E8F0"
                                 android:contentDescription="Hoàng Nam"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_person" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/avatar_hoang_nam" />
 
                             <View
                                 android:layout_width="11dp"
@@ -251,8 +253,8 @@
                                 android:background="@drawable/bg_camera_circle"
                                 android:backgroundTint="#E2E8F0"
                                 android:contentDescription="Vũ Mai Anh"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_person" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/avatar_mai_anh" />
 
                             <View
                                 android:layout_width="11dp"
@@ -297,8 +299,8 @@
                                 android:background="@drawable/bg_camera_circle"
                                 android:backgroundTint="#E2E8F0"
                                 android:contentDescription="Bảo Minh"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_person" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/avatar_bao_minh" />
 
                             <View
                                 android:layout_width="11dp"
@@ -532,6 +534,7 @@
 
                 <!-- CARD USER 1: Nguyễn Thảo Ly -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardExploreUser1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -561,7 +564,8 @@
                                     android:background="@drawable/bg_camera_circle"
                                     android:backgroundTint="#CBD5E1"
                                     android:contentDescription="Ảnh đại diện Nguyễn Thảo Ly"
-                                    android:src="@drawable/ic_person" />
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/avatar_thao_ly" />
 
                                 <View
                                     android:layout_width="11dp"
@@ -718,6 +722,7 @@
 
                 <!-- CARD USER 2: Trần Bảo Long -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardExploreUser2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -747,7 +752,8 @@
                                     android:background="@drawable/bg_camera_circle"
                                     android:backgroundTint="#CBD5E1"
                                     android:contentDescription="Ảnh đại diện Trần Bảo Long"
-                                    android:src="@drawable/ic_person" />
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/avatar_bao_long" />
 
                                 <View
                                     android:layout_width="11dp"

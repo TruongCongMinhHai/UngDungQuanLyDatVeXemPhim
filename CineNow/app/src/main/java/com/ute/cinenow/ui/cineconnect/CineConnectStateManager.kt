@@ -16,7 +16,7 @@ object CineConnectStateManager {
         val name: String,
         val handle: String,
         val age: Int,
-        val avatarRes: Int = R.drawable.ic_person,
+        val avatarRes: Int,
         val favoriteCinema: String,
         val watchedTickets: Int,
         val genres: List<String>,
@@ -42,10 +42,7 @@ object CineConnectStateManager {
         val movieCinema: String? = null
     )
 
-    // Master list: Nguồn duy nhất cho mọi màn hình
     private val allUsers = mutableMapOf<String, CineUser>()
-
-    // Chat history per user
     private val chatHistories = mutableMapOf<String, MutableList<ChatMessage>>()
 
     init {
@@ -62,7 +59,7 @@ object CineConnectStateManager {
                 name = "Minh Quân",
                 handle = "minhquan_cine",
                 age = 24,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_minh_quan,
                 favoriteCinema = "CineNow Bitexco Q1",
                 watchedTickets = 32,
                 genres = listOf("Khoa học viễn tưởng", "Hành động", "IMAX"),
@@ -80,7 +77,7 @@ object CineConnectStateManager {
                 name = "Thảo Vy",
                 handle = "thaovy_film",
                 age = 23,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_thao_vy,
                 favoriteCinema = "CineNow Landmark 81",
                 watchedTickets = 19,
                 genres = listOf("Tình cảm", "Hoạt hình", "Ghibli"),
@@ -98,7 +95,7 @@ object CineConnectStateManager {
                 name = "Hoàng Nam",
                 handle = "hoangnam_imax",
                 age = 25,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_hoang_nam,
                 favoriteCinema = "CineNow Nguyễn Huệ",
                 watchedTickets = 28,
                 genres = listOf("IMAX Fan", "Hành động", "Phiêu lưu"),
@@ -116,7 +113,7 @@ object CineConnectStateManager {
                 name = "Phương Linh",
                 handle = "phuonglinh_horror",
                 age = 21,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_phuong_linh,
                 favoriteCinema = "CineNow Landmark 81",
                 watchedTickets = 15,
                 genres = listOf("Kinh dị", "Giật gân", "Trinh thám"),
@@ -134,7 +131,7 @@ object CineConnectStateManager {
                 name = "Vũ Mai Anh",
                 handle = "maianh_vu",
                 age = 22,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_mai_anh,
                 favoriteCinema = "CineNow Hai Bà Trưng",
                 watchedTickets = 21,
                 genres = listOf("Tâm lý", "Âm nhạc", "Lãng mạn"),
@@ -152,7 +149,7 @@ object CineConnectStateManager {
                 name = "Bảo Minh",
                 handle = "baominh_cinema",
                 age = 26,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_bao_minh,
                 favoriteCinema = "CineNow Bitexco Q1",
                 watchedTickets = 30,
                 genres = listOf("Hành động", "Kịch tính", "Sci-Fi"),
@@ -170,7 +167,7 @@ object CineConnectStateManager {
                 name = "Nguyễn Thảo Ly",
                 handle = "thaoly_cinema",
                 age = 22,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_thao_ly,
                 favoriteCinema = "CineNow Landmark 81",
                 watchedTickets = 18,
                 genres = listOf("Khoa học viễn tưởng", "Anime", "Tâm lý"),
@@ -188,7 +185,7 @@ object CineConnectStateManager {
                 name = "Đặng Tuấn Kiệt",
                 handle = "tuankiet_cine",
                 age = 26,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_tuan_kiet,
                 favoriteCinema = "CineNow Bitexco Q1",
                 watchedTickets = 27,
                 genres = listOf("Hành động", "Phiêu lưu", "Marvel"),
@@ -206,7 +203,7 @@ object CineConnectStateManager {
                 name = "Phạm Thảo Vy",
                 handle = "phamthaovy_cgv",
                 age = 23,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_pham_thao_vy,
                 favoriteCinema = "CineNow Hai Bà Trưng",
                 watchedTickets = 14,
                 genres = listOf("Hài hước", "Gia đình", "Hoạt hình"),
@@ -224,7 +221,7 @@ object CineConnectStateManager {
                 name = "Trần Bảo Long",
                 handle = "baolong_cinema",
                 age = 25,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_bao_long,
                 favoriteCinema = "CineNow Landmark 81",
                 watchedTickets = 24,
                 genres = listOf("Khoa học viễn tưởng", "IMAX", "4DX"),
@@ -242,7 +239,7 @@ object CineConnectStateManager {
                 name = "Lê Hoàng Minh",
                 handle = "hoangminh_imax",
                 age = 27,
-                avatarRes = R.drawable.ic_person,
+                avatarRes = R.drawable.avatar_le_hoang_minh,
                 favoriteCinema = "CineNow Landmark 81",
                 watchedTickets = 35,
                 genres = listOf("Tâm lý", "Giật gân", "Nolan"),
@@ -259,7 +256,6 @@ object CineConnectStateManager {
 
         list.forEach { allUsers[it.name] = it }
 
-        // Khởi tạo lịch sử chat mẫu cho từng bạn bè (không dùng chung)
         chatHistories["Thảo Vy"] = mutableListOf(
             ChatMessage("Thảo Vy", "Chào bạn! Cuối tuần này rảnh không, mình thấy phim Hành Tinh Cát 2 đang hot quá nè!", "14:22", false),
             ChatMessage("Tôi", "Mình cũng đang muốn xem lại bản IMAX nè, bạn đã mua vé chưa?", "14:25", true),
@@ -275,18 +271,6 @@ object CineConnectStateManager {
         chatHistories["Minh Quân"] = mutableListOf(
             ChatMessage("Minh Quân", "Hôm qua vừa xem Dune 2 về, kỹ xảo đỉnh cao thực sự!", "09:00", false),
             ChatMessage("Tôi", "Đoạn sa mạc nhìn choáng ngợp thật sự Quân ạ.", "09:05", true)
-        )
-
-        chatHistories["Vũ Mai Anh"] = mutableListOf(
-            ChatMessage("Vũ Mai Anh", "Chào bạn, phim Mai có suất chiếu tối nay ở Hai Bà Trưng nè.", "16:00", false)
-        )
-
-        chatHistories["Bảo Minh"] = mutableListOf(
-            ChatMessage("Bảo Minh", "Cuối tuần này rảnh làm chầu bắp nước xem phim bom tấn nhé!", "11:30", false)
-        )
-
-        chatHistories["Phương Linh"] = mutableListOf(
-            ChatMessage("Phương Linh", "Phim kinh dị mới ra rạp ghê lắm, đi xem chung cho đỡ sợ không?", "20:00", false)
         )
     }
 
@@ -310,29 +294,17 @@ object CineConnectStateManager {
     }
 
     fun getAllUsers(): List<CineUser> = allUsers.values.toList()
-
     fun getFriends(): List<CineUser> = allUsers.values.filter { it.status == ConnectionStatus.FRIEND }
-
     fun getReceivedRequests(): List<CineUser> = allUsers.values.filter { it.status == ConnectionStatus.REQUEST_RECEIVED }
-
     fun getSentRequests(): List<CineUser> = allUsers.values.filter { it.status == ConnectionStatus.REQUEST_SENT }
 
-    fun isFriend(userName: String): Boolean {
-        return getUser(userName).status == ConnectionStatus.FRIEND
-    }
-
-    fun isRequestSent(userName: String): Boolean {
-        return getUser(userName).status == ConnectionStatus.REQUEST_SENT
-    }
-
-    fun isRequestReceived(userName: String): Boolean {
-        return getUser(userName).status == ConnectionStatus.REQUEST_RECEIVED
-    }
+    fun isFriend(userName: String): Boolean = getUser(userName).status == ConnectionStatus.FRIEND
+    fun isRequestSent(userName: String): Boolean = getUser(userName).status == ConnectionStatus.REQUEST_SENT
+    fun isRequestReceived(userName: String): Boolean = getUser(userName).status == ConnectionStatus.REQUEST_RECEIVED
 
     fun sendFriendRequest(userName: String) {
         val user = getUser(userName)
         if (user.status == ConnectionStatus.REQUEST_RECEIVED) {
-            // Cả hai cùng gửi lời mời -> Tự động thành bạn bè
             user.status = ConnectionStatus.FRIEND
         } else if (user.status == ConnectionStatus.NOT_CONNECTED) {
             user.status = ConnectionStatus.REQUEST_SENT
@@ -360,10 +332,7 @@ object CineConnectStateManager {
         allUsers[user.name] = user
     }
 
-    // Chat management
-    fun getMessages(userName: String): MutableList<ChatMessage> {
-        return chatHistories.getOrPut(userName) { mutableListOf() }
-    }
+    fun getMessages(userName: String): MutableList<ChatMessage> = chatHistories.getOrPut(userName) { mutableListOf() }
 
     fun addMessage(userName: String, message: ChatMessage) {
         getMessages(userName).add(message)

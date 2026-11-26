@@ -53,6 +53,8 @@ class UserProfileFragment : Fragment() {
         binding.tvUserName.text = user.name
         binding.tvUserHandle.text = user.handle
         binding.ivAvatar.setImageResource(user.avatarRes)
+        binding.ivAvatar.imageTintList = null
+        binding.ivAvatar.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
         binding.header.title = "Hồ sơ: ${user.name}"
 
         // Điểm số và rạp thường ghé
